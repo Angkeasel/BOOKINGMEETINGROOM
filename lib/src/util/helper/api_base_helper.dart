@@ -4,8 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
-import 'local_storage/local_storage.dart';
-
 class ErrorModel {
   final int? statusCode;
   final dynamic bodyString;
@@ -20,8 +18,8 @@ enum METHODE {
 }
 
 class ApiBaseHelper {
-  String? baseurl = dotenv.env['base_url'];
-  // String? baseurl = 'https://pre-myproperty.z1platform.com/api/';
+  //String? baseurl = dotenv.env['base_url'];
+  String? baseurl = 'http://localhost:8080/api';
   Future<dynamic> onNetworkRequesting({
     required String url,
     Map<String, String>? header,
@@ -31,7 +29,9 @@ class ApiBaseHelper {
     String baseUrl = '',
   }) async {
     if (baseUrl != '') baseurl = baseUrl;
-    var token = await LocalStorage.getStringValue(key: 'access_token');
+    var token =
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjk5NDA5OTY0LCJleHAiOjE2OTk0OTYzNjR9.nDriVPu4kKlBCJFDXg2VSo9qzbWfDrwsq2C0smU1Fro';
+    //var token = await LocalStorage.getStringValue(key: 'access_token');
     final fullUrl = baseurl! + url;
     Map<String, String> headerDefault = {
       'Content-Type': 'application/json',
