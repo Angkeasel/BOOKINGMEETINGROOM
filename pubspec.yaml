@@ -31,7 +31,7 @@ dependencies:
   flutter:
     sdk: flutter
   get: ^4.6.6
-  table_calendar: ^3.0.9
+  table_calendar: ^3.0.3
   shared_preferences: ^2.2.2
   flutter_dotenv: ^5.0.2
   http: ^1.1.0
@@ -41,6 +41,7 @@ dependencies:
   freezed: ^2.4.5
   freezed_annotation: ^2.4.1
   json_annotation: ^4.8.1
+  dropdown_button2: ^2.3.9
 
 
   # The following adds the Cupertino Icons font to your application.

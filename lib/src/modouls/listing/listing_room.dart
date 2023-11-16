@@ -61,7 +61,8 @@ class _ListingRoomState extends State<ListingRoom> {
                                 roomCon.currentIndex.value = e.value.id!;
                                 debugPrint(
                                     '====> indexID ${roomCon.currentIndex.value}');
-                                GoRouter.of(context).go('/room/booking');
+                                GoRouter.of(context).go(
+                                    '/room/room-meet/${roomCon.currentIndex.value}');
                               },
                               child: Container(
                                   width:
