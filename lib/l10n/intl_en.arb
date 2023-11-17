@@ -1,0 +1,14 @@
+{
+    "@@locale": "en",
+    "login": "Login",
+    "email": "Email Address",
+    "emailHintMgs": "Please Enter Your Email",
+    "password": "Password",
+    "passwordHintMgs": "Please Enter Your Password",
+    "hasAccountMsg": "Already have an account?",
+    "noAccountMsg": "Don't have an account yet?",
+    "registerTitle": "Register New Account",
+    "register": "Register",
+    "username": "Username",
+    "forgetPassword": "Forget Password?"
+}

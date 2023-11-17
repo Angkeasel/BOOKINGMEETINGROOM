@@ -1,9 +1,13 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:meetroombooking/generated/l10n.dart';
 import 'package:meetroombooking/src/auth/controller/auth_controller.dart';
+import 'package:meetroombooking/src/constant/app_size.dart';
+import 'package:meetroombooking/src/constant/app_textstyle.dart';
 import 'package:meetroombooking/widgets/custom_text_form_filed.dart';
 
 import '../../../widgets/custom_buttons.dart';
@@ -12,122 +16,127 @@ import '../../constant/app_color.dart';
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
 
+  static final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     final authCon = Get.put(AuthController());
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Image.asset(
-          'assets/image/png/KOFI LOGO-01 1.png',
-          height: 100,
-        ),
+        // title: Image.asset(
+        //   'assets/image/png/KOFI LOGO-01 1.png',
+        //   height: 100,
+        // ),
         elevation: 0,
         backgroundColor: Colors.white,
-        leading: IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              color: Colors.black,
-            )),
       ),
-      body: Obx(
-        () => Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 80),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
+      body: SafeArea(
+        minimum: const EdgeInsets.only(bottom: padding),
+        child: Obx(
+          () => Column(
             children: [
-              const Text(
-                "Register",
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.w700),
-              ),
-              const SizedBox(
-                height: 50,
-              ),
-              CustomTextFormFiled(
-                controller: authCon.nameController.value,
-                lable: "UserName",
-                hintText: "Please Enter your username",
-                onChanged: (v) {},
-                validator: (v) =>
-                    v == '' ? Intl.message("Invalid Username") : null,
-              ),
-              CustomTextFormFiled(
-                controller: authCon.emailController.value,
-                lable: "Email Address",
-                hintText: "Please Enter your email",
-                onChanged: (v) {},
-                validator: (v) =>
-                    v == '' ? Intl.message("Invalid Email Address") : null,
-              ),
-              CustomTextFormFiled(
-                controller: authCon.pwController.value,
-                lable: "Password",
-                obscureText: authCon.hidePassword.value,
-                suffixIcon: IconButton(
-                    onPressed: () {
-                      authCon.hidePassword.value = !authCon.hidePassword.value;
-                    },
-                    icon: authCon.hidePassword.value
-                        ? Icon(
-                            Icons.visibility_rounded,
-                            color: AppColors.primaryColor,
-                          )
-                        : Icon(Icons.visibility_off,
-                            color: AppColors.primaryColor)),
-                hintText: "Please Enter your password",
-                validator: (v) =>
-                    v == '' ? Intl.message("Invalid Password") : null,
-                onChanged: (v) {},
-              ),
-              Align(
-                  alignment: Alignment.bottomRight,
-                  child: GestureDetector(
-                    onTap: () {
-                      debugPrint("========> go to forget pw screen");
-                    },
-                    child: Text(
-                      "Forget password?",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.primaryColor),
-                    ),
-                  )),
-              const SizedBox(
-                height: 50,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: CustomButtons(
-                  title: 'Register',
-                  onTap: () {
-                    debugPrint('============> 1 welcome to my page');
-                    GoRouter.of(context).go("/room");
-                  },
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(horizontal: padding),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(height: context.height * .05),
+                        Text(
+                          L.current.registerTitle,
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontVariations: [FontWeight.w600.getVariant],
+                          ),
+                        ),
+                        const SizedBox(height: 30),
+                        CustomTextFormFiled(
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          controller: authCon.nameController.value,
+                          lable: L.current.username,
+                          onChanged: (v) {},
+                          validator: (v) =>
+                              v == '' ? Intl.message("Invalid Username") : null,
+                        ),
+                        CustomTextFormFiled(
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          controller: authCon.emailController.value,
+                          keyboardType: TextInputType.emailAddress,
+                          lable: L.current.email,
+                          hintText: L.current.emailHintMgs,
+                          onChanged: (v) {},
+                          validator: (v) => v?.isEmail == false
+                              ? Intl.message("Invalid Email Address")
+                              : null,
+                        ),
+                        CustomTextFormFiled(
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          controller: authCon.pwController.value,
+                          textInputAction: TextInputAction.done,
+                          lable: L.current.password,
+                          hintText: L.current.passwordHintMgs,
+                          obscureText: authCon.hidePassword.value,
+                          suffixIcon: IconButton(
+                              onPressed: () {
+                                authCon.hidePassword.value =
+                                    !authCon.hidePassword.value;
+                              },
+                              icon: authCon.hidePassword.value
+                                  ? Icon(
+                                      Icons.visibility_rounded,
+                                      color: AppColors.primaryColor,
+                                    )
+                                  : Icon(Icons.visibility_off,
+                                      color: AppColors.primaryColor)),
+                          validator: (v) => v == null || v == '' || v.length < 8
+                              ? Intl.message("Invalid Password")
+                              : null,
+                          onChanged: (v) {},
+                        ),
+                        const SizedBox(height: 10),
+                        CustomButtons(
+                          title: L.current.register,
+                          onTap: () {
+                            final noError =
+                                _formKey.currentState?.validate() == true;
+                            if (noError) {
+                              context.go("/room");
+                            }
+                            debugPrint('============> 1 welcome to my page');
+                          },
+                        ),
+                      ],
+                    ).animate().slideY(
+                          begin: .05,
+                          end: 0,
+                          duration: 200.ms,
+                        ),
+                  ),
                 ),
               ),
-              const Spacer(),
               RichText(
-                  text: TextSpan(
-                      text: "Already Have an account!    ",
-                      style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.grey),
-                      children: [
+                text: TextSpan(
+                  text: '${L.current.hasAccountMsg} ',
+                  style: context.titleMedium,
+                  children: [
                     TextSpan(
-                        text: "SIGNIN",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.primaryColor,
-                        ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            debugPrint("=======>go SIGNIN");
-                            GoRouter.of(context).go('/login');
-                          })
-                  ])),
+                      text: L.current.login,
+                      style: TextStyle(
+                        color: AppColors.primaryColor,
+                        decoration: TextDecoration.underline,
+                      ),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          context.go('/login');
+                        },
+                    )
+                  ],
+                ),
+              ),
             ],
           ),
         ),

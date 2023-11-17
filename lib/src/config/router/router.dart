@@ -9,7 +9,7 @@ import '../../modouls/listing/listing_room.dart';
 
 const _initialLocation = '/sso';
 final router = GoRouter(
-  debugLogDiagnostics: true,
+  // debugLogDiagnostics: true,
   initialLocation: _initialLocation,
   routes: [
     GoRoute(
@@ -18,35 +18,43 @@ final router = GoRouter(
     ),
     GoRoute(
       path: '/register',
-      builder: (context, state) => const RegisterScreen(),
+      pageBuilder: (context, state) => const NoTransitionPage(
+        child: RegisterScreen(),
+      ),
     ),
     GoRoute(
       path: '/login',
-      builder: (context, state) => const LoginScreen(),
+      pageBuilder: (context, state) => const NoTransitionPage(
+        child: LoginScreen(),
+      ),
     ),
     GoRoute(
-        path: '/room',
-        name: 'Room',
-        builder: (context, state) => const ListingRoom(),
-        routes: [
-          GoRoute(
-            path: 'room-meet/:id',
-            builder: (context, state) {
-              int id = int.parse(state.pathParameters['id']!);
-              return EventCalendarPage(
-                id: id,
-              );
-            },
-          ),
-          GoRoute(
-              path: 'confirm-booking',
-              name: 'ConfirmBooking',
-              builder: (context, state) {
-                return ConfirmBookingScreen(
-                  amountTime: int.parse(state.uri.queryParameters['index']!),
-                  time: state.uri.queryParameters['time'],
-                );
-              }),
-        ])
+      path: '/room',
+      name: 'RoomListingScreen',
+      pageBuilder: (context, state) => const NoTransitionPage(
+        child: ListingRoom(),
+      ),
+      routes: [
+        GoRoute(
+          path: 'room-meet/:id',
+          builder: (context, state) {
+            int id = int.parse(state.pathParameters['id']!);
+            return EventCalendarPage(
+              id: id,
+            );
+          },
+        ),
+        GoRoute(
+          path: 'confirm-booking',
+          name: 'ConfirmBookingScreen',
+          builder: (context, state) {
+            return ConfirmBookingScreen(
+              amountTime: int.parse(state.uri.queryParameters['index']!),
+              time: state.uri.queryParameters['time'],
+            );
+          },
+        ),
+      ],
+    )
   ],
 );

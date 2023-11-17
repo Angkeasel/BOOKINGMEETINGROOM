@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:meetroombooking/src/constant/app_size.dart';
+import 'package:meetroombooking/src/constant/app_textstyle.dart';
 
 import '../src/constant/app_color.dart';
 
@@ -29,27 +31,28 @@ class CustomButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: isOutline!
+      color: isOutline == true
           ? Colors.transparent
-          : isDisabled!
+          : isDisabled == true
               ? Colors.grey
               : color ?? AppColors.primaryColor,
       borderRadius: BorderRadius.circular(10),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
-        onTap: isDisabled! ? null : onTap,
+        onTap: isDisabled == true ? null : onTap,
         splashColor:
-            isOutline! ? AppColors.primaryColor.withOpacity(0.4) : null,
+            isOutline == true ? AppColors.primaryColor.withOpacity(0.4) : null,
         highlightColor:
-            isOutline! ? AppColors.primaryColor.withOpacity(0.4) : null,
-        focusColor: isOutline! ? AppColors.primaryColor.withOpacity(0.4) : null,
+            isOutline == true ? AppColors.primaryColor.withOpacity(0.4) : null,
+        focusColor:
+            isOutline == true ? AppColors.primaryColor.withOpacity(0.4) : null,
         child: Container(
           height: 50,
           width: width ?? double.infinity,
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            border: isOutline!
-                ? isDisabled!
+            border: isOutline == true
+                ? isDisabled == true
                     ? Border.all(color: Colors.grey)
                     : Border.all(color: color ?? AppColors.primaryColor)
                 : null,
@@ -74,11 +77,10 @@ class CustomButtons extends StatelessWidget {
                   : const SizedBox(),
               Text(title ?? '',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: context.bodyMedium.copyWith(
                       fontSize: 20,
-                      fontFamily: 'Roboto',
-                      fontWeight: FontWeight.w700,
-                      color: isOutline!
+                      fontVariations: [FontWeight.w600.getVariant],
+                      color: isOutline == true
                           ? color ?? AppColors.primaryColor
                           : textColor ?? Colors.white)),
             ],

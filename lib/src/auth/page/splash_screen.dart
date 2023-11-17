@@ -26,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen>
       () async {
         try {
           debugPrint("=======>token: $token");
-          if (token.isEmpty) {
+          if (token.isNotEmpty) {
             router.go('/login');
           } else {
             router.go('/room');
@@ -39,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen>
   late final AnimationController _animationController;
   final _position =
       Tween<Offset>(begin: const Offset(0, 0.2), end: Offset.zero);
-  final _opacity = Tween<double>(begin: 0, end: 2);
+  final _opacity = Tween<double>(begin: 0, end: 1);
 
   @override
   void initState() {
@@ -56,38 +56,39 @@ class _SplashScreenState extends State<SplashScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-          child: Container(
-        height: double.infinity,
-        width: double.infinity,
-        color: Colors.white,
-        child: Column(
-          children: [
-            Expanded(
-              child: AnimatedBuilder(
-                animation: _animationController,
-                builder: (_, __) => SlideTransition(
-                  position: _position.animate(
-                    CurvedAnimation(
-                      parent: _animationController,
-                      curve: Curves.fastEaseInToSlowEaseOut,
+        child: Container(
+          height: double.infinity,
+          width: double.infinity,
+          color: Colors.white,
+          child: Column(
+            children: [
+              Expanded(
+                child: AnimatedBuilder(
+                  animation: _animationController,
+                  builder: (_, __) => SlideTransition(
+                    position: _position.animate(
+                      CurvedAnimation(
+                        parent: _animationController,
+                        curve: Curves.fastEaseInToSlowEaseOut,
+                      ),
                     ),
+                    child: FadeTransition(
+                        opacity: _opacity.animate(_animationController),
+                        child:
+                            Image.asset("assets/image/png/KOFI LOGO-01 1.png")),
                   ),
-                  child: FadeTransition(
-                      opacity: _opacity.animate(_animationController),
-                      child:
-                          Image.asset("assets/image/png/KOFI LOGO-01 1.png")),
                 ),
               ),
-            ),
-            CupertinoActivityIndicator(
-              color: AppColors.primaryColor,
-            ),
-            const SizedBox(
-              height: 50,
-            )
-          ],
+              CupertinoActivityIndicator(
+                color: AppColors.primaryColor,
+              ),
+              const SizedBox(
+                height: 50,
+              )
+            ],
+          ),
         ),
-      )),
+      ),
     );
   }
 }
