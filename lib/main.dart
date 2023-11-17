@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
             GlobalWidgetsLocalizations.delegate,
           ],
           supportedLocales: L.delegate.supportedLocales,
-          locale: controller.locale,
+          locale: controller.locale.value,
           routerConfig: router,
         );
       },

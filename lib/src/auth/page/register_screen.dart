@@ -8,6 +8,7 @@ import 'package:meetroombooking/generated/l10n.dart';
 import 'package:meetroombooking/src/auth/controller/auth_controller.dart';
 import 'package:meetroombooking/src/constant/app_size.dart';
 import 'package:meetroombooking/src/constant/app_textstyle.dart';
+import 'package:meetroombooking/widgets/change_language_button.dart';
 import 'package:meetroombooking/widgets/custom_text_form_filed.dart';
 
 import '../../../widgets/custom_buttons.dart';
@@ -24,12 +25,13 @@ class RegisterScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        // title: Image.asset(
-        //   'assets/image/png/KOFI LOGO-01 1.png',
-        //   height: 100,
-        // ),
+        title: Image.asset(
+          'assets/image/png/KOFI LOGO-01 1.png',
+          height: 100,
+        ),
         elevation: 0,
         backgroundColor: Colors.white,
+        actions: const [ChangeLanguageButton(), SizedBox(width: 10)],
       ),
       body: SafeArea(
         minimum: const EdgeInsets.only(bottom: padding),

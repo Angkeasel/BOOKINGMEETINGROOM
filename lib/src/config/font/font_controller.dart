@@ -5,13 +5,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 const _appLocaleKey = 'LOCALE';
 
 class LanguageController extends GetxController {
-  Locale locale = const Locale('en');
+  Rx<Locale> locale = Rx<Locale>(Locale(Language.en.name));
   late final SharedPreferences _pref;
 
   void _checkLanguage() async {
     _pref = await SharedPreferences.getInstance();
     final savedLocale = _pref.getString(_appLocaleKey) ?? 'en';
-    locale = Locale(savedLocale);
+    locale.value = Locale(savedLocale);
     update();
     refresh();
   }
@@ -22,9 +22,17 @@ class LanguageController extends GetxController {
 
   void changeLanguage(Language language) {
     _setCurrentLanguage(language);
-    locale = Locale(language.name);
+    locale.value = Locale(language.name);
     update();
     refresh();
+  }
+
+  void toggleLanguage() {
+    if (locale.value == Locale(Language.en.name)) {
+      changeLanguage(Language.km);
+    } else {
+      changeLanguage(Language.en);
+    }
   }
 
   @override
@@ -32,6 +40,8 @@ class LanguageController extends GetxController {
     _checkLanguage();
     super.onInit();
   }
+
+  bool get isKhmer => locale.value == Locale(Language.km.name);
 }
 
 //Don't change

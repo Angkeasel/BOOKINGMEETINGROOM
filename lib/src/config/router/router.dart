@@ -7,7 +7,7 @@ import '../../modouls/booking /confirm_booking.dart';
 import '../../modouls/booking /event_calendar_page.dart';
 import '../../modouls/listing/listing_room.dart';
 
-const _initialLocation = '/sso';
+const _initialLocation = '/login';
 final router = GoRouter(
   // debugLogDiagnostics: true,
   initialLocation: _initialLocation,
