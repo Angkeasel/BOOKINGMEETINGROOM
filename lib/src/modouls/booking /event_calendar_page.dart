@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import 'package:meetroombooking/src/constant/app_color.dart';
+import 'package:meetroombooking/src/constant/app_size.dart';
 import 'package:meetroombooking/src/modouls/home/home_controller.dart';
 import 'package:meetroombooking/src/modouls/listing/room_controller.dart';
 import 'package:meetroombooking/widgets/custom_time_card.dart';
@@ -65,29 +66,19 @@ class _EventCalendarPageState extends State<EventCalendarPage> {
   @override
   Widget build(BuildContext context) {
     List<String> availableSlots = findAvailableSlots(bookedSlots);
-    debugPrint('BookedTime Slots: $bookedSlots');
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
         title: Text(
           "Booking Your Meeting Room ${widget.id}",
-          style: const TextStyle(color: Colors.black),
         ),
-        elevation: 0,
-        leading: IconButton(
-            onPressed: () {
-              context.pop();
-              debugPrint('=>>>>>>>> check pop route booking');
-            },
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              color: Colors.black,
-            )),
       ),
-      body: SingleChildScrollView(
+      body: SafeArea(
+        minimum: defaultMinSafeArea.copyWith(left: padding, right: padding),
         child: Column(
           children: [
             TableCalendar(
+              locale: 'en',
               headerStyle: HeaderStyle(
                   titleCentered: true,
                   leftChevronVisible: outsideDaysVisible ? false : true,
@@ -142,7 +133,7 @@ class _EventCalendarPageState extends State<EventCalendarPage> {
                   debugPrint(
                       '=======>currentdate ${DateFormat.yMMMMEEEEd().format(currentDay)}');
                   final currentSelected =
-                      DateFormat.yMMMMEEEEd().format(currentDay);
+                      DateFormat.yMMMMEEEEd('en').format(currentDay);
                   debugPrint('=======>focusDay $currentSelected');
                 });
               },
@@ -152,21 +143,22 @@ class _EventCalendarPageState extends State<EventCalendarPage> {
               calendarBuilders: CalendarBuilders(
                 selectedBuilder: (context, datetime, events) {
                   return Container(
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 2, horizontal: 8),
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppColors.primaryColor,
-                          border:
-                              Border.all(color: Colors.deepPurple, width: 2)),
-                      child: Center(
-                          child: Text(
+                    margin:
+                        const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppColors.primaryColor,
+                        border: Border.all(color: Colors.deepPurple, width: 2)),
+                    child: Center(
+                      child: Text(
                         "${datetime.day}",
                         style: const TextStyle(
                             color: Colors.white,
                             fontSize: 16,
                             fontWeight: FontWeight.w600),
-                      )));
+                      ),
+                    ),
+                  );
                 },
                 todayBuilder: (context, day, focusedDay) {
                   return Container(
@@ -203,7 +195,7 @@ class _EventCalendarPageState extends State<EventCalendarPage> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              padding: const EdgeInsets.symmetric(vertical: 5),
               child: DateFormat.MMMMEEEEd()
                       .format(currentDay)
                       .contains(DateFormat.MMMMEEEEd().format(DateTime.now()))
@@ -225,56 +217,44 @@ class _EventCalendarPageState extends State<EventCalendarPage> {
                           fontSize: 20, fontWeight: FontWeight.w700),
                     ),
             ),
-            ListView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemExtent: 50,
-              itemCount: availableSlots.length - 1,
-              padding: const EdgeInsets.all(10),
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: CustomTimeCard(
+            Expanded(
+              child: ListView.separated(
+                shrinkWrap: true,
+                itemCount: availableSlots.length - 1,
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: padding),
+                itemBuilder: (context, index) {
+                  return CustomTimeCard(
                       onTap: () {
-                        debugPrint(
-                            "=======> selected time ${availableSlots[index]}-${availableSlots[index + addIndex]}");
-                        homeCon.testing.value =
-                            "${availableSlots[index]}-${availableSlots[index + addIndex]}";
-                        setState(() {
-                          bookedSlots.add(homeCon.testing.value);
-                          context.push(
-                              '/room/confirm-booking?time=${homeCon.testing.value}&index=$addIndex');
-                        });
-                        homeCon.update();
+                        bookedSlots.add(homeCon.testing.value);
+                        final location =
+                            GoRouterState.of(context).uri.toString();
+                        print(
+                            '$location/confirm-booking?millisecondsSinceEpoch=${currentDay.millisecondsSinceEpoch}');
+                        context.push(
+                            '$location/confirm-booking?millisecondsSinceEpoch=${DateTime(2023).copyWith(hour: 8, second: 0).millisecondsSinceEpoch}');
+                        // context.pushNamed(
+                        //     'ConfirmBookingScreen'
+                        //     // '/room/0//confirm-booking?time=${homeCon.testing.value}&index=$addIndex',
+                        //     // ),
+                        //     ,
+                        //     pathParameters: {
+                        //       'id': '1',
+                        //     },
+                        //     queryParameters: {
+                        //       'time': 'homeCon.testing.value',
+                        //       'index': '0'
+                        //     });
                       },
                       time: availableSlots[index],
                       isSelected: homeCon.testing.value ==
-                          "${availableSlots[index]}-${availableSlots[index + addIndex]}"),
-                );
-              },
+                          "${availableSlots[index]}-${availableSlots[index + addIndex]}");
+                },
+              ),
             ),
           ],
         ),
       ),
     );
   }
-
-  // Widget buildEventList() {
-  //   return ListView(
-  //     children: selectedEvents!
-  //         .map((event) => Container(
-  //               decoration: BoxDecoration(
-  //                 border: Border.all(width: 0.8),
-  //                 borderRadius: BorderRadius.circular(12.0),
-  //               ),
-  //               margin:
-  //                   const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-  //               child: ListTile(
-  //                 title: Text(event.toString()),
-  //                 onTap: () => debugPrint('$event tapped!'),
-  //               ),
-  //             ))
-  //         .toList(),
-  //   );
-  // }
 }
