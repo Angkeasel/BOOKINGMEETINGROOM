@@ -1,9 +1,11 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+
 import 'package:meetroombooking/generated/l10n.dart';
 import 'package:meetroombooking/src/config/font/font_controller.dart';
 import 'package:meetroombooking/src/constant/app_size.dart';
@@ -25,6 +27,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   static final _formKey = GlobalKey<FormState>();
   final lController = Get.find<LanguageController>();
+
   @override
   Widget build(BuildContext context) {
     final authCon = Get.put(AuthController());
@@ -40,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
         actions: const [ChangeLanguageButton(), SizedBox(width: 10)],
       ),
       body: SafeArea(
-        minimum: const EdgeInsets.only(bottom: padding),
+        minimum: defaultMinSafeArea,
         child: Obx(
           () => Column(
             children: [
@@ -118,7 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 // _formKey.currentState?.validate() ==
                                 true;
                             if (noError) {
-                              context.go("/room");
+                              context.go('/rooms');
                             }
                             // final fontController =
                             //     Get.find<LanguageController>();

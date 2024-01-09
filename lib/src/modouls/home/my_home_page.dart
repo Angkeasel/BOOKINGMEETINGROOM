@@ -50,7 +50,7 @@ class MyHomePage extends StatelessWidget {
                 //   return const ListingRoom();
 
                 // }));
-                GoRouter.of(context).go('/room');
+                GoRouter.of(context).go('/rooms');
               },
               child: Container(
                 height: 50,

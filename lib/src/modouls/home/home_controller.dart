@@ -20,21 +20,21 @@ class HomeController extends GetxController {
         (hour == endTime.hour && minute <= endTime.minute));
   }
 
-  final dropdownvalue = '30 minutes'.obs;
+  void setDefaultDropdown() {
+    dropdownvalue(30);
+  }
+
+  final dropdownvalue = 30.obs;
   final dropdownvalueIndex = 0.obs;
-  List<String> dropdownAddTimeList = [
-    '30 minutes',
-    '1 hours',
-    '2 hours',
-    '3 hours',
-    '4 hours',
-    '5 hours',
-    '6 hours',
-    '7 hours',
-    '8 hours',
-    '9 hours',
-    '10 hours',
+  List<int> dropdownAddTimeList = [
+    30,
+    60,
+    90,
+    120,
+    150,
+    300,
   ];
+
   int updateAddTime(int index) {
     if (index == 0) {
       return 1;

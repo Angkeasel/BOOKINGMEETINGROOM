@@ -10,5 +10,6 @@
     "registerTitle": "Register New Account",
     "register": "Register",
     "username": "Username",
-    "forgetPassword": "Forget Password?"
+    "forgetPassword": "Forget Password?",
+    "test": "Test"
 }

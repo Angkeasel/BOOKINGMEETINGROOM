@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'package:go_router/go_router.dart';
-
+import 'package:meetroombooking/generated/l10n.dart';
 import 'package:meetroombooking/src/constant/app_color.dart';
+import 'package:meetroombooking/src/constant/app_size.dart';
+import 'package:meetroombooking/src/constant/app_textstyle.dart';
 import 'package:meetroombooking/src/modouls/listing/room_controller.dart';
 
 class ListingRoom extends StatefulWidget {
+  static get path => '/room-listing';
   const ListingRoom({super.key});
 
   @override
@@ -23,64 +25,58 @@ class _ListingRoomState extends State<ListingRoom> {
 
   @override
   Widget build(BuildContext context) {
+    L.current.test;
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        title: const Text(
-          "Rooms Meeting",
-          style: TextStyle(
-              color: Colors.black, fontWeight: FontWeight.w700, fontSize: 20),
+        backgroundColor: Colors.transparent,
+        title: const Text("Meeting Rooms"),
+        titleTextStyle: context.appBarTextStyle.copyWith(
+          color: AppColors.textLightColor,
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        tooltip: 'Add New Room',
+        onPressed: () {},
+        child: const Icon(Icons.add),
+      ),
       body: Obx(
-        () => Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 80),
-            child: Column(
-              children: [
-                Text(
-                  "Please Selecte Your Room Meeting !",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18,
-                      color: AppColors.primaryColor),
-                ),
-                roomCon.roomListing.isNotEmpty
-                    ? Padding(
-                        padding: const EdgeInsets.only(top: 20, bottom: 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children:
-                              roomCon.roomListing.asMap().entries.map((e) {
-                            return GestureDetector(
-                              onTap: () {
-                                roomCon.currentIndex.value = e.value.id!;
-                                debugPrint(
-                                    '====> indexID ${roomCon.currentIndex.value}');
-                                GoRouter.of(context).go(
-                                    '/room/room-meet/${roomCon.currentIndex.value}');
-                              },
-                              child: Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.9,
-                                  margin: const EdgeInsets.all(5),
-                                  padding: const EdgeInsets.all(15),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: Colors.grey.shade200),
-                                  child: Text("${e.value.name}")),
-                            );
-                          }).toList(),
+        () => Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            if (roomCon.roomListing.isNotEmpty)
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(padding),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: roomCon.roomListing.asMap().entries.map((e) {
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: padding),
+                        child: Material(
+                          type: MaterialType.transparency,
+                          borderRadius: BorderRadius.circular(5),
+                          clipBehavior: Clip.antiAlias,
+                          child: InkWell(
+                            onTap: () {
+                              context
+                                  .go('/rooms/${roomCon.currentIndex.value}');
+                            },
+                            child: Ink(
+                              width: double.infinity,
+                              // margin: const EdgeInsets.all(5),
+                              padding: const EdgeInsets.all(15),
+                              color: Colors.grey.shade200,
+                              child: Text("${e.value.name}"),
+                            ),
+                          ),
                         ),
-                      )
-                    : Container(),
-              ],
-            ),
-          ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              )
+          ],
         ),
       ),
     );

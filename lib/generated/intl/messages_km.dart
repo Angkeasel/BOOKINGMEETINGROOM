@@ -36,6 +36,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("បញ្ចូលពាក្យសម្ងាត់របស់អ្នក"),
         "register": MessageLookupByLibrary.simpleMessage("ចុះឈ្មោះ"),
         "registerTitle": MessageLookupByLibrary.simpleMessage("បង្កើតគណនីថ្មី"),
+        "test": MessageLookupByLibrary.simpleMessage("តេស្ត"),
         "username": MessageLookupByLibrary.simpleMessage("ឈ្មោះអ្នកប្រើប្រាស់")
       };
 }

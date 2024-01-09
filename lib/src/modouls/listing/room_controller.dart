@@ -8,8 +8,14 @@ class RoomController extends GetxController {
   final currentIndex = 0.obs;
   ApiBaseHelper api = ApiBaseHelper();
 
-  final roomListing = <RoomListingModel>[].obs;
+  final roomListing = [
+    RoomListingModel(id: 1, name: 'Room1'),
+    RoomListingModel(id: 2, name: 'Room3'),
+    RoomListingModel(id: 3, name: 'Room3'),
+  ].obs;
+  // final roomListing = <RoomListingModel>[].obs;
   Future<List<RoomListingModel>> getListingRoom() async {
+    return [];
     List<RoomListingModel> listRoom = [];
     await api
         .onNetworkRequesting(

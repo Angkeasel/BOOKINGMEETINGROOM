@@ -38,6 +38,14 @@ extension ThemeExtension on BuildContext {
   TextStyle get titleMedium => textTheme.titleMedium!;
   TextStyle get titleSmall => textTheme.titleSmall!;
 
+  TextStyle get appBarTextStyle => titleLarge.copyWith(
+        color: Colors.white,
+        fontFamily: 'KantumruyPro',
+        fontVariations: [
+          FontWeight.w500.getVariant,
+        ],
+      );
+
   // TextStyle get subtitle1 => textTheme.subtitle1!;
   // TextStyle get subtitle2 => textTheme.subtitle2!;
 

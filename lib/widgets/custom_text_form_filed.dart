@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:meetroombooking/src/constant/app_color.dart';
 import 'package:meetroombooking/src/constant/app_size.dart';
 import 'package:meetroombooking/src/constant/app_textstyle.dart';
@@ -15,7 +14,7 @@ class CustomTextFormFiled extends StatefulWidget {
   final bool obscureText;
   final String? Function(String?)? validator;
   final TextInputType? keyboardType;
-  final bool isValidate;
+
   final TextInputAction textInputAction;
   final AutovalidateMode? autovalidateMode;
   const CustomTextFormFiled({
@@ -30,7 +29,6 @@ class CustomTextFormFiled extends StatefulWidget {
     this.obscureText = false,
     this.validator,
     this.keyboardType,
-    this.isValidate = false,
     this.textInputAction = TextInputAction.next,
     this.autovalidateMode,
   });
@@ -52,10 +50,10 @@ class _CustomTextFormFiledState extends State<CustomTextFormFiled> {
           if (widget.title != null)
             Text(
               widget.title ?? '',
-              style: Theme.of(context)
-                  .textTheme
-                  .headlineSmall!
-                  .copyWith(fontSize: 16, fontWeight: FontWeight.w700),
+              style: context.headlineSmall.copyWith(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           if (widget.title != null) const SizedBox(height: 5),
           SizedBox(
@@ -63,7 +61,7 @@ class _CustomTextFormFiledState extends State<CustomTextFormFiled> {
             child: TextFormField(
               autovalidateMode: widget.autovalidateMode,
               textInputAction: widget.textInputAction,
-              controller: widget.controller,
+              controller: controller,
               onChanged: (value) {
                 widget.onChanged?.call(value);
                 setState(() {});
@@ -77,6 +75,7 @@ class _CustomTextFormFiledState extends State<CustomTextFormFiled> {
               },
 
               style: textFieldTextStyle,
+              scrollPadding: const EdgeInsets.all(20.0).copyWith(bottom: 30),
               // contextMenuBuilder: (context, editableTextState) =>
               //     AdaptiveTextSelectionToolbar.buttonItems(
               //   anchors: editableTextState.contextMenuAnchors,
@@ -100,31 +99,24 @@ class _CustomTextFormFiledState extends State<CustomTextFormFiled> {
               //   ],
               // ),
               decoration: InputDecoration(
+                isDense: true,
                 suffixIcon: widget.suffixIcon,
                 hintText: widget.hintText,
                 labelText: widget.lable,
                 hintStyle: context.titleMedium,
                 labelStyle: textFieldLabelStyle,
-                enabledBorder: widget.isValidate
+                enabledBorder: controller.text.isEmpty
                     ? OutlineInputBorder(
-                        borderSide: const BorderSide(
-                          width: borderWidth,
-                          color: Colors.red,
-                        ),
+                        borderSide: BorderSide.none,
                         borderRadius: BorderRadius.circular(10),
                       )
-                    : controller.text.isEmpty
-                        ? OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.circular(10),
-                          )
-                        : OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              width: borderWidth,
-                              // color: Color(0xffF1F1F1),
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
+                    : OutlineInputBorder(
+                        borderSide: const BorderSide(
+                          width: borderWidth,
+                          // color: Color(0xffF1F1F1),
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                 errorBorder: OutlineInputBorder(
                   borderSide: BorderSide(
                     width: borderWidth,

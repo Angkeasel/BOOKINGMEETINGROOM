@@ -29,7 +29,7 @@ class _SplashScreenState extends State<SplashScreen>
           if (token.isNotEmpty) {
             router.go('/login');
           } else {
-            router.go('/room');
+            router.go('/rooms');
           }
         } catch (_) {}
       },

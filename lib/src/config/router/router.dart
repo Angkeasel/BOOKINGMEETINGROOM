@@ -29,30 +29,31 @@ final router = GoRouter(
       ),
     ),
     GoRoute(
-      path: '/room',
+      path: '/rooms',
       name: 'RoomListingScreen',
       pageBuilder: (context, state) => const NoTransitionPage(
         child: ListingRoom(),
       ),
       routes: [
         GoRoute(
-          path: 'room-meet/:id',
-          builder: (context, state) {
-            int id = int.parse(state.pathParameters['id']!);
-            return EventCalendarPage(
-              id: id,
-            );
+          path: ':id',
+          builder: (_, state) {
+            final id = int.tryParse(state.pathParameters['id'] ?? '');
+            return EventCalendarPage(id: id);
           },
-        ),
-        GoRoute(
-          path: 'confirm-booking',
-          name: 'ConfirmBookingScreen',
-          builder: (context, state) {
-            return ConfirmBookingScreen(
-              amountTime: int.parse(state.uri.queryParameters['index']!),
-              time: state.uri.queryParameters['time'],
-            );
-          },
+          routes: [
+            GoRoute(
+              path: 'confirm-booking',
+              name: 'ConfirmBookingScreen',
+              builder: (context, state) {
+                return ConfirmBookingScreen(
+                  millisecondsSinceEpoch: int.tryParse(
+                    state.uri.queryParameters['millisecondsSinceEpoch'] ?? '',
+                  ),
+                );
+              },
+            ),
+          ],
         ),
       ],
     )

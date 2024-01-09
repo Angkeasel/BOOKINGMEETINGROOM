@@ -34,7 +34,7 @@ class RegisterScreen extends StatelessWidget {
         actions: const [ChangeLanguageButton(), SizedBox(width: 10)],
       ),
       body: SafeArea(
-        minimum: const EdgeInsets.only(bottom: padding),
+        minimum: defaultMinSafeArea,
         child: Obx(
           () => Column(
             children: [
@@ -106,9 +106,8 @@ class RegisterScreen extends StatelessWidget {
                             final noError =
                                 _formKey.currentState?.validate() == true;
                             if (noError) {
-                              context.go("/room");
+                              context.go('/rooms');
                             }
-                            debugPrint('============> 1 welcome to my page');
                           },
                         ),
                       ],
