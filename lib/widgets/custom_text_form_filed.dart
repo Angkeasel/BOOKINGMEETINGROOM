@@ -8,13 +8,13 @@ class CustomTextFormFiled extends StatefulWidget {
   final String? lable;
   final String? hintText;
   final double? height;
+  final double? width;
   final TextEditingController? controller;
   final ValueChanged<String>? onChanged;
   final Widget? suffixIcon;
   final bool obscureText;
   final String? Function(String?)? validator;
   final TextInputType? keyboardType;
-
   final TextInputAction textInputAction;
   final AutovalidateMode? autovalidateMode;
   const CustomTextFormFiled({
@@ -22,6 +22,7 @@ class CustomTextFormFiled extends StatefulWidget {
     this.title,
     this.lable,
     this.height,
+    this.width,
     this.hintText,
     this.controller,
     this.onChanged,
@@ -58,6 +59,7 @@ class _CustomTextFormFiledState extends State<CustomTextFormFiled> {
           if (widget.title != null) const SizedBox(height: 5),
           SizedBox(
             height: widget.height,
+            width: widget.width,
             child: TextFormField(
               autovalidateMode: widget.autovalidateMode,
               textInputAction: widget.textInputAction,
@@ -99,6 +101,7 @@ class _CustomTextFormFiledState extends State<CustomTextFormFiled> {
               //   ],
               // ),
               decoration: InputDecoration(
+                contentPadding: const EdgeInsets.all(12),
                 isDense: true,
                 suffixIcon: widget.suffixIcon,
                 hintText: widget.hintText,

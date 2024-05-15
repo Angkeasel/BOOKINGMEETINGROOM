@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
@@ -8,12 +7,18 @@ import 'package:meetroombooking/src/config/font/font_controller.dart';
 import 'package:meetroombooking/src/config/router/router.dart';
 import 'package:meetroombooking/src/constant/app_color.dart';
 import 'package:meetroombooking/src/constant/app_textstyle.dart';
+import 'package:meetroombooking/src/util/helper/local_storage/local_storage.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Get.put(LanguageController());
+  await LocalStorage.init();
+
   runApp(const MyApp());
 }
+
+final GlobalKey<ScaffoldMessengerState> snackBarKey =
+    GlobalKey<ScaffoldMessengerState>();
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

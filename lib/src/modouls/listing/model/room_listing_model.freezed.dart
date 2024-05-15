@@ -12,7 +12,7 @@ part of 'room_listing_model.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 RoomListingModel _$RoomListingModelFromJson(Map<String, dynamic> json) {
   return _RoomListingModel.fromJson(json);
@@ -20,8 +20,10 @@ RoomListingModel _$RoomListingModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$RoomListingModel {
-  int? get id => throw _privateConstructorUsedError;
-  String? get name => throw _privateConstructorUsedError;
+  @JsonKey(name: '_id')
+  String? get id => throw _privateConstructorUsedError;
+  String? get title => throw _privateConstructorUsedError;
+  String? get floor => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +37,7 @@ abstract class $RoomListingModelCopyWith<$Res> {
           RoomListingModel value, $Res Function(RoomListingModel) then) =
       _$RoomListingModelCopyWithImpl<$Res, RoomListingModel>;
   @useResult
-  $Res call({int? id, String? name});
+  $Res call({@JsonKey(name: '_id') String? id, String? title, String? floor});
 }
 
 /// @nodoc
@@ -52,16 +54,21 @@ class _$RoomListingModelCopyWithImpl<$Res, $Val extends RoomListingModel>
   @override
   $Res call({
     Object? id = freezed,
-    Object? name = freezed,
+    Object? title = freezed,
+    Object? floor = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int?,
-      name: freezed == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      title: freezed == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String?,
+      floor: freezed == floor
+          ? _value.floor
+          : floor // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
   }
@@ -75,7 +82,7 @@ abstract class _$$RoomListingModelImplCopyWith<$Res>
       __$$RoomListingModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int? id, String? name});
+  $Res call({@JsonKey(name: '_id') String? id, String? title, String? floor});
 }
 
 /// @nodoc
@@ -90,16 +97,21 @@ class __$$RoomListingModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
-    Object? name = freezed,
+    Object? title = freezed,
+    Object? floor = freezed,
   }) {
     return _then(_$RoomListingModelImpl(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int?,
-      name: freezed == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      title: freezed == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String?,
+      floor: freezed == floor
+          ? _value.floor
+          : floor // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -108,33 +120,38 @@ class __$$RoomListingModelImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$RoomListingModelImpl implements _RoomListingModel {
-  _$RoomListingModelImpl({this.id, this.name});
+  _$RoomListingModelImpl(
+      {@JsonKey(name: '_id') this.id, this.title, this.floor});
 
   factory _$RoomListingModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$RoomListingModelImplFromJson(json);
 
   @override
-  final int? id;
+  @JsonKey(name: '_id')
+  final String? id;
   @override
-  final String? name;
+  final String? title;
+  @override
+  final String? floor;
 
   @override
   String toString() {
-    return 'RoomListingModel(id: $id, name: $name)';
+    return 'RoomListingModel(id: $id, title: $title, floor: $floor)';
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$RoomListingModelImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name));
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.floor, floor) || other.floor == floor));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name);
+  int get hashCode => Object.hash(runtimeType, id, title, floor);
 
   @JsonKey(ignore: true)
   @override
@@ -152,16 +169,21 @@ class _$RoomListingModelImpl implements _RoomListingModel {
 }
 
 abstract class _RoomListingModel implements RoomListingModel {
-  factory _RoomListingModel({final int? id, final String? name}) =
-      _$RoomListingModelImpl;
+  factory _RoomListingModel(
+      {@JsonKey(name: '_id') final String? id,
+      final String? title,
+      final String? floor}) = _$RoomListingModelImpl;
 
   factory _RoomListingModel.fromJson(Map<String, dynamic> json) =
       _$RoomListingModelImpl.fromJson;
 
   @override
-  int? get id;
+  @JsonKey(name: '_id')
+  String? get id;
   @override
-  String? get name;
+  String? get title;
+  @override
+  String? get floor;
   @override
   @JsonKey(ignore: true)
   _$$RoomListingModelImplCopyWith<_$RoomListingModelImpl> get copyWith =>

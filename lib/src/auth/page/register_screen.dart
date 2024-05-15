@@ -58,7 +58,7 @@ class RegisterScreen extends StatelessWidget {
                         const SizedBox(height: 30),
                         CustomTextFormFiled(
                           autovalidateMode: AutovalidateMode.onUserInteraction,
-                          controller: authCon.nameController.value,
+                          controller: authCon.nameController,
                           lable: L.current.username,
                           onChanged: (v) {},
                           validator: (v) =>
@@ -66,7 +66,7 @@ class RegisterScreen extends StatelessWidget {
                         ),
                         CustomTextFormFiled(
                           autovalidateMode: AutovalidateMode.onUserInteraction,
-                          controller: authCon.emailController.value,
+                          controller: authCon.emailController,
                           keyboardType: TextInputType.emailAddress,
                           lable: L.current.email,
                           hintText: L.current.emailHintMgs,
@@ -77,7 +77,7 @@ class RegisterScreen extends StatelessWidget {
                         ),
                         CustomTextFormFiled(
                           autovalidateMode: AutovalidateMode.onUserInteraction,
-                          controller: authCon.pwController.value,
+                          controller: authCon.pwController,
                           textInputAction: TextInputAction.done,
                           lable: L.current.password,
                           hintText: L.current.passwordHintMgs,
@@ -106,7 +106,9 @@ class RegisterScreen extends StatelessWidget {
                             final noError =
                                 _formKey.currentState?.validate() == true;
                             if (noError) {
-                              context.go('/rooms');
+                              // context.go('/rooms');
+
+                              authCon.onRegister();
                             }
                           },
                         ),

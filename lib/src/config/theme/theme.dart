@@ -4,7 +4,7 @@ import 'package:meetroombooking/src/constant/app_color.dart';
 
 ThemeData theme() {
   return ThemeData.light().copyWith(
-    useMaterial3: true,
+    // useMaterial3: true,
     primaryColor: AppColors.primaryColor,
     secondaryHeaderColor: AppColors.secondaryColor,
     disabledColor: AppColors.disableColor,

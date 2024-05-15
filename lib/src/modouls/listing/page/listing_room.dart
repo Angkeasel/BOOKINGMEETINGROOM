@@ -5,7 +5,7 @@ import 'package:meetroombooking/generated/l10n.dart';
 import 'package:meetroombooking/src/constant/app_color.dart';
 import 'package:meetroombooking/src/constant/app_size.dart';
 import 'package:meetroombooking/src/constant/app_textstyle.dart';
-import 'package:meetroombooking/src/modouls/listing/room_controller.dart';
+import 'package:meetroombooking/src/modouls/listing/controller/room_controller.dart';
 
 class ListingRoom extends StatefulWidget {
   static get path => '/room-listing';
@@ -34,11 +34,11 @@ class _ListingRoomState extends State<ListingRoom> {
           color: AppColors.textLightColor,
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        tooltip: 'Add New Room',
-        onPressed: () {},
-        child: const Icon(Icons.add),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   tooltip: 'Add New Room',
+      //   onPressed: () {},
+      //   child: const Icon(Icons.add),
+      // ),
       body: Obx(
         () => Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -59,15 +59,16 @@ class _ListingRoomState extends State<ListingRoom> {
                           clipBehavior: Clip.antiAlias,
                           child: InkWell(
                             onTap: () {
-                              context
-                                  .go('/rooms/${roomCon.currentIndex.value}');
+                              debugPrint('roomId: ${e.value.id}');
+                              context.go(
+                                  '/rooms/room?id=${e.value.id}&title=${e.value.title}');
                             },
                             child: Ink(
                               width: double.infinity,
                               // margin: const EdgeInsets.all(5),
                               padding: const EdgeInsets.all(15),
                               color: Colors.grey.shade200,
-                              child: Text("${e.value.name}"),
+                              child: Text("${e.value.title}"),
                             ),
                           ),
                         ),
@@ -75,7 +76,8 @@ class _ListingRoomState extends State<ListingRoom> {
                     }).toList(),
                   ),
                 ),
-              )
+              ),
+            const Text("data")
           ],
         ),
       ),

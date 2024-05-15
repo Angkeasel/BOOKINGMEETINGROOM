@@ -9,13 +9,15 @@ part of 'room_listing_model.dart';
 _$RoomListingModelImpl _$$RoomListingModelImplFromJson(
         Map<String, dynamic> json) =>
     _$RoomListingModelImpl(
-      id: json['id'] as int?,
-      name: json['name'] as String?,
+      id: json['_id'] as String?,
+      title: json['title'] as String?,
+      floor: json['floor'] as String?,
     );
 
 Map<String, dynamic> _$$RoomListingModelImplToJson(
         _$RoomListingModelImpl instance) =>
     <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
+      '_id': instance.id,
+      'title': instance.title,
+      'floor': instance.floor,
     };

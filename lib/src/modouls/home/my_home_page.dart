@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
@@ -50,7 +49,10 @@ class MyHomePage extends StatelessWidget {
                 //   return const ListingRoom();
 
                 // }));
-                GoRouter.of(context).go('/rooms');
+                //GoRouter.of(context).go('/rooms');
+                // Navigator.push(context, MaterialPageRoute(builder: (context) {
+                //   return const TestingScreen();
+                // }));
               },
               child: Container(
                 height: 50,

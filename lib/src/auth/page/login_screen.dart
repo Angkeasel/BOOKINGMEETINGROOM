@@ -70,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           keyboardType: TextInputType.emailAddress,
                           hintText: L.current.emailHintMgs,
-                          controller: authCon.emailController.value,
+                          controller: authCon.emailController,
                           onChanged: (v) {},
                           validator: (v) =>
                               v == '' ? Intl.message("Invalid Username") : null,
@@ -80,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           lable: L.current.password,
                           textInputAction: TextInputAction.done,
                           hintText: L.current.passwordHintMgs,
-                          controller: authCon.pwController.value,
+                          controller: authCon.pwController,
                           onChanged: (v) {},
                           obscureText: authCon.hidePassword.value,
                           suffixIcon: IconButton(
@@ -95,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               color: AppColors.primaryColor,
                             ),
                           ),
-                          validator: (v) => v == null || v == '' || v.length < 8
+                          validator: (v) => v == null || v == '' || v.length < 6
                               ? Intl.message("Invalid Password")
                               : null,
                         ),
@@ -121,7 +121,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 // _formKey.currentState?.validate() ==
                                 true;
                             if (noError) {
-                              context.go('/rooms');
+                              // context.go('/rooms');
+                              authCon.onLogin();
                             }
                             // final fontController =
                             //     Get.find<LanguageController>();

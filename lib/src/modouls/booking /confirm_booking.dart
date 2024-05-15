@@ -70,7 +70,10 @@ class _ConfirmBookingScreenState extends State<ConfirmBookingScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Confirm Booking"),
+        title: Text(
+          "Confirm Booking",
+          style: TextStyle(color: AppColors.primaryColor),
+        ),
       ),
       body: SafeArea(
         minimum: defaultMinSafeArea.copyWith(left: padding, right: padding),
@@ -163,10 +166,10 @@ class _ConfirmBookingScreenState extends State<ConfirmBookingScreen> {
                                       homeCon.dropdownvalueIndex.value =
                                           items.key;
                                       //=====>> testing
-                                      testing = homeCon.updateAddTime(
-                                          homeCon.dropdownvalueIndex.value);
-                                      debugPrint(
-                                          '========> return value of AddIndex $testing');
+                                      // testing = homeCon.updateAddTime(
+                                      //     homeCon.dropdownvalueIndex.value);
+                                      // debugPrint(
+                                      //     '========> return value of AddIndex $testing');
                                     },
                                     value: items.value,
                                     child: Text(

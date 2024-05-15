@@ -1,24 +1,70 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'package:meetroombooking/src/modouls/booking%20/time_model/time_model.dart';
+
 class HomeController extends GetxController {
   final testing = ''.obs;
   final isSelected = ''.obs;
 
-  Iterable<TimeOfDay> generateAllTimeSlots(
-      TimeOfDay startTime, TimeOfDay endTime, Duration step) sync* {
-    var hour = startTime.hour;
-    var minute = startTime.minute;
-    do {
-      yield TimeOfDay(hour: hour, minute: minute);
-      minute += step.inMinutes;
-      while (minute >= 60) {
-        minute -= 60;
-        hour++;
+  List<TimeModel> getGeneratedTimeSlots() {
+    List<TimeModel> gtimeSlots = [];
+
+    DateTime currentDay = DateTime.now();
+    // Set the start time and end time
+    TimeOfDay startTime = const TimeOfDay(hour: 8, minute: 0);
+    TimeOfDay endTime = const TimeOfDay(hour: 17, minute: 0);
+
+    // ignore: unnecessary_null_comparison
+    if (endTime == null) {
+      throw ArgumentError('Both startTime and endTime must be provided.');
+    }
+
+    DateTime startDateTime = currentDay
+        .add(Duration(hours: startTime.hour, minutes: startTime.minute));
+
+    DateTime endDateTime =
+        currentDay.add(Duration(hours: endTime.hour, minutes: endTime.minute));
+
+    if (startDateTime.isAfter(endDateTime)) {
+      throw ArgumentError('endTime must be after startTime');
+    }
+
+    while (startDateTime.isBefore(endDateTime)) {
+      DateTime endSlot = startDateTime.add(const Duration(minutes: 30));
+      if (endSlot.isAfter(endDateTime)) {
+        endSlot = endDateTime;
       }
-    } while (hour < endTime.hour ||
-        (hour == endTime.hour && minute <= endTime.minute));
+      TimeModel timeModel = TimeModel(
+          startTime: startDateTime, endTime: endSlot, currentDay: currentDay);
+      gtimeSlots.add(timeModel);
+      debugPrint(
+          '=====>show model ${timeModel.startTime} - ${timeModel.endTime}');
+      // gtimeSlots.add({
+      //   'startTime': TimeOfDay.fromDateTime(startDateTime).format(context),
+      //   'endTime': TimeOfDay.fromDateTime(endSlot).format(context),
+      // });
+
+      startDateTime = endSlot;
+    }
+
+    return gtimeSlots;
   }
+
+  // Iterable<TimeOfDay> generateAllTimeSlots(
+  //     TimeOfDay startTime, TimeOfDay endTime, Duration step) sync* {
+  //   var hour = startTime.hour;
+  //   var minute = startTime.minute;
+  //   do {
+  //     yield TimeOfDay(hour: hour, minute: minute);
+  //     minute += step.inMinutes;
+  //     while (minute >= 60) {
+  //       minute -= 60;
+  //       hour++;
+  //     }
+  //   } while (hour < endTime.hour ||
+  //       (hour == endTime.hour && minute <= endTime.minute));
+  // }
 
   void setDefaultDropdown() {
     dropdownvalue(30);
@@ -34,74 +80,4 @@ class HomeController extends GetxController {
     150,
     300,
   ];
-
-  int updateAddTime(int index) {
-    if (index == 0) {
-      return 1;
-    } else if (index == 1) {
-      return 2;
-    } else if (index == 2) {
-      return 3;
-    } else if (index == 3) {
-      return 4;
-    } else if (index == 4) {
-      return 5;
-    } else if (index == 5) {
-      return 6;
-    } else if (index == 6) {
-      return 7;
-    } else if (index == 7) {
-      return 8;
-    } else if (index == 8) {
-      return 9;
-    } else if (index == 9) {
-      return 10;
-    } else if (index == 10) {
-      return 11;
-    }
-
-    return 1;
-  }
-  // final daySuffix = ''.obs;
-  // String getDaySuffix(int day) {
-  //   if (day >= 11 && day <= 13) {
-  //     return 'th';
-  //   }
-  //   switch (day % 10) {
-  //     case 1:
-  //       return 'st';
-  //     case 2:
-  //       return 'nd';
-  //     case 3:
-  //       return 'rd';
-  //     default:
-  //       return 'th';
-  //   }
-  // }
-
-  // formatDateWithDaySuffix(DateTime date) {
-  //   DateFormat dateFormat = DateFormat('d');
-  //   debugPrint('=====> dayformat $dateFormat');
-  //   int day = int.parse(dateFormat.format(date));
-  //   debugPrint('======> day $day');
-  //   daySuffix.value = getDaySuffix(day);
-  //   debugPrint('======> daySuffix ${daySuffix.value}');
-  //   // Format the date with the day and suffix
-  //   DateFormat formattedDateFormat = DateFormat('${daySuffix.value} ');
-  //   return formattedDateFormat.format(date);
-  // }
-  // List<String> createTimeSlots(String fromTime, String toTime) {
-  //   List<String> timeSlots = [];
-  //   DateTime startTime = DateFormat('HH:mm').parse(fromTime);
-  //   DateTime endTime = DateFormat('HH:mm').parse(toTime);
-  //   if (startTime.isBefore(endTime)) {
-  //     String formatTime = startTime.hour.toString();
-  //     timeSlots.add(formatTime);
-  //     startTime = startTime.add(const Duration(minutes: 30));
-  //   }
-
-  //   return timeSlots;
-  // }
-
-  // List<String> setTimeSlots = [];
 }
