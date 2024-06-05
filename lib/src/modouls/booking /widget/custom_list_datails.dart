@@ -3,9 +3,9 @@ import 'package:intl/intl.dart';
 
 class CustomListDetails extends StatelessWidget {
   final String? title;
-  final DateTime? date;
-  final DateTime? timeFrom;
-  final DateTime? timeTo;
+  final String? date;
+  final String? timeFrom;
+  final String? timeTo;
   final GestureTapCallback? onTap;
   const CustomListDetails(
       {super.key,
@@ -17,6 +17,13 @@ class CustomListDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String formatDateTime(String dateTimeString) {
+      final dateTime = DateTime.parse(dateTimeString);
+      final formatter = DateFormat(
+          'hh:mm aa'); // Adjust format as needed (e.g., HH:mm for 24-hour format)
+      return formatter.format(dateTime);
+    }
+
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Padding(
@@ -35,14 +42,11 @@ class CustomListDetails extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(title ?? ''),
-                      Text(DateFormat.yMMMMEEEEd().format(date!).toString()),
+                      Text(date ?? ''),
                       Row(
                         children: [
-                          Text(
-                              '${DateFormat('HH:mm aa').format(timeFrom!)} - '),
-                          Text(DateFormat('HH:mm aa')
-                              .format(timeTo!)
-                              .toString()),
+                          Text('${formatDateTime(timeFrom!)} - '),
+                          Text(formatDateTime(timeTo!)),
                         ],
                       )
                     ]),

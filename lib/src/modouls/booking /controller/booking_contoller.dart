@@ -170,11 +170,11 @@ class BookingController extends GetxController {
     return slotList;
   }
 
+//==============================> getBooking by date <===================================
   final bookingModel = Meeting().obs;
   final bookingList = <Meeting>[].obs;
   final isLoadingDate = false.obs;
   Future<List<Meeting>> getBookingByDate({required String date}) async {
-//final String encodedDate = Uri.encodeQueryComponent(date);
     final dateformat = DateFormat('yyyy-MM-dd');
     final dateString = dateformat.parse(date).toString().split(' ').first;
     try {

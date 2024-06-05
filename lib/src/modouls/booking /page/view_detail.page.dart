@@ -13,9 +13,9 @@ class ViewDetailsPage extends StatelessWidget {
   final String? email;
   final String? phone;
   final String? topic;
-  final DateTime? date;
-  final DateTime? startTime;
-  final DateTime? endTime;
+  final String? date;
+  final String? startTime;
+  final String? endTime;
   final int? duration;
 
   const ViewDetailsPage(
@@ -34,6 +34,13 @@ class ViewDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bookingCon = Get.put(BookingController());
+    String formatDateTime(String dateTimeString) {
+      final dateTime = DateTime.parse(dateTimeString);
+      final formatter = DateFormat(
+          'hh:mm aa'); // Adjust format as needed (e.g., HH:mm for 24-hour format)
+      return formatter.format(dateTime);
+    }
+
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -79,17 +86,16 @@ class ViewDetailsPage extends StatelessWidget {
                     ),
                     CustomRowDetails(
                       title: 'Date',
-                      value: DateFormat.yMMMMEEEEd().format(date!).toString(),
+                      value: date,
                     ),
                     CustomRowDetails(
                       title: 'StatTime',
-                      value:
-                          DateFormat('HH:mm aa').format(startTime!).toString(),
+                      value: formatDateTime(startTime!),
                     ),
                     CustomRowDetails(
-                        title: 'EndTime',
-                        value:
-                            DateFormat('HH:mm aa').format(endTime!).toString()),
+                      title: 'EndTime',
+                      value: formatDateTime(endTime!),
+                    ),
                     CustomRowDetails(
                         title: 'Duration',
                         value: bookingCon.hourFormatFromMinutes(duration!)),
