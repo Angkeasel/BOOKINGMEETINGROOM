@@ -13,3 +13,18 @@ extension DateTimeExtension on DateTime {
     return dateTime.toLocal();
   }
 }
+
+extension DateFormatExtension on String {
+  String toCustomDateFormat() {
+    // Parse the UTC datetime string
+    DateTime utcDateTime = DateTime.parse(this);
+
+    // Define the desired output format
+    DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm:ss.SSS');
+
+    // Format the datetime to the desired string format
+    String formattedStr = formatter.format(utcDateTime);
+
+    return formattedStr;
+  }
+}

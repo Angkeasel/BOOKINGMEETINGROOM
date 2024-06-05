@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:meetroombooking/src/modouls/booking%20/models/meeting/meeting_model.dart';
 import 'package:meetroombooking/src/modouls/listing/model/room_listing_model.dart';
-
 import '../../../util/helper/api_base_helper.dart';
 
 class RoomController extends GetxController {
@@ -42,40 +40,40 @@ class RoomController extends GetxController {
   }
 
   //Find available slots
-  List<DateTime> getTimeSlots(DateTime date) {
-    List<DateTime> timeSlots = [];
-    // Define time range (e.g., from 8 AM to 5 PM)
-    DateTime startTime = DateTime(date.year, date.month, date.day, 8, 0);
-    DateTime endTime = DateTime(date.year, date.month, date.day, 17, 30);
+  // List<DateTime> getTimeSlots(DateTime date) {
+  //   List<DateTime> timeSlots = [];
+  //   // Define time range (e.g., from 8 AM to 5 PM)
+  //   DateTime startTime = DateTime(date.year, date.month, date.day, 8, 0);
+  //   DateTime endTime = DateTime(date.year, date.month, date.day, 17, 30);
 
-    // Generate time slots every 30 minutes
-    DateTime currentTime = startTime;
-    while (currentTime.isBefore(endTime)) {
-      timeSlots.add(currentTime);
-      currentTime = currentTime.add(const Duration(minutes: 30));
-    }
-    return timeSlots;
-  }
+  //   // Generate time slots every 30 minutes
+  //   DateTime currentTime = startTime;
+  //   while (currentTime.isBefore(endTime)) {
+  //     timeSlots.add(currentTime);
+  //     currentTime = currentTime.add(const Duration(minutes: 30));
+  //   }
+  //   return timeSlots;
+  // }
 
-  List<DateTime> getAvailableTimeSlots(
-      DateTime date, List<Meeting> appointments) {
-    List<DateTime> allTimeSlots = getTimeSlots(date);
-    List<DateTime> bookedTimeSlots = [];
+  // List<DateTime> getAvailableTimeSlots(
+  //     DateTime date, List<Meeting> appointments) {
+  //   List<DateTime> allTimeSlots = getTimeSlots(date);
+  //   List<DateTime> bookedTimeSlots = [];
 
-    // Collect all booked time slots from appointments
-    for (Meeting appointment in appointments) {
-      if (appointment.from.day == date.day) {
-        DateTime currentTime = appointment.from;
-        while (currentTime.isBefore(appointment.to)) {
-          bookedTimeSlots.add(DateTime(currentTime.year, currentTime.month,
-              currentTime.day, currentTime.hour, currentTime.minute));
-          currentTime = currentTime.add(const Duration(minutes: 30));
-        }
-      }
-    }
-    // Filter out booked time slots to get available time slots
-    List<DateTime> availableTimeSlots =
-        allTimeSlots.where((slot) => !bookedTimeSlots.contains(slot)).toList();
-    return availableTimeSlots;
-  }
+  //   // Collect all booked time slots from appointments
+  //   for (Meeting appointment in appointments) {
+  //     if (DateTime.parse(appointment.startTime!).day == date.day) {
+  //       DateTime currentTime = DateTime.parse(appointment.startTime!);
+  //       while (currentTime.isBefore(DateTime.parse(appointment.endTime!))) {
+  //         bookedTimeSlots.add(DateTime(currentTime.year, currentTime.month,
+  //             currentTime.day, currentTime.hour, currentTime.minute));
+  //         currentTime = currentTime.add(const Duration(minutes: 30));
+  //       }
+  //     }
+  //   }
+  //   // Filter out booked time slots to get available time slots
+  //   List<DateTime> availableTimeSlots =
+  //       allTimeSlots.where((slot) => !bookedTimeSlots.contains(slot)).toList();
+  //   return availableTimeSlots;
+  // }
 }

@@ -7,8 +7,7 @@ import '../../auth/page/login_screen.dart';
 import '../../auth/page/splash_screen.dart';
 import '../../bottomNavigationbar/bottomnavigationbar.dart';
 import '../../modouls/booking /confirm_booking.dart';
-import '../../modouls/booking /page/booking_room_datails.dart';
-import '../../modouls/booking /page/event_calendar_page.dart';
+
 import '../../modouls/listing/page/listing_room.dart';
 import '../../modouls/profile/page/profile_page.dart';
 
@@ -58,37 +57,48 @@ final _shellRoute = <GoRoute>[
     routes: [
       GoRoute(
         parentNavigatorKey: _rootNavigatorKey,
-        path: 'room',
-        builder: (_, state) {
-          return EventCalendarPage(
-            id: state.uri.queryParameters['id'] ?? '',
-            title: state.uri.queryParameters['title'] ?? '',
+        path: 'confirm-booking',
+        name: 'ConfirmBookingScreen',
+        builder: (context, state) {
+          return ConfirmBookingScreen(
+            millisecondsSinceEpoch: int.tryParse(
+              state.uri.queryParameters['millisecondsSinceEpoch'] ?? '',
+            ),
           );
         },
-        routes: [
-          GoRoute(
-            parentNavigatorKey: _rootNavigatorKey,
-            path: 'confirm-booking',
-            name: 'ConfirmBookingScreen',
-            builder: (context, state) {
-              return ConfirmBookingScreen(
-                millisecondsSinceEpoch: int.tryParse(
-                  state.uri.queryParameters['millisecondsSinceEpoch'] ?? '',
-                ),
-              );
-            },
-          ),
-        ],
       ),
+      // GoRoute(
+      //   parentNavigatorKey: _rootNavigatorKey,
+      //   path: 'room',
+      //   builder: (context, state) => EventCalendarPage(
+      //       roomListingModel: state.extra as RoomListingModel),
+      //   // id: state.uri.queryParameters['id'] ?? '',
+      //   // title: state.uri.queryParameters['title'] ?? '',
+
+      //   routes: [
+      //     GoRoute(
+      //       parentNavigatorKey: _rootNavigatorKey,
+      //       path: 'confirm-booking',
+      //       name: 'ConfirmBookingScreen',
+      //       builder: (context, state) {
+      //         return ConfirmBookingScreen(
+      //           millisecondsSinceEpoch: int.tryParse(
+      //             state.uri.queryParameters['millisecondsSinceEpoch'] ?? '',
+      //           ),
+      //         );
+      //       },
+      //     ),
+      //   ],
+      // ),
     ],
   ),
-  GoRoute(
-    path: '/booking-room',
-    name: 'bookingroom',
-    pageBuilder: (context, state) {
-      return const NoTransitionPage(child: BookingRoomDetailsPage());
-    },
-  ),
+  // GoRoute(
+  //   path: '/booking-room',
+  //   name: 'bookingroom',
+  //   pageBuilder: (context, state) {
+  //     return const NoTransitionPage(child: BookingRoomDetailsPage());
+  //   },
+  // ),
   GoRoute(
     path: '/profile',
     name: 'profile',

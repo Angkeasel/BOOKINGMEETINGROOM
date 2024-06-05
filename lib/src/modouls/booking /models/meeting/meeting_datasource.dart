@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:meetroombooking/src/util/extension/colors.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-
 import 'meeting_model.dart';
 
 class MeetingDataSource extends CalendarDataSource {
@@ -13,27 +12,27 @@ class MeetingDataSource extends CalendarDataSource {
 
   @override
   DateTime getStartTime(int index) {
-    return _getMeetingData(index).from;
+    return DateTime.parse(_getMeetingData(index).startTime!);
   }
 
   @override
   DateTime getEndTime(int index) {
-    return _getMeetingData(index).to;
+    return DateTime.parse(_getMeetingData(index).endTime!);
   }
 
   @override
   String getSubject(int index) {
-    return _getMeetingData(index).eventName;
+    return _getMeetingData(index).meetingTopic!;
   }
 
   @override
   Color getColor(int index) {
-    return _getMeetingData(index).backgroundColor;
+    return _getMeetingData(index).backgroundColor!.toColor();
   }
 
   @override
   bool isAllDay(int index) {
-    return _getMeetingData(index).isAllDay;
+    return _getMeetingData(index).isAllDay!;
   }
 
   Meeting _getMeetingData(int index) {

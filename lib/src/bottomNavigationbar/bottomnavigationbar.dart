@@ -16,7 +16,7 @@ class ButtomNavigationBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final bottomBarCon = Get.put(BottomNavigationBarController());
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       // resizeToAvoidBottomInset: false,
       body: child,
       bottomNavigationBar: SizedBox(

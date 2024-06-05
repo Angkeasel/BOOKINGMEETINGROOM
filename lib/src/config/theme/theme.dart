@@ -81,10 +81,8 @@ ThemeData theme() {
       ),
     ),
     colorScheme: ColorScheme(
-        background: const Color(0xffffffff),
         brightness: Brightness.light,
         error: Colors.red,
-        onBackground: Colors.white,
         onError: Colors.red,
         onPrimary: AppColors.primaryColor,
         onSecondary: AppColors.secondaryColor,

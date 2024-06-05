@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:go_router/go_router.dart';
+
 import 'package:meetroombooking/generated/l10n.dart';
 import 'package:meetroombooking/src/constant/app_color.dart';
 import 'package:meetroombooking/src/constant/app_size.dart';
 import 'package:meetroombooking/src/constant/app_textstyle.dart';
 import 'package:meetroombooking/src/modouls/listing/controller/room_controller.dart';
+
+import '../../booking /page/event_calendar_page.dart';
 
 class ListingRoom extends StatefulWidget {
   static get path => '/room-listing';
@@ -60,8 +62,13 @@ class _ListingRoomState extends State<ListingRoom> {
                           child: InkWell(
                             onTap: () {
                               debugPrint('roomId: ${e.value.id}');
-                              context.go(
-                                  '/rooms/room?id=${e.value.id}&title=${e.value.title}');
+                              // context.go('/rooms/room', extra: e.value);
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return EventCalendarPage(
+                                  roomListingModel: e.value,
+                                );
+                              }));
                             },
                             child: Ink(
                               width: double.infinity,
