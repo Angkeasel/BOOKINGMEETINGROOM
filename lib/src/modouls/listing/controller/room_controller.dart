@@ -7,22 +7,16 @@ class RoomController extends GetxController {
   final currentIndex = 0.obs;
   ApiBaseHelper api = ApiBaseHelper();
   final roomListing = <RoomListingModel>[].obs;
-  List allTimeSlots = <DateTime>[]
-      .obs; // for debugprint view all list timeslot no need to used on screen anymore
-  List availableTimeSlots = <DateTime>[].obs;
-  // final roomListing = [
-  //   RoomListingModel(id: 1, name: 'Room1'),
-  //   RoomListingModel(id: 2, name: 'Room3'),
-  //   RoomListingModel(id: 3, name: 'Room3'),
-  // ].obs;
-  // final roomListing = <RoomListingModel>[].obs;
+  // List allTimeSlots = <DateTime>[].obs; // for debugprint view all list timeslot no need to used on screen anymore
+  // List availableTimeSlots = <DateTime>[].obs;
 
+//=====================> Get All Room Listing <=========================
   Future<List<RoomListingModel>> getListingRoom() async {
     List<RoomListingModel> listRoom = [];
     try {
       await api
           .onNetworkRequesting(
-              url: "/room/", methode: METHODE.get, isAuthorize: true)
+              url: "/room", methode: METHODE.get, isAuthorize: true)
           .then((value) {
         value.map((e) {
           listRoom.add(RoomListingModel.fromJson(e));

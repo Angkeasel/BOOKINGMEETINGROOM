@@ -20,6 +20,10 @@ Meeting _$MeetingFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Meeting {
+  @JsonKey(name: '_id')
+  String? get id => throw _privateConstructorUsedError;
+  String? get byRoom => throw _privateConstructorUsedError;
+  String? get user => throw _privateConstructorUsedError;
   String? get firstName => throw _privateConstructorUsedError;
   String? get lastName => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
@@ -44,7 +48,10 @@ abstract class $MeetingCopyWith<$Res> {
       _$MeetingCopyWithImpl<$Res, Meeting>;
   @useResult
   $Res call(
-      {String? firstName,
+      {@JsonKey(name: '_id') String? id,
+      String? byRoom,
+      String? user,
+      String? firstName,
       String? lastName,
       String? email,
       String? phoneNumber,
@@ -71,6 +78,9 @@ class _$MeetingCopyWithImpl<$Res, $Val extends Meeting>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = freezed,
+    Object? byRoom = freezed,
+    Object? user = freezed,
     Object? firstName = freezed,
     Object? lastName = freezed,
     Object? email = freezed,
@@ -85,6 +95,18 @@ class _$MeetingCopyWithImpl<$Res, $Val extends Meeting>
     Object? duration = freezed,
   }) {
     return _then(_value.copyWith(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      byRoom: freezed == byRoom
+          ? _value.byRoom
+          : byRoom // ignore: cast_nullable_to_non_nullable
+              as String?,
+      user: freezed == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as String?,
       firstName: freezed == firstName
           ? _value.firstName
           : firstName // ignore: cast_nullable_to_non_nullable
@@ -145,7 +167,10 @@ abstract class _$$MeetingImplCopyWith<$Res> implements $MeetingCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String? firstName,
+      {@JsonKey(name: '_id') String? id,
+      String? byRoom,
+      String? user,
+      String? firstName,
       String? lastName,
       String? email,
       String? phoneNumber,
@@ -170,6 +195,9 @@ class __$$MeetingImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = freezed,
+    Object? byRoom = freezed,
+    Object? user = freezed,
     Object? firstName = freezed,
     Object? lastName = freezed,
     Object? email = freezed,
@@ -184,6 +212,18 @@ class __$$MeetingImplCopyWithImpl<$Res>
     Object? duration = freezed,
   }) {
     return _then(_$MeetingImpl(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      byRoom: freezed == byRoom
+          ? _value.byRoom
+          : byRoom // ignore: cast_nullable_to_non_nullable
+              as String?,
+      user: freezed == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as String?,
       firstName: freezed == firstName
           ? _value.firstName
           : firstName // ignore: cast_nullable_to_non_nullable
@@ -240,7 +280,10 @@ class __$$MeetingImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$MeetingImpl implements _Meeting {
   _$MeetingImpl(
-      {this.firstName,
+      {@JsonKey(name: '_id') this.id,
+      this.byRoom,
+      this.user,
+      this.firstName,
       this.lastName,
       this.email,
       this.phoneNumber,
@@ -256,6 +299,13 @@ class _$MeetingImpl implements _Meeting {
   factory _$MeetingImpl.fromJson(Map<String, dynamic> json) =>
       _$$MeetingImplFromJson(json);
 
+  @override
+  @JsonKey(name: '_id')
+  final String? id;
+  @override
+  final String? byRoom;
+  @override
+  final String? user;
   @override
   final String? firstName;
   @override
@@ -283,7 +333,7 @@ class _$MeetingImpl implements _Meeting {
 
   @override
   String toString() {
-    return 'Meeting(firstName: $firstName, lastName: $lastName, email: $email, phoneNumber: $phoneNumber, location: $location, meetingTopic: $meetingTopic, startTime: $startTime, endTime: $endTime, date: $date, backgroundColor: $backgroundColor, isAllDay: $isAllDay, duration: $duration)';
+    return 'Meeting(id: $id, byRoom: $byRoom, user: $user, firstName: $firstName, lastName: $lastName, email: $email, phoneNumber: $phoneNumber, location: $location, meetingTopic: $meetingTopic, startTime: $startTime, endTime: $endTime, date: $date, backgroundColor: $backgroundColor, isAllDay: $isAllDay, duration: $duration)';
   }
 
   @override
@@ -291,6 +341,9 @@ class _$MeetingImpl implements _Meeting {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$MeetingImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.byRoom, byRoom) || other.byRoom == byRoom) &&
+            (identical(other.user, user) || other.user == user) &&
             (identical(other.firstName, firstName) ||
                 other.firstName == firstName) &&
             (identical(other.lastName, lastName) ||
@@ -318,6 +371,9 @@ class _$MeetingImpl implements _Meeting {
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      id,
+      byRoom,
+      user,
       firstName,
       lastName,
       email,
@@ -347,7 +403,10 @@ class _$MeetingImpl implements _Meeting {
 
 abstract class _Meeting implements Meeting {
   factory _Meeting(
-      {final String? firstName,
+      {@JsonKey(name: '_id') final String? id,
+      final String? byRoom,
+      final String? user,
+      final String? firstName,
       final String? lastName,
       final String? email,
       final String? phoneNumber,
@@ -362,6 +421,13 @@ abstract class _Meeting implements Meeting {
 
   factory _Meeting.fromJson(Map<String, dynamic> json) = _$MeetingImpl.fromJson;
 
+  @override
+  @JsonKey(name: '_id')
+  String? get id;
+  @override
+  String? get byRoom;
+  @override
+  String? get user;
   @override
   String? get firstName;
   @override

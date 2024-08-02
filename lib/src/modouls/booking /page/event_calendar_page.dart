@@ -27,10 +27,10 @@ class EventCalendarPage extends StatefulWidget {
 class _EventCalendarPageState extends State<EventCalendarPage> {
   @override
   void initState() {
+    bookingCon.meetingList.clear();
     fetch();
+
     debugPrint("datetime now  ${DateTime.now()}");
-    //calendarController.selectedDate = DateTime.now();
-    //calendarController.displayDate = DateTime.now();
     super.initState();
   }
 
@@ -44,11 +44,12 @@ class _EventCalendarPageState extends State<EventCalendarPage> {
   Future<List<Meeting>> fetch() async {
     try {
       await bookingCon
-          .getBooking(id: widget.roomListingModel?.id)
+          .getBooking(id: widget.roomListingModel!.id!)
           .then((value) {
-        debugPrint('value fetch $value');
+        // debugPrint('value fetch $value');
         setState(() {
           bookingCon.meetingList.value = value;
+          bookingCon.update();
         });
         debugPrint('draft list event ${bookingCon.meetingList.length} ');
       });
@@ -144,7 +145,6 @@ class _EventCalendarPageState extends State<EventCalendarPage> {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return TimeListingPage(
                   date: text!,
-                  appointment: bookingCon.meetingList,
                   roomListingModel: widget.roomListingModel,
                 );
               }));

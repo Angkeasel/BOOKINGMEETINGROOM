@@ -10,6 +10,7 @@ import '../../modouls/booking /confirm_booking.dart';
 
 import '../../modouls/booking /page/booking_room_datails.dart';
 import '../../modouls/booking /page/event_calendar_page.dart';
+
 import '../../modouls/listing/model/room_listing_model.dart';
 import '../../modouls/listing/page/listing_room.dart';
 import '../../modouls/profile/page/profile_page.dart';
@@ -88,6 +89,7 @@ final _shellRoute = <GoRoute>[
                 millisecondsSinceEpoch: int.tryParse(
                   state.uri.queryParameters['millisecondsSinceEpoch'] ?? '',
                 ),
+                roomListingModel: state.extra as RoomListingModel,
               );
             },
           ),

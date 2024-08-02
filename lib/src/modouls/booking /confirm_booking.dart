@@ -4,11 +4,14 @@ import 'package:get/get.dart';
 
 import 'package:intl/intl.dart';
 import 'package:meetroombooking/src/config/font/font_controller.dart';
+
 import 'package:meetroombooking/src/constant/app_color.dart';
 import 'package:meetroombooking/src/constant/app_size.dart';
 import 'package:meetroombooking/src/constant/app_textstyle.dart';
 import 'package:meetroombooking/src/modouls/booking%20/controller/booking_contoller.dart';
+
 import 'package:meetroombooking/src/modouls/home/home_controller.dart';
+import 'package:meetroombooking/src/modouls/listing/model/room_listing_model.dart';
 
 import 'package:meetroombooking/widgets/custom_buttons.dart';
 import 'package:meetroombooking/widgets/custom_text_form_filed.dart';
@@ -19,16 +22,14 @@ import 'widget/custom_color.dart';
 
 class ConfirmBookingScreen extends StatefulWidget {
   final int? millisecondsSinceEpoch;
-  final String? room;
-  final String? id;
+  final RoomListingModel roomListingModel;
+
+  // final String? room;
+  // final String? id;
 // roomid
 
-  const ConfirmBookingScreen({
-    super.key,
-    this.millisecondsSinceEpoch,
-    this.room,
-    this.id,
-  });
+  const ConfirmBookingScreen(
+      {super.key, this.millisecondsSinceEpoch, required this.roomListingModel});
 
   @override
   State<ConfirmBookingScreen> createState() => _ConfirmBookingScreenState();
@@ -47,10 +48,13 @@ class _ConfirmBookingScreenState extends State<ConfirmBookingScreen> {
 
   @override
   void initState() {
-    debugPrint('id of roomid ${widget.id}');
+    bookingCon.colorString.value = '';
+    bookingCon.isSelected.value = '';
+    debugPrint('id of roomid ${widget.roomListingModel.id}');
     debugPrint('dateTime of now ${DateTime.now()}');
     debugPrint('startDate $startDate');
     homeCon.setDefaultDropdown();
+
     super.initState();
   }
 
@@ -81,7 +85,6 @@ class _ConfirmBookingScreenState extends State<ConfirmBookingScreen> {
       color: AppColors.secondaryColor,
       fontVariations: [FontWeight.w500.getVariant],
     );
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -206,7 +209,8 @@ class _ConfirmBookingScreenState extends State<ConfirmBookingScreen> {
 
                                 TextFormField(
                                   controller: TextEditingController()
-                                    ..text = widget.room ?? '',
+                                    ..text =
+                                        widget.roomListingModel.title ?? '',
                                   decoration: const InputDecoration(
                                     prefixIcon: Icon(
                                       CupertinoIcons.building_2_fill,
@@ -290,17 +294,17 @@ class _ConfirmBookingScreenState extends State<ConfirmBookingScreen> {
                                 ? Intl.message("Invalid Email Address")
                                 : null,
                           ),
-                          CustomTextFormFiled(
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            controller: bookingCon.locationController,
-                            title: 'Location',
-                            lable: '',
-                            hintText: 'Enter Your Location',
-                            validator: (v) => v == ''
-                                ? Intl.message("Invalid Location")
-                                : null,
-                          ),
+                          // CustomTextFormFiled(
+                          //   autovalidateMode:
+                          //       AutovalidateMode.onUserInteraction,
+                          //   controller: bookingCon.locationController,
+                          //   title: 'Location',
+                          //   lable: '',
+                          //   hintText: 'Enter Your Location',
+                          //   validator: (v) => v == ''
+                          //       ? Intl.message("Invalid Location")
+                          //       : null,
+                          // ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -310,18 +314,39 @@ class _ConfirmBookingScreenState extends State<ConfirmBookingScreen> {
                                     bookingCon.colors.asMap().entries.map((e) {
                                   return GestureDetector(
                                     onTap: () {
-                                      bookingCon.isSelected.value = e.key;
+                                      bookingCon.isSelected.value = e.value;
                                       debugPrint('value colos: ${e.value}');
-                                      bookingCon.colorString.value = e.value;
+                                      setState(() {
+                                        bookingCon.colorString.value = e.value;
+                                      });
                                     },
                                     child: CustomColor(
                                         isSelected:
                                             bookingCon.isSelected.value ==
-                                                e.key,
+                                                e.value,
                                         colors: e.value),
                                   );
                                 }).toList(),
                               ),
+                              // testing
+                              // ListView.builder(
+                              //   shrinkWrap: true,
+                              //   itemCount: bookingCon.colors.length,
+                              //   itemBuilder: (context, index) {
+                              //     return GestureDetector(
+                              //       onTap: () {
+                              //         // bookingCon.isSelected.value =
+                              //         //     bookingCon.colors[index];
+                              //         setState(() {});
+                              //       },
+                              //       child: CustomColor(
+                              //           colors: bookingCon.colors[index],
+                              //           isSelected:
+                              //               bookingCon.isSelected.value ==
+                              //                   bookingCon.colors[index]),
+                              //     );
+                              //   },
+                              // )
                             ],
                           )
                         ],
@@ -334,45 +359,47 @@ class _ConfirmBookingScreenState extends State<ConfirmBookingScreen> {
                 init: BookingController(),
                 builder: (_) => CustomButtons(
                   title: 'Confirm Booking',
-                  onTap: () {
-                    // var event = Meeting(
-                    //     eventName: bookingCon.topicController.text,
-                    //     backgroundColor: bookingCon.colorString.value.toColor(),
-                    //     from: startDate!,
-                    //     isAllDay: false,
-                    //     to: startDate!.add(
-                    //         Duration(minutes: homeCon.dropdownvalue.value)),
-                    //     email: bookingCon.emailController.text,
-                    //     phone: bookingCon.phoneNumberController.text,
-                    //     firstName: bookingCon.firstNameController.text,
-                    //     lastName: bookingCon.lastNameController.text,
-                    //     location: bookingCon.locationController.text,
-                    //     duration: homeCon.dropdownvalue.value);
-                    // debugPrint('print add event $event');
+                  onTap: () async {
                     final isValidated = _formKey.currentState?.validate();
-                    if (isValidated != null && isValidated == true) {
-                      setState(() {
-                        //bookingCon.addEvent(event);
-                        bookingCon.postBooking(
-                            id: widget.id,
-                            meetingTopic: bookingCon.topicController.text,
-                            email: bookingCon.emailController.text,
-                            phoneNumber: bookingCon.phoneNumberController.text,
-                            firstName: bookingCon.firstNameController.text,
-                            lastName: bookingCon.lastNameController.text,
-                            location: bookingCon.locationController.text,
-                            date: DateFormat('yyyy-MM-dd')
-                                .format(startDate!)
-                                .toString(),
-                            startTime: startDate!.toString(),
-                            endTime: startDate!
-                                .add(Duration(
-                                    minutes: homeCon.dropdownvalue.value))
-                                .toString(),
-                            duration: homeCon.dropdownvalue.value,
-                            color: bookingCon.colorString.value);
-                      });
-                      Navigator.pop(context);
+                    if (isValidated != null &&
+                        isValidated == true &&
+                        bookingCon.colorString.value != '') {
+                      await bookingCon.postBooking(context,
+                          id: widget.roomListingModel.id!,
+                          meetingTopic: bookingCon.topicController.text,
+                          email: bookingCon.emailController.text,
+                          phoneNumber: bookingCon.phoneNumberController.text,
+                          firstName: bookingCon.firstNameController.text,
+                          lastName: bookingCon.lastNameController.text,
+                          location: widget.roomListingModel.title!,
+                          date: DateFormat('yyyy-MM-dd')
+                              .format(startDate!)
+                              .toString(),
+                          startTime: startDate!.toString(),
+                          endTime: startDate!
+                              .add(Duration(
+                                  minutes: homeCon.dropdownvalue.value))
+                              .toString(),
+                          duration: homeCon.dropdownvalue.value,
+                          color: bookingCon.colorString.value);
+
+                      // Navigator.push(context,
+                      //     MaterialPageRoute(builder: (context) {
+                      //   return Verifybooking(
+                      //     date: DateFormat.yMMMMEEEEd().format(startDate!),
+                      //     fromTime: timeshiftFormatter(
+                      //         _dateFormat.format(startDate!)),
+                      //     toTime: timeshiftFormatter(_dateFormat.format(
+                      //       startDate!.add(
+                      //         Duration(minutes: homeCon.dropdownvalue.value),
+                      //       ),
+                      //     )),
+                      //     location: bookingCon.locationController.text,
+                      //     durations: bookingCon.hourFormatFromMinutes(
+                      //         homeCon.dropdownvalue.value),
+                      //     userName: bookingCon.firstNameController.text,
+                      //   );
+                      // }));
                     }
                   },
                 ),

@@ -28,3 +28,14 @@ extension DateFormatExtension on String {
     return formattedStr;
   }
 }
+
+extension TimeExtension on String {
+  String toTimeFormat() {
+    DateTime dateTime = DateTime.parse(this);
+
+    // Format the time portion only
+    DateFormat timeFormat = DateFormat("HH:mm a");
+    String formattedTime = timeFormat.format(dateTime);
+    return formattedTime;
+  }
+}

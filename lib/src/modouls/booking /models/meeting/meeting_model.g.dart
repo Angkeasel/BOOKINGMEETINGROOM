@@ -8,6 +8,9 @@ part of 'meeting_model.dart';
 
 _$MeetingImpl _$$MeetingImplFromJson(Map<String, dynamic> json) =>
     _$MeetingImpl(
+      id: json['_id'] as String?,
+      byRoom: json['byRoom'] as String?,
+      user: json['user'] as String?,
       firstName: json['firstName'] as String?,
       lastName: json['lastName'] as String?,
       email: json['email'] as String?,
@@ -24,6 +27,9 @@ _$MeetingImpl _$$MeetingImplFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$MeetingImplToJson(_$MeetingImpl instance) =>
     <String, dynamic>{
+      '_id': instance.id,
+      'byRoom': instance.byRoom,
+      'user': instance.user,
       'firstName': instance.firstName,
       'lastName': instance.lastName,
       'email': instance.email,

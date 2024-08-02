@@ -6,6 +6,8 @@ class CustomListDetails extends StatelessWidget {
   final String? date;
   final String? timeFrom;
   final String? timeTo;
+  final Function()? onPressedEdit;
+  final Function()? onPressedDeleted;
   final GestureTapCallback? onTap;
   const CustomListDetails(
       {super.key,
@@ -13,7 +15,9 @@ class CustomListDetails extends StatelessWidget {
       this.timeFrom,
       this.timeTo,
       this.title,
-      this.onTap});
+      this.onTap,
+      this.onPressedEdit,
+      this.onPressedDeleted});
 
   @override
   Widget build(BuildContext context) {
@@ -64,9 +68,7 @@ class CustomListDetails extends StatelessWidget {
                     color: Colors.amber,
                     border: Border.all(color: Colors.grey.shade600)),
                 child: IconButton(
-                    onPressed: () {
-                      debugPrint('print deleted from detail ');
-                    },
+                    onPressed: onPressedEdit,
                     icon: const Icon(
                       Icons.edit,
                       size: 27,
@@ -84,9 +86,7 @@ class CustomListDetails extends StatelessWidget {
                     color: Colors.red,
                     border: Border.all(color: Colors.grey.shade600)),
                 child: IconButton(
-                    onPressed: () {
-                      debugPrint('print deleted from detail ');
-                    },
+                    onPressed: onPressedDeleted,
                     icon: const Align(
                       alignment: Alignment.center,
                       child: Icon(

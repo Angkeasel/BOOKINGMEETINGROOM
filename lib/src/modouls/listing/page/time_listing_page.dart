@@ -12,13 +12,9 @@ import '../../../config/font/font_controller.dart';
 
 class TimeListingPage extends StatefulWidget {
   final String date;
-  final List<Meeting> appointment;
   final RoomListingModel? roomListingModel;
-  const TimeListingPage(
-      {super.key,
-      required this.date,
-      required this.appointment,
-      this.roomListingModel});
+
+  const TimeListingPage({super.key, required this.date, this.roomListingModel});
 
   @override
   State<TimeListingPage> createState() => _TimeListingPageState();
@@ -60,7 +56,10 @@ class _TimeListingPageState extends State<TimeListingPage> {
       : datetime;
   List<String> availableSoltList = [];
   Future<List<String>> fetch() async {
-    bookingCon.getAvailableTimeSlot(date: widget.date).then((value) {
+    bookingCon
+        .getAvailableTimeSlot(
+            date: widget.date, roomId: widget.roomListingModel!.id!)
+        .then((value) {
       debugPrint('available time $value');
       setState(() {
         availableSoltList = value;
@@ -100,7 +99,8 @@ class _TimeListingPageState extends State<TimeListingPage> {
                     bookingCon.timeIndex.value = e.key;
                     debugPrint('Time Index ${bookingCon.timeIndex.value}');
                     String dateTimeString = e.value;
-                    debugPrint('add time : $dateTimeString');
+                    debugPrint(
+                        'add time : $dateTimeString'); // //7/1/2024, 8:00:00
                     DateFormat dateFormat =
                         DateFormat('MM/dd/yyyy, hh:mm:ss aa');
                     DateTime dateTime = dateFormat.parse(dateTimeString);
@@ -110,9 +110,9 @@ class _TimeListingPageState extends State<TimeListingPage> {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
                       return ConfirmBookingScreen(
-                          millisecondsSinceEpoch: result.toInt(),
-                          room: widget.roomListingModel?.title,
-                          id: widget.roomListingModel?.id);
+                        millisecondsSinceEpoch: result.toInt(),
+                        roomListingModel: widget.roomListingModel!,
+                      );
                     }));
                   },
                   child: Container(
