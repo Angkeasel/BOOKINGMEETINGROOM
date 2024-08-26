@@ -7,6 +7,7 @@ class RoomController extends GetxController {
   final currentIndex = 0.obs;
   ApiBaseHelper api = ApiBaseHelper();
   final roomListing = <RoomListingModel>[].obs;
+  final selectRoom = RoomListingModel().obs;
   // List allTimeSlots = <DateTime>[].obs; // for debugprint view all list timeslot no need to used on screen anymore
   // List availableTimeSlots = <DateTime>[].obs;
 
@@ -70,4 +71,9 @@ class RoomController extends GetxController {
   //       allTimeSlots.where((slot) => !bookedTimeSlots.contains(slot)).toList();
   //   return availableTimeSlots;
   // }
+  @override
+  void onInit() {
+    getListingRoom();
+    super.onInit();
+  }
 }

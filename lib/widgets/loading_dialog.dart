@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meetroombooking/src/constant/app_color.dart';
 
 BuildContext? _loadingContext;
 
@@ -9,11 +10,12 @@ void showLoading(BuildContext context) {
     barrierDismissible: false,
     builder: (_) {
       _loadingContext = _;
-      return const PopScope(
+      return PopScope(
         canPop: false,
         child: Center(
           child: CircularProgressIndicator(
-            color: Colors.red,
+            color: AppColors.primaryColor,
+            // backgroundColor: Colors.grey.shade800,
           ),
         ),
       );

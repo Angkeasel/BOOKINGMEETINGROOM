@@ -9,6 +9,7 @@ class CustomTextFormFiled extends StatefulWidget {
   final String? hintText;
   final double? height;
   final double? width;
+  final String? initialValue;
   final TextEditingController? controller;
   final ValueChanged<String>? onChanged;
   final Widget? suffixIcon;
@@ -32,6 +33,7 @@ class CustomTextFormFiled extends StatefulWidget {
     this.keyboardType,
     this.textInputAction = TextInputAction.next,
     this.autovalidateMode,
+    this.initialValue,
   });
 
   @override
@@ -64,12 +66,12 @@ class _CustomTextFormFiledState extends State<CustomTextFormFiled> {
               autovalidateMode: widget.autovalidateMode,
               textInputAction: widget.textInputAction,
               controller: controller,
+              initialValue: widget.initialValue,
               onChanged: (value) {
                 widget.onChanged?.call(value);
                 setState(() {});
               },
               obscureText: widget.obscureText,
-
               validator: widget.validator,
               keyboardType: widget.keyboardType,
               onTapOutside: (event) {

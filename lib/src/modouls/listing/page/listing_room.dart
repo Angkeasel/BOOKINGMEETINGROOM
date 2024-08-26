@@ -23,9 +23,9 @@ class _ListingRoomState extends State<ListingRoom> {
   final bookingCon = Get.put(BookingController());
   @override
   void initState() {
+    bookingCon.page.value = 1;
     roomCon.getListingRoom();
-    bookingCon.bookingList.clear();
-
+    bookingCon.newMeetingList.clear();
     super.initState();
   }
 
@@ -70,8 +70,9 @@ class _ListingRoomState extends State<ListingRoom> {
                             onTap: () {
                               debugPrint(
                                   'roomId: ${roomCon.roomListing[index].id}');
-                              context.go('/rooms/room',
-                                  extra: roomCon.roomListing[index]);
+                              context.go('/rooms/room', extra: {
+                                'roomListingModel': roomCon.roomListing[index],
+                              });
                             },
                           );
                         },

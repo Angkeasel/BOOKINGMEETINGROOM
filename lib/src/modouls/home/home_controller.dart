@@ -70,8 +70,10 @@ class HomeController extends GetxController {
     dropdownvalue(30);
   }
 
+  final newdropdownValue = 30.obs;
   final dropdownvalue = 30.obs;
   final dropdownvalueIndex = 0.obs;
+  // final newdropdownvalueIndex = 0.obs;
   List<int> dropdownAddTimeList = [
     30,
     60,

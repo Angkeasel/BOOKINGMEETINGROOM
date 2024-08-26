@@ -16,9 +16,9 @@ import 'package:meetroombooking/src/modouls/listing/model/room_listing_model.dar
 import 'package:meetroombooking/widgets/custom_buttons.dart';
 import 'package:meetroombooking/widgets/custom_text_form_filed.dart';
 
-import '../../../widgets/custom_lable_edit.dart';
+import '../../../../widgets/custom_lable_edit.dart';
 
-import 'widget/custom_color.dart';
+import '../widget/custom_color.dart';
 
 class ConfirmBookingScreen extends StatefulWidget {
   final int? millisecondsSinceEpoch;
@@ -358,6 +358,8 @@ class _ConfirmBookingScreenState extends State<ConfirmBookingScreen> {
               GetBuilder(
                 init: BookingController(),
                 builder: (_) => CustomButtons(
+                  isDisabled:
+                      bookingCon.colorString.value.isEmpty ? true : false,
                   title: 'Confirm Booking',
                   onTap: () async {
                     final isValidated = _formKey.currentState?.validate();

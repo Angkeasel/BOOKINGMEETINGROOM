@@ -8,9 +8,11 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:meetroombooking/src/constant/app_textstyle.dart';
 import 'package:meetroombooking/src/modouls/profile/controller/profile_controller.dart';
+import 'package:meetroombooking/src/modouls/profile/page/language_page.dart';
 import 'package:meetroombooking/src/modouls/widget/custom_details_profile.dart';
 import '../../../../widgets/custom_showbottomsheet.dart';
 import '../../../constant/app_color.dart';
+import 'edit_profile_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -34,6 +36,12 @@ class _ProfilePageState extends State<ProfilePage> {
             'http://localhost:8000/api/profile/upload/profile', _image!);
       }
     });
+  }
+
+  @override
+  void initState() {
+    profileCon.getProfile();
+    super.initState();
   }
 
   @override
@@ -240,26 +248,71 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               ),
             ),
+            const Text(
+              'Admin',
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
+            ),
+            Text(
+              'muykea@gmail.com',
+              style: TextStyle(
+                  color: AppColors.primaryColor, fontWeight: FontWeight.w600),
+            ),
             const SizedBox(
               height: 30,
             ),
-            const CustomDetailProfile(
-              lable: 'UserName',
-              value: 'Muykea',
+
+            // const CustomDetailProfile(
+            //   lable: 'UserName',
+            //   value: 'Muykea',
+            // ),
+            // const CustomDetailProfile(
+            //   lable: 'Email',
+            //   value: 'muykea@gmail.com',
+            // ),
+            // const CustomDetailProfile(
+            //   lable: 'Gender',
+            //   value: 'Female',
+            // ),
+            // const CustomDetailProfile(
+            //   lable: 'Position',
+            //   value: 'App programmer',
+            // ),
+            CustomDetailProfile(
+              iconData: Icons.person,
+              lable: 'Edit Profile',
+              icons: true,
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return EditProfilePage(
+                    userModel: profileCon.userModel.value,
+                  );
+                }));
+              },
             ),
-            const CustomDetailProfile(
-              lable: 'Email',
-              value: 'muykea@gmail.com',
+            const SizedBox(
+              height: 10,
             ),
-            const CustomDetailProfile(
-              lable: 'Gender',
-              value: 'Female',
+            CustomDetailProfile(
+              iconData: Icons.notifications_sharp,
+              lable: 'Notification',
+              icons: true,
+              onTap: () {},
             ),
-            const CustomDetailProfile(
-              lable: 'Position',
-              value: 'App programmer',
+            CustomDetailProfile(
+              iconData: Icons.language,
+              lable: 'Language',
+              icons: false,
+              isText: true,
+              language: 'English (US)',
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const LanguagePage();
+                }));
+              },
             ),
-            const CustomDetailProfile(
+            CustomDetailProfile(
+              iconData: Icons.key,
               lable: 'Change Password',
               icons: true,
             ),

@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:meetroombooking/src/modouls/profile/model/userModel.dart';
 import 'package:meetroombooking/src/util/helper/api_base_helper.dart';
 
 import '../../../util/helper/local_storage/local_storage.dart';
@@ -40,11 +41,31 @@ class ProfileController extends GetxController {
   Future<void> uploadImages() async {}
 
   //=======================> get profile <=========================
+  final userModel = UserModel().obs;
+  final isLoading = false.obs;
+  Future getProfile() async {
+    isLoading(true);
+    try {
+      await api
+          .onNetworkRequesting(
+              url: '/profile/info', methode: METHODE.get, isAuthorize: true)
+          .then((value) {
+        debugPrint('show profile information : $value ');
+        userModel.value = UserModel.fromJson(value);
+      }).onError((ErrorModel error, stackTrace) {
+        debugPrint("=========> get Profile Error $error");
+        isLoading(false);
+      });
+    } catch (e) {
+      debugPrint('err catch profile information $e');
+      isLoading(false);
+    }
+    return userModel.value;
+  }
 
-  Future<void> getProfile() async {
-    api
-        .onNetworkRequesting(url: '', methode: METHODE.get, isAuthorize: true)
-        .then((value) {})
-        .onError((ErrorModel error, stackTrace) {});
+  @override
+  void onInit() {
+    getProfile();
+    super.onInit();
   }
 }

@@ -131,7 +131,6 @@ class BookingController extends GetxController {
       }).onError((ErrorModel error, stackTrace) {
         debugPrint(
             'post booking not work ${error.statusCode} ${error.bodyString}');
-
         Get.snackbar(
           'Duplicated select time ',
           error.bodyString['message'],
@@ -276,23 +275,35 @@ class BookingController extends GetxController {
               methode: METHODE.update,
               isAuthorize: true,
               body: body)
-          .then((value) {
-        debugPrint('=====> print update value$value');
-        // getBooking(id: roomId!);
+          .then((value) async {
+        debugPrint('=====> print update value $value');
+        roomId = value['byRoom'];
+        debugPrint('=====> print roomId value $roomId');
+        await Get.put(BookingController())
+            .getBookingByUser(loading: false, roomId: roomId);
+        isLoadingUpdate(false);
+      }).onError((ErrorModel error, stackTrace) {
+        Get.snackbar(
+          'Duplicated select time ',
+          error.bodyString['message'],
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.TOP,
+        );
+        isLoadingUpdate(false);
       });
-      isLoadingUpdate(false);
     } catch (e) {
       isLoadingUpdate(false);
-      debugPrint('errr catch body ${e.toString()}');
+      debugPrint('errr catch body kkkkk ${e.toString()}');
     }
   }
 
   final delLoading = false.obs;
 //============================> Deleted Booking <===================================
-  Future<void> deleteMeeting({
-    required BuildContext context,
-    required String id,
-  }) async {
+  Future<void> deleteMeeting(
+      {required BuildContext context,
+      required String id,
+      required String roomId}) async {
     showLoading(context);
     try {
       await api
@@ -300,9 +311,13 @@ class BookingController extends GetxController {
               url: '/book/$id', methode: METHODE.delete, isAuthorize: true)
           .then((value) async {
         debugPrint('Delelet Meeting Success : $value');
-        await Get.put(BookingController()).getBookingByUser(loading: false);
-        //await Get.put(BookingController()).getBookingByUser();
+        newMeetingList.clear();
+        List<Meeting> bookingList = await Get.put(BookingController())
+            .getBookingByUser(loading: false, roomId: roomId);
+        debugPrint('call back booking list $bookingList ');
         removeLoading();
+
+        //await Get.put(BookingController()).getBookingByUser();
       }).onError((ErrorModel err, _) {
         debugPrint('Delelet Meeting Error ${err.bodyString}');
         removeLoading();
@@ -352,10 +367,9 @@ class BookingController extends GetxController {
   final currentPage = 0.obs;
   final isLoading = false.obs;
   final page = 1.obs;
-  int limit = 1;
-  Future<List<Meeting>> getBookingByUser({
-    bool loading = true,
-  }) async {
+  String? roomId;
+  Future<List<Meeting>> getBookingByUser({bool loading = true, roomId}) async {
+    debugPrint('===========> id $roomId');
     if (loading) {
       isLoadingMeetingUser(true);
     }
@@ -371,7 +385,7 @@ class BookingController extends GetxController {
     try {
       await api
           .onNetworkRequesting(
-              url: '/book/bookings?page=$page&limit=1',
+              url: '/book/bookings?page=$page&limit=10&roomId=$roomId',
               methode: METHODE.get,
               isAuthorize: true)
           .then((response) {
@@ -390,7 +404,7 @@ class BookingController extends GetxController {
         hasNextPage(false);
       });
     } catch (error) {
-      debugPrint('errr catch body ${error.toString()}');
+      debugPrint('errr catch body tttttt ${error.toString()}');
       isLoadingMeetingUser(false);
       hasNextPage(false);
     }
@@ -401,14 +415,16 @@ class BookingController extends GetxController {
     page.value < totalPage.value
         ? () {
             page.value++;
-            getBookingByUser();
+            getBookingByUser(roomId: roomId);
+            // debugPrint(
+            //     'show me infinitPage value : ${getBookingByUser(roomId: roomId)}');
           }()
         : const SizedBox();
   }
 
   @override
   void onInit() {
-    getBookingByUser();
+    getBookingByUser(roomId: roomId);
     super.onInit();
   }
 }

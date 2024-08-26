@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:meetroombooking/src/constant/app_color.dart';
-import 'package:meetroombooking/src/modouls/booking%20/confirm_booking.dart';
-import 'package:meetroombooking/src/modouls/booking%20/controller/booking_contoller.dart';
-import 'package:meetroombooking/src/modouls/booking%20/models/meeting/meeting_model.dart';
 import 'package:meetroombooking/src/modouls/listing/controller/room_controller.dart';
 import 'package:meetroombooking/src/modouls/listing/model/room_listing_model.dart';
-
 import '../../../config/font/font_controller.dart';
+import '../../booking /controller/booking_contoller.dart';
+import '../../booking /models/meeting/meeting_model.dart';
 
 class TimeListingPage extends StatefulWidget {
   final String date;
   final RoomListingModel? roomListingModel;
+  final bool isEdit;
+  final Meeting? meetingModel;
 
-  const TimeListingPage({super.key, required this.date, this.roomListingModel});
+  const TimeListingPage(
+      {super.key,
+      required this.date,
+      this.roomListingModel,
+      this.isEdit = false,
+      this.meetingModel});
 
   @override
   State<TimeListingPage> createState() => _TimeListingPageState();
@@ -84,7 +90,7 @@ class _TimeListingPageState extends State<TimeListingPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Show Add time ',
+          widget.isEdit ? 'Update Add Time' : 'Show Add time ',
           style: TextStyle(color: AppColors.primaryColor),
         ),
       ),
@@ -107,13 +113,34 @@ class _TimeListingPageState extends State<TimeListingPage> {
                     int milliSeconds = dateTime.microsecondsSinceEpoch;
                     var result = milliSeconds / 1000;
                     debugPrint('millisecond: ${result.toInt()}');
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return ConfirmBookingScreen(
-                        millisecondsSinceEpoch: result.toInt(),
-                        roomListingModel: widget.roomListingModel!,
-                      );
-                    }));
+                    widget.isEdit
+                        ? context.goNamed('EditBooking', pathParameters: {
+                            'millisecondsSinceEpoch': result.toInt().toString()
+                          }, extra: {
+                            'roomModel': widget.roomListingModel,
+                            'meetModel': widget.meetingModel
+                          })
+                        // ? Navigator.pushReplacement(context,
+                        //     MaterialPageRoute(builder: (context) {
+                        //     return EditBookingPage(
+                        //       millisecondsSinceEpoch: result.toInt(),
+                        //       roomModel: widget.roomListingModel,
+                        //       meetModel: widget.meetingModel,
+                        //     );
+                        //   }))
+                        // : Navigator.push(context,
+                        //     MaterialPageRoute(builder: (context) {
+                        //     return ConfirmBookingScreen(
+                        //       millisecondsSinceEpoch: result.toInt(),
+                        //       roomListingModel: widget.roomListingModel!,
+                        //     );
+                        //   }));
+                        : context
+                            .goNamed('ConfirmBookingScreen', queryParameters: {
+                            'millisecondsSinceEpoch': result.toInt().toString()
+                          }, extra: {
+                            'roomListingModel': widget.roomListingModel!
+                          });
                   },
                   child: Container(
                       width: MediaQuery.of(context).size.width * 0.8,

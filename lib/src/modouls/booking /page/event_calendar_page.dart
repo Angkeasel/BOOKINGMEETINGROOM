@@ -1,36 +1,38 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
-
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:meetroombooking/src/constant/app_color.dart';
 import 'package:meetroombooking/src/modouls/booking%20/controller/booking_contoller.dart';
-
 import 'package:meetroombooking/src/modouls/booking%20/models/meeting/meeting_datasource.dart';
-
 import 'package:meetroombooking/src/modouls/home/home_controller.dart';
 import 'package:meetroombooking/src/modouls/listing/controller/room_controller.dart';
 import 'package:meetroombooking/src/modouls/listing/model/room_listing_model.dart';
-
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-
-import '../../listing/page/time_listing_page.dart';
 import '../models/meeting/meeting_model.dart';
 
 class EventCalendarPage extends StatefulWidget {
   final RoomListingModel? roomListingModel;
-  const EventCalendarPage({super.key, this.roomListingModel});
+  final bool? isEdit;
+  final Meeting? meetingModel;
+  const EventCalendarPage(
+      {super.key, this.roomListingModel, this.isEdit, this.meetingModel});
   @override
   State<EventCalendarPage> createState() => _EventCalendarPageState();
 }
 
 class _EventCalendarPageState extends State<EventCalendarPage> {
+  //  String dateString = widget.meetingModel!.date!;
+  //   DateFormat format = DateFormat("yyyy-MM-dd");
+  //   dateTime = format.parse(dateString);
+  // DateTime? dateTime;
   @override
   void initState() {
     bookingCon.meetingList.clear();
     fetch();
-
     debugPrint("datetime now  ${DateTime.now()}");
+    // find booking id to check isEdit
+
     super.initState();
   }
 
@@ -41,6 +43,10 @@ class _EventCalendarPageState extends State<EventCalendarPage> {
   final roomCon = Get.put(RoomController());
   final homeCon = Get.put(HomeController());
   final bookingCon = Get.put(BookingController());
+  //bool isEdit = false;
+  //==================> Find Id Of Booking List <=================
+
+  //==================> Fetch booking Listing <=================
   Future<List<Meeting>> fetch() async {
     try {
       await bookingCon
@@ -65,7 +71,9 @@ class _EventCalendarPageState extends State<EventCalendarPage> {
       appBar: AppBar(
         backgroundColor: AppColors.primaryColor,
         title: Text(
-          widget.roomListingModel?.title ?? '',
+          widget.isEdit!
+              ? 'Edit ${widget.roomListingModel?.title}'
+              : widget.roomListingModel?.title ?? '',
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -142,12 +150,28 @@ class _EventCalendarPageState extends State<EventCalendarPage> {
           child: FloatingActionButton(
             shape: const CircleBorder(),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return TimeListingPage(
-                  date: text!,
-                  roomListingModel: widget.roomListingModel,
-                );
-              }));
+              // Navigator.push(context, MaterialPageRoute(builder: (context) {
+              //   return TimeListingPage(
+              //     date: text!,
+              //     roomListingModel: widget.roomListingModel,
+              //     isEdit: widget.isEdit!,
+              //     meetingModel: widget.meetingModel,
+              //   );
+              // }));
+              //================>************ fix here [millisecond] *************** <=====================
+              debugPrint('==>************ fix here [millisecond] ');
+              widget.isEdit!
+                  ? context.push(
+                      '/booking-room/all-booking-user/edit-booking/1724893200000/edit-event-date/edit-time-slot?date=$text',
+                      // '/booking-room/edit-booking/1724893200000/edit-event-date/edit-time-slot?date=$text',
+                      extra: {
+                          'roomListingModel': widget.roomListingModel,
+                          'meetingModel': widget.meetingModel
+                        })
+                  : context.go('/rooms/room/time-slot/$text', extra: {
+                      'roomListingModel': widget.roomListingModel,
+                      'meetingModel': widget.meetingModel
+                    });
             },
             child: const Icon(Icons.add),
           ),
