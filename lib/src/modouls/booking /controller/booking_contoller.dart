@@ -159,7 +159,7 @@ class BookingController extends GetxController {
             url: '/book/$id/bookings', methode: METHODE.get, isAuthorize: true)
         .then((value) {
       //debugPrint('get all booking ${value['room']['booking']}');
-      value['room']['booking'].map((e) {
+      value['room'].map((e) {
         eventModel.value = Meeting.fromJson(e);
         //debugPrint('====> event model ${eventModel.value}');
         eventList.add(eventModel.value);
@@ -394,7 +394,7 @@ class BookingController extends GetxController {
           newMeetingList.clear();
         }
         totalPage.value = response['totalPages'];
-        response['bookings'].map((value) {
+        response['booking'].map((value) {
           newMeetingList.add(Meeting.fromJson(value));
         }).toList();
         isLoadingMeetingUser(false);

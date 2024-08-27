@@ -22,14 +22,15 @@ class EventCalendarPage extends StatefulWidget {
 }
 
 class _EventCalendarPageState extends State<EventCalendarPage> {
-  //  String dateString = widget.meetingModel!.date!;
+  // String dateString = widget.meetingModel!.date!;
   //   DateFormat format = DateFormat("yyyy-MM-dd");
   //   dateTime = format.parse(dateString);
-  // DateTime? dateTime;
+  DateTime? dateTime;
   @override
   void initState() {
     bookingCon.meetingList.clear();
     fetch();
+    widget.isEdit! ? showTime() : DateTime.now();
     debugPrint("datetime now  ${DateTime.now()}");
     // find booking id to check isEdit
 
@@ -65,6 +66,13 @@ class _EventCalendarPageState extends State<EventCalendarPage> {
     return bookingCon.meetingList;
   }
 
+  DateTime showTime() {
+    String dateString = widget.meetingModel!.date!;
+    DateFormat format = DateFormat("yyyy-MM-dd");
+    dateTime = format.parse(dateString);
+    return dateTime!;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,7 +99,7 @@ class _EventCalendarPageState extends State<EventCalendarPage> {
           child: SfCalendar(
             controller: calendarController,
             initialDisplayDate: DateTime.now(),
-            initialSelectedDate: DateTime.now(),
+            initialSelectedDate: widget.isEdit! ? dateTime : DateTime.now(),
             onSelectionChanged: selectionChanged,
             minDate: DateTime.now(),
             maxDate: DateTime(2040, 12, 31, 0, 0),
