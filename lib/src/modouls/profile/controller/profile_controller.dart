@@ -4,10 +4,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:meetroombooking/src/modouls/profile/model/userModel.dart';
 import 'package:meetroombooking/src/util/helper/api_base_helper.dart';
-
 import '../../../util/helper/local_storage/local_storage.dart';
+import '../model/userModel.dart';
 
 class ProfileController extends GetxController {
   final api = ApiBaseHelper();
@@ -15,7 +14,7 @@ class ProfileController extends GetxController {
   Future<void> uploadImage(String url, File image) async {
     final token = await LocalStorage.getStringValue(key: 'access_token');
     debugPrint('=======> token :$token');
-    final request = http.MultipartRequest('POST', Uri.parse(url));
+    final request = http.MultipartRequest('PUT', Uri.parse(url));
     request.headers.assignAll({"Authorization": "Bearer $token"});
     request.files.add(
       http.MultipartFile(
@@ -38,12 +37,12 @@ class ProfileController extends GetxController {
   }
 
 // ==========================> upload image with api <=========================
-  Future<void> uploadImages() async {}
+  // Future<void> uploadImages() async {}
 
   //=======================> get profile <=========================
   final userModel = UserModel().obs;
   final isLoading = false.obs;
-  Future getProfile() async {
+  Future<UserModel> getProfile() async {
     isLoading(true);
     try {
       await api
@@ -51,7 +50,9 @@ class ProfileController extends GetxController {
               url: '/profile/info', methode: METHODE.get, isAuthorize: true)
           .then((value) {
         debugPrint('show profile information : $value ');
-        userModel.value = UserModel.fromJson(value);
+        userModel.value = UserModel.fromJson(value['profile']);
+        debugPrint('====> test value : ${userModel.value}');
+        isLoading(false);
       }).onError((ErrorModel error, stackTrace) {
         debugPrint("=========> get Profile Error $error");
         isLoading(false);
@@ -61,6 +62,24 @@ class ProfileController extends GetxController {
       isLoading(false);
     }
     return userModel.value;
+  }
+
+  // ========================> Update Profile Info <=============================
+  Future<void> updateProfile({String? userName, String? email}) async {
+    final body = {"username": userName, "email": email};
+    try {
+      await api
+          .onNetworkRequesting(
+              url: '/profile/update/info',
+              methode: METHODE.update,
+              isAuthorize: true,
+              body: body)
+          .then((value) {
+        debugPrint('===========> update Profile Info $value');
+      });
+    } catch (e) {
+      debugPrint('err catch profile information $e');
+    }
   }
 
   @override

@@ -27,10 +27,16 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   static final _formKey = GlobalKey<FormState>();
   final lController = Get.find<LanguageController>();
+  final authCon = Get.put(AuthController());
+  @override
+  void initState() {
+    authCon.emailController.text = '';
+    authCon.pwController.text = '';
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final authCon = Get.put(AuthController());
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(

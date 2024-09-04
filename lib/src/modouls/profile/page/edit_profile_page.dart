@@ -1,16 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:meetroombooking/src/modouls/profile/model/userModel.dart';
 import 'package:meetroombooking/widgets/custom_buttons.dart';
 import 'package:meetroombooking/widgets/custom_text_form_filed.dart';
 
-class EditProfilePage extends StatelessWidget {
+import '../model/userModel.dart';
+
+class EditProfilePage extends StatefulWidget {
   final UserModel? userModel;
   const EditProfilePage({super.key, this.userModel});
-  //final TextEditingController usernameController = TextEditingController();
+
+  @override
+  State<EditProfilePage> createState() => _EditProfilePageState();
+}
+
+class _EditProfilePageState extends State<EditProfilePage> {
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController emailContoller = TextEditingController();
+
+  @override
+  void initState() {
+    usernameController.text = widget.userModel!.username!;
+    emailContoller.text = widget.userModel!.email!;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    // final profileCon = Get.put(ProfileController());
-    // usernameController.text = userModel!.email!;
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -18,35 +32,25 @@ class EditProfilePage extends StatelessWidget {
           style: TextStyle(color: Colors.black),
         ),
       ),
-      body: const Padding(
-        padding: EdgeInsets.only(left: 15, right: 15, top: 20, bottom: 0),
+      body: Padding(
+        padding: const EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 0),
         child: Column(
           children: [
             CustomTextFormFiled(
-                // controller: usernameController,
-                ),
-            SizedBox(
-              height: 20,
+              controller: usernameController,
+              title: 'UserName',
             ),
             CustomTextFormFiled(
-                // controller: usernameController,
-                ),
-            SizedBox(
-              height: 20,
+              controller: emailContoller,
+              title: 'Email',
             ),
-            CustomTextFormFiled(
-                // controller: usernameController,
-                ),
-            SizedBox(
-              height: 20,
-            ),
-            CustomTextFormFiled(
-                // controller: usernameController,
-                ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             CustomButtons(
+              onTap: () {
+                debugPrint('======> update profile info');
+              },
               title: 'Update',
             )
           ],

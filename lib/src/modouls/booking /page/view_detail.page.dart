@@ -42,115 +42,123 @@ class ViewDetailsPage extends StatelessWidget {
     }
 
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'View Page Details',
-            style: TextStyle(color: AppColors.primaryColor),
-          ),
+      appBar: AppBar(
+        title: Text(
+          topic ?? '',
+          style: TextStyle(color: AppColors.primaryColor),
         ),
-        body: Column(
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.only(bottom: 30, top: 20),
+        child: Column(
           children: [
-            Center(
-              child: Container(
-                padding: const EdgeInsets.all(20),
-                margin: const EdgeInsets.only(top: 30),
-                width: MediaQuery.of(context).size.width * 0.9,
-                height: MediaQuery.of(context).size.height * 0.55,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.shade700),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    CustomRowDetails(
-                      title: 'Location',
-                      value: location,
-                    ),
-                    CustomRowDetails(
-                      title: 'FirstName',
-                      value: firstName ?? '',
-                    ),
-                    CustomRowDetails(
-                      title: 'LastName',
-                      value: lastName ?? '',
-                    ),
-                    CustomRowDetails(
-                      title: 'Phone',
-                      value: phone ?? '',
-                    ),
-                    CustomRowDetails(
-                      title: 'Meeting Topic',
-                      value: topic ?? '',
-                    ),
-                    CustomRowDetails(
-                      title: 'Date',
-                      value: date,
-                    ),
-                    CustomRowDetails(
-                      title: 'StatTime',
-                      value: formatDateTime(startTime!),
-                    ),
-                    CustomRowDetails(
-                      title: 'EndTime',
-                      value: formatDateTime(endTime!),
-                    ),
-                    CustomRowDetails(
-                        title: 'Duration',
-                        value: bookingCon.hourFormatFromMinutes(duration!)),
-                    CustomRowDetails(
-                      title: 'Email',
-                      value: email ?? '',
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Container(
-                            height: 60,
-                            width: 60,
-                            //padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.amber,
-                                border:
-                                    Border.all(color: Colors.grey.shade600)),
-                            child: IconButton(
-                                onPressed: () {
-                                  debugPrint('print edit from detail ');
-                                },
-                                icon: const Icon(
-                                  Icons.edit_outlined,
-                                  size: 27,
-                                ))),
-                        Container(
-                            height: 60,
-                            width: 60,
-                            //padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.red,
-                                border:
-                                    Border.all(color: Colors.grey.shade600)),
-                            child: IconButton(
-                                onPressed: () {
-                                  debugPrint('print deleted from detail ');
-                                },
-                                icon: const Icon(
-                                  Icons.delete,
-                                  size: 27,
-                                  color: Colors.white,
-                                ))),
-                      ],
-                    )
-                  ],
-                ),
+            Container(
+              padding: const EdgeInsets.all(16),
+              margin: const EdgeInsets.symmetric(horizontal: 16),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey.shade700),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  CustomRowDetails(
+                    title: 'Location',
+                    value: location,
+                  ),
+                  CustomRowDetails(
+                    title: 'FirstName',
+                    value: firstName ?? '',
+                  ),
+                  CustomRowDetails(
+                    title: 'LastName',
+                    value: lastName ?? '',
+                  ),
+                  CustomRowDetails(
+                    title: 'Phone',
+                    value: phone ?? '',
+                  ),
+                  CustomRowDetails(
+                    title: 'Meeting Topic',
+                    value: topic ?? '',
+                  ),
+                  CustomRowDetails(
+                    title: 'Date',
+                    value: date,
+                  ),
+                  CustomRowDetails(
+                    title: 'StatTime',
+                    value: formatDateTime(startTime!),
+                  ),
+                  CustomRowDetails(
+                    title: 'EndTime',
+                    value: formatDateTime(endTime!),
+                  ),
+                  CustomRowDetails(
+                      title: 'Duration',
+                      value: bookingCon.hourFormatFromMinutes(duration!)),
+                  CustomRowDetails(
+                    title: 'Email',
+                    value: email ?? '',
+                  ),
+                ],
               ),
             ),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Column(
+                  children: [
+                    Container(
+                      height: 60,
+                      width: 60,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.amber,
+                          border: Border.all(color: Colors.grey.shade600)),
+                      child: IconButton(
+                        onPressed: () {
+                          debugPrint('print edit from detail ');
+                        },
+                        icon: const Icon(
+                          Icons.edit_outlined,
+                          size: 27,
+                        ),
+                      ),
+                    ),
+                    const Text('Edit'),
+                  ],
+                ),
+                Column(
+                  children: [
+                    Container(
+                      height: 60,
+                      width: 60,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.red,
+                          border: Border.all(color: Colors.grey.shade600)),
+                      child: IconButton(
+                        onPressed: () {
+                          debugPrint('print deleted from detail ');
+                        },
+                        icon: const Icon(
+                          Icons.delete,
+                          size: 27,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    const Text('Delete'),
+                  ],
+                ),
+              ],
+            )
           ],
-        ));
+        ),
+      ),
+    );
   }
 }

@@ -54,7 +54,6 @@ class _ConfirmBookingScreenState extends State<ConfirmBookingScreen> {
     debugPrint('dateTime of now ${DateTime.now()}');
     debugPrint('startDate $startDate');
     homeCon.setDefaultDropdown();
-
     super.initState();
   }
 
@@ -183,12 +182,6 @@ class _ConfirmBookingScreenState extends State<ConfirmBookingScreen> {
                                       onTap: () {
                                         homeCon.dropdownvalueIndex.value =
                                             items.key;
-
-                                        //=====>> testing
-                                        // testing = homeCon.updateAddTime(
-                                        //     homeCon.dropdownvalueIndex.value);
-                                        // debugPrint(
-                                        //     '========> return value of AddIndex $testing');
                                       },
                                       value: items.value,
                                       child: Text(
@@ -328,25 +321,6 @@ class _ConfirmBookingScreenState extends State<ConfirmBookingScreen> {
                                   );
                                 }).toList(),
                               ),
-                              // testing
-                              // ListView.builder(
-                              //   shrinkWrap: true,
-                              //   itemCount: bookingCon.colors.length,
-                              //   itemBuilder: (context, index) {
-                              //     return GestureDetector(
-                              //       onTap: () {
-                              //         // bookingCon.isSelected.value =
-                              //         //     bookingCon.colors[index];
-                              //         setState(() {});
-                              //       },
-                              //       child: CustomColor(
-                              //           colors: bookingCon.colors[index],
-                              //           isSelected:
-                              //               bookingCon.isSelected.value ==
-                              //                   bookingCon.colors[index]),
-                              //     );
-                              //   },
-                              // )
                             ],
                           )
                         ],
@@ -384,24 +358,6 @@ class _ConfirmBookingScreenState extends State<ConfirmBookingScreen> {
                               .toString(),
                           duration: homeCon.dropdownvalue.value,
                           color: bookingCon.colorString.value);
-
-                      // Navigator.push(context,
-                      //     MaterialPageRoute(builder: (context) {
-                      //   return Verifybooking(
-                      //     date: DateFormat.yMMMMEEEEd().format(startDate!),
-                      //     fromTime: timeshiftFormatter(
-                      //         _dateFormat.format(startDate!)),
-                      //     toTime: timeshiftFormatter(_dateFormat.format(
-                      //       startDate!.add(
-                      //         Duration(minutes: homeCon.dropdownvalue.value),
-                      //       ),
-                      //     )),
-                      //     location: bookingCon.locationController.text,
-                      //     durations: bookingCon.hourFormatFromMinutes(
-                      //         homeCon.dropdownvalue.value),
-                      //     userName: bookingCon.firstNameController.text,
-                      //   );
-                      // }));
                     }
                   },
                 ),

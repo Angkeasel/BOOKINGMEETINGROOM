@@ -22,6 +22,7 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) {
 mixin _$UserModel {
   String? get email => throw _privateConstructorUsedError;
   String? get username => throw _privateConstructorUsedError;
+  String? get role => throw _privateConstructorUsedError;
   String? get avatar => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -35,7 +36,7 @@ abstract class $UserModelCopyWith<$Res> {
   factory $UserModelCopyWith(UserModel value, $Res Function(UserModel) then) =
       _$UserModelCopyWithImpl<$Res, UserModel>;
   @useResult
-  $Res call({String? email, String? username, String? avatar});
+  $Res call({String? email, String? username, String? role, String? avatar});
 }
 
 /// @nodoc
@@ -53,6 +54,7 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
   $Res call({
     Object? email = freezed,
     Object? username = freezed,
+    Object? role = freezed,
     Object? avatar = freezed,
   }) {
     return _then(_value.copyWith(
@@ -63,6 +65,10 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
       username: freezed == username
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
+              as String?,
+      role: freezed == role
+          ? _value.role
+          : role // ignore: cast_nullable_to_non_nullable
               as String?,
       avatar: freezed == avatar
           ? _value.avatar
@@ -80,7 +86,7 @@ abstract class _$$UserModelImplCopyWith<$Res>
       __$$UserModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? email, String? username, String? avatar});
+  $Res call({String? email, String? username, String? role, String? avatar});
 }
 
 /// @nodoc
@@ -96,6 +102,7 @@ class __$$UserModelImplCopyWithImpl<$Res>
   $Res call({
     Object? email = freezed,
     Object? username = freezed,
+    Object? role = freezed,
     Object? avatar = freezed,
   }) {
     return _then(_$UserModelImpl(
@@ -106,6 +113,10 @@ class __$$UserModelImplCopyWithImpl<$Res>
       username: freezed == username
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
+              as String?,
+      role: freezed == role
+          ? _value.role
+          : role // ignore: cast_nullable_to_non_nullable
               as String?,
       avatar: freezed == avatar
           ? _value.avatar
@@ -118,7 +129,7 @@ class __$$UserModelImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$UserModelImpl implements _UserModel {
-  _$UserModelImpl({this.email, this.username, this.avatar});
+  _$UserModelImpl({this.email, this.username, this.role, this.avatar});
 
   factory _$UserModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserModelImplFromJson(json);
@@ -128,11 +139,13 @@ class _$UserModelImpl implements _UserModel {
   @override
   final String? username;
   @override
+  final String? role;
+  @override
   final String? avatar;
 
   @override
   String toString() {
-    return 'UserModel(email: $email, username: $username, avatar: $avatar)';
+    return 'UserModel(email: $email, username: $username, role: $role, avatar: $avatar)';
   }
 
   @override
@@ -143,12 +156,13 @@ class _$UserModelImpl implements _UserModel {
             (identical(other.email, email) || other.email == email) &&
             (identical(other.username, username) ||
                 other.username == username) &&
+            (identical(other.role, role) || other.role == role) &&
             (identical(other.avatar, avatar) || other.avatar == avatar));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, email, username, avatar);
+  int get hashCode => Object.hash(runtimeType, email, username, role, avatar);
 
   @JsonKey(ignore: true)
   @override
@@ -168,6 +182,7 @@ abstract class _UserModel implements UserModel {
   factory _UserModel(
       {final String? email,
       final String? username,
+      final String? role,
       final String? avatar}) = _$UserModelImpl;
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
@@ -177,6 +192,8 @@ abstract class _UserModel implements UserModel {
   String? get email;
   @override
   String? get username;
+  @override
+  String? get role;
   @override
   String? get avatar;
   @override

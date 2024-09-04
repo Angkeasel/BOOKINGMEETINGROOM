@@ -22,18 +22,12 @@ class EventCalendarPage extends StatefulWidget {
 }
 
 class _EventCalendarPageState extends State<EventCalendarPage> {
-  // String dateString = widget.meetingModel!.date!;
-  //   DateFormat format = DateFormat("yyyy-MM-dd");
-  //   dateTime = format.parse(dateString);
-  DateTime? dateTime;
   @override
   void initState() {
     bookingCon.meetingList.clear();
     fetch();
     widget.isEdit! ? showTime() : DateTime.now();
     debugPrint("datetime now  ${DateTime.now()}");
-    // find booking id to check isEdit
-
     super.initState();
   }
 
@@ -41,19 +35,17 @@ class _EventCalendarPageState extends State<EventCalendarPage> {
   final MonthAppointmentDisplayMode _displayMode =
       MonthAppointmentDisplayMode.indicator;
   String? text;
+  DateTime? dateTime;
   final roomCon = Get.put(RoomController());
   final homeCon = Get.put(HomeController());
   final bookingCon = Get.put(BookingController());
-  //bool isEdit = false;
-  //==================> Find Id Of Booking List <=================
-
   //==================> Fetch booking Listing <=================
   Future<List<Meeting>> fetch() async {
     try {
       await bookingCon
           .getBooking(id: widget.roomListingModel!.id!)
           .then((value) {
-        // debugPrint('value fetch $value');
+        debugPrint('value fetch get booking event :$value');
         setState(() {
           bookingCon.meetingList.value = value;
           bookingCon.update();
@@ -96,59 +88,62 @@ class _EventCalendarPageState extends State<EventCalendarPage> {
         init: BookingController(),
         builder: (_) => SizedBox(
           height: MediaQuery.of(context).size.height * 0.7,
-          child: SfCalendar(
-            controller: calendarController,
-            initialDisplayDate: DateTime.now(),
-            initialSelectedDate: widget.isEdit! ? dateTime : DateTime.now(),
-            onSelectionChanged: selectionChanged,
-            minDate: DateTime.now(),
-            maxDate: DateTime(2040, 12, 31, 0, 0),
-            headerHeight: 50,
-            viewHeaderStyle: const ViewHeaderStyle(
-                dayTextStyle: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-            )),
-            headerStyle: CalendarHeaderStyle(
-                backgroundColor: AppColors.primaryColor,
-                textStyle:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-            showTodayButton: false,
-            showDatePickerButton: true,
-            showNavigationArrow: true,
-            view: CalendarView.month,
-            appointmentTimeTextFormat: 'HH:mm a',
-            // cellBorderColor: Colors.transparent,
-            dataSource:
-                MeetingDataSource(bookingCon.meetingList), // post events
-            monthViewSettings: MonthViewSettings(
-              appointmentDisplayMode: _displayMode,
-              showAgenda: true,
-              // agendaViewHeight: 200,
-            ),
-            selectionDecoration: BoxDecoration(
-                color: Colors.transparent,
-                border: Border.all(color: Colors.pink, width: 2)),
-            blackoutDates: const [
-              // DateTime.now().subtract(const Duration(hours: 48)),
-              // DateTime.now().subtract(const Duration(hours: 24))
-            ],
-            allowedViews: const [
-              CalendarView.day,
-              CalendarView.month,
-              CalendarView.timelineWeek,
-              CalendarView.week,
-              CalendarView.workWeek
-            ],
-            timeSlotViewSettings: const TimeSlotViewSettings(
-                timeIntervalHeight: 200,
-                //timeTextStyle: TextStyle(color: Colors.pink, fontSize: 10),
-                startHour: 8,
-                endHour: 18,
-                timeInterval: Duration(minutes: 30),
-                timeFormat: 'hh:mm a ',
-                timeRulerSize: 80),
-          ),
+          child: bookingCon.isFetchEvent.value
+              ? const Center(child: CircularProgressIndicator())
+              : SfCalendar(
+                  controller: calendarController,
+                  initialDisplayDate: DateTime.now(),
+                  initialSelectedDate:
+                      widget.isEdit! ? dateTime : DateTime.now(),
+                  onSelectionChanged: selectionChanged,
+                  minDate: DateTime.now(),
+                  maxDate: DateTime(2040, 12, 31, 0, 0),
+                  headerHeight: 50,
+                  viewHeaderStyle: const ViewHeaderStyle(
+                      dayTextStyle: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  )),
+                  headerStyle: CalendarHeaderStyle(
+                      backgroundColor: AppColors.primaryColor,
+                      textStyle: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 18)),
+                  showTodayButton: false,
+                  showDatePickerButton: true,
+                  showNavigationArrow: true,
+                  view: CalendarView.month,
+                  appointmentTimeTextFormat: 'HH:mm a',
+                  // cellBorderColor: Colors.transparent,
+                  dataSource:
+                      MeetingDataSource(bookingCon.meetingList), // post events
+                  monthViewSettings: MonthViewSettings(
+                    appointmentDisplayMode: _displayMode,
+                    showAgenda: true,
+                    // agendaViewHeight: 200,
+                  ),
+                  selectionDecoration: BoxDecoration(
+                      color: Colors.transparent,
+                      border: Border.all(color: Colors.pink, width: 2)),
+                  blackoutDates: const [
+                    // DateTime.now().subtract(const Duration(hours: 48)),
+                    // DateTime.now().subtract(const Duration(hours: 24))
+                  ],
+                  allowedViews: const [
+                    CalendarView.day,
+                    CalendarView.month,
+                    CalendarView.timelineWeek,
+                    CalendarView.week,
+                    CalendarView.workWeek
+                  ],
+                  timeSlotViewSettings: const TimeSlotViewSettings(
+                      timeIntervalHeight: 200,
+                      //timeTextStyle: TextStyle(color: Colors.pink, fontSize: 10),
+                      startHour: 8,
+                      endHour: 18,
+                      timeInterval: Duration(minutes: 30),
+                      timeFormat: 'hh:mm a ',
+                      timeRulerSize: 80),
+                ),
         ),
       ),
       floatingActionButton: SizedBox(
@@ -158,14 +153,6 @@ class _EventCalendarPageState extends State<EventCalendarPage> {
           child: FloatingActionButton(
             shape: const CircleBorder(),
             onPressed: () {
-              // Navigator.push(context, MaterialPageRoute(builder: (context) {
-              //   return TimeListingPage(
-              //     date: text!,
-              //     roomListingModel: widget.roomListingModel,
-              //     isEdit: widget.isEdit!,
-              //     meetingModel: widget.meetingModel,
-              //   );
-              // }));
               //================>************ fix here [millisecond] *************** <=====================
               debugPrint('==>************ fix here [millisecond] ');
               widget.isEdit!

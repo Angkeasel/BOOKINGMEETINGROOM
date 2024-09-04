@@ -1,26 +1,3 @@
-// import 'dart:convert';
-// import 'dart:typed_data';
-
-// import 'package:http/http.dart' as http;
-
-// class UploadFileImage {
-//   Future<dynamic> uploadImage(Uint8List bytes, String fileName) async {
-//     Uri url = Uri.parse('http://localhost:8000/api/profile/upload');
-//     var request = http.MultipartRequest("POST", url);
-//     var myFile = http.MultipartFile(
-//         "profile", http.ByteStream.fromBytes(bytes), bytes.length,
-//         filename: fileName);
-//     request.files.add(myFile);
-//     final response = await request.send();
-//     if (response.statusCode == 201) {
-//       var data = await response.stream.bytesToString();
-//       return jsonDecode(data);
-//     } else {
-//       return null;
-//     }
-//   }
-// }
-
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +8,6 @@ class FileUpload {
   FileUpload() {
     dio = Dio();
   }
-
   Future<Response> uploadImage({
     required File file,
     required String keyName,
@@ -53,7 +29,6 @@ class FileUpload {
         },
       ),
     );
-
     debugPrint('submit url: $url');
     debugPrint('submit keyName: $keyName');
     debugPrint('submit file: $file');

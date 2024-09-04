@@ -17,7 +17,7 @@ import '../../modouls/profile/page/profile_page.dart';
 final GlobalKey<NavigatorState> _rootNavigatorKey = Get.key;
 final GlobalKey<NavigatorState> _shellNavigatorKey =
     GlobalKey<NavigatorState>();
-const _initialLocation = '/login';
+const _initialLocation = '/splash';
 
 final router = GoRouter(
   navigatorKey: _rootNavigatorKey,
@@ -27,41 +27,40 @@ final router = GoRouter(
     ShellRoute(
         navigatorKey: _shellNavigatorKey,
         builder: (_, state, child) {
-          return ButtomNavigationBar(
-            child: child,
-          );
+          return ButtomNavigationBar(child: child);
         },
         routes: _shellRoute),
     GoRoute(
-      path: '/sso',
-      builder: (context, state) => const SplashScreen(),
+      path: '/splash',
+      builder: (_, state) => const SplashScreen(),
     ),
     GoRoute(
       path: '/register',
-      pageBuilder: (context, state) => const NoTransitionPage(
+      pageBuilder: (_, state) => const NoTransitionPage(
         child: RegisterScreen(),
       ),
     ),
     GoRoute(
       path: '/login',
-      pageBuilder: (context, state) => const NoTransitionPage(
+      pageBuilder: (_, state) => const NoTransitionPage(
         child: LoginScreen(),
       ),
     ),
   ],
 );
+
 final _shellRoute = <GoRoute>[
   GoRoute(
     path: '/rooms',
     name: 'RoomListingScreen',
-    pageBuilder: (context, state) => const NoTransitionPage(
+    pageBuilder: (_, state) => const NoTransitionPage(
       child: ListingRoom(),
     ),
     routes: [
       GoRoute(
         parentNavigatorKey: _rootNavigatorKey,
         path: 'room',
-        builder: (context, state) {
+        builder: (_, state) {
           Map<String, dynamic> extra = state.extra as Map<String, dynamic>;
           return EventCalendarPage(
             isEdit: false,
@@ -69,14 +68,12 @@ final _shellRoute = <GoRoute>[
             meetingModel: extra['meetingModel'],
           );
         },
-        // id: state.uri.queryParameters['id'] ?? '',
-        // title: state.uri.queryParameters['title'] ?? '',
         routes: [
           GoRoute(
             parentNavigatorKey: _rootNavigatorKey,
             path: 'time-slot/:date',
             name: 'TimeSlot',
-            builder: (context, state) {
+            builder: (_, state) {
               Map<String, dynamic> extra = state.extra as Map<String, dynamic>;
               return TimeListingPage(
                   date: state.pathParameters['date'] ?? '',
@@ -89,7 +86,7 @@ final _shellRoute = <GoRoute>[
             parentNavigatorKey: _rootNavigatorKey,
             path: 'confirm-booking',
             name: 'ConfirmBookingScreen',
-            builder: (context, state) {
+            builder: (_, state) {
               Map<String, dynamic> extra = state.extra as Map<String, dynamic>;
               return ConfirmBookingScreen(
                   millisecondsSinceEpoch: int.tryParse(
@@ -105,7 +102,7 @@ final _shellRoute = <GoRoute>[
   GoRoute(
       path: '/booking-room',
       name: 'BookingRoom',
-      pageBuilder: (context, state) {
+      pageBuilder: (_, state) {
         return const NoTransitionPage(child: ListDetailPage());
       },
       routes: [
@@ -113,7 +110,7 @@ final _shellRoute = <GoRoute>[
             parentNavigatorKey: _rootNavigatorKey,
             path: 'all-booking-user',
             name: 'AllBookingUserListing',
-            builder: (context, state) {
+            builder: (_, state) {
               Map<String, dynamic> extra = state.extra as Map<String, dynamic>;
               return BookingRoomDetailsPage(roomModel: extra['roomModel']);
             },
@@ -122,7 +119,7 @@ final _shellRoute = <GoRoute>[
                   parentNavigatorKey: _rootNavigatorKey,
                   path: 'edit-booking/:millisecondsSinceEpoch',
                   name: 'EditBooking',
-                  builder: (context, state) {
+                  builder: (_, state) {
                     Map<String, dynamic> extra =
                         state.extra as Map<String, dynamic>;
                     return EditBookingPage(
@@ -137,7 +134,7 @@ final _shellRoute = <GoRoute>[
                         parentNavigatorKey: _rootNavigatorKey,
                         path: 'edit-event-date',
                         name: 'EditEventDate',
-                        builder: (context, state) {
+                        builder: (_, state) {
                           Map<String, dynamic> extra =
                               state.extra as Map<String, dynamic>;
                           return EventCalendarPage(
@@ -152,7 +149,7 @@ final _shellRoute = <GoRoute>[
                               parentNavigatorKey: _rootNavigatorKey,
                               path: 'edit-time-slot',
                               name: 'EditTimeslots',
-                              builder: (context, state) {
+                              builder: (_, state) {
                                 Map<String, dynamic> extra =
                                     state.extra as Map<String, dynamic>;
                                 return TimeListingPage(
@@ -164,25 +161,13 @@ final _shellRoute = <GoRoute>[
                                         extra['roomListingModel']);
                               }),
                         ]),
-
-                    // GoRoute(
-                    //     parentNavigatorKey: _rootNavigatorKey,
-                    //     path: 'edit-time-slot',
-                    //     name: 'EditTimeslots',
-                    //     builder: (context, state) {
-                    //       return TimeListingPage(
-                    //           date: state.uri.queryParameters['date'] ?? '',
-                    //           isEdit: true,
-                    //           meetingModel: state.extra as Meeting,
-                    //           roomListingModel: state.extra as RoomListingModel);
-                    //     }),
                   ]),
             ]),
       ]),
   GoRoute(
     path: '/profile',
     name: 'profile',
-    pageBuilder: (context, state) {
+    pageBuilder: (_, state) {
       return const NoTransitionPage(child: ProfilePage());
     },
   ),

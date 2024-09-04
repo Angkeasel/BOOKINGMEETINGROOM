@@ -8,6 +8,7 @@ class UserModel with _$UserModel {
   factory UserModel(
       {final String? email,
       final String? username,
+      final String? role,
       final String? avatar}) = _UserModel;
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>

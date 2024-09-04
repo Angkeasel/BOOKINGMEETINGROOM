@@ -11,6 +11,7 @@ import 'package:meetroombooking/src/util/helper/local_storage/local_storage.dart
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // setPathUrlStrategy();
   Get.put(LanguageController());
   await LocalStorage.init();
 

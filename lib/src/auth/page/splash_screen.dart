@@ -1,11 +1,9 @@
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'package:meetroombooking/src/constant/app_color.dart';
-
 import '../../config/router/router.dart';
+import '../../util/helper/local_storage/local_storage.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -17,16 +15,16 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   Future<void> tokenHandler(context) async {
-    const token =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjk5NDA5OTY0LCJleHAiOjE2OTk0OTYzNjR9.nDriVPu4kKlBCJFDXg2VSo9qzbWfDrwsq2C0smU1Fro';
-    // final token = await LocalStorage.getStringValue(key: 'access_token');
+    // const token =
+    //     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjk5NDA5OTY0LCJleHAiOjE2OTk0OTYzNjR9.nDriVPu4kKlBCJFDXg2VSo9qzbWfDrwsq2C0smU1Fro';
+    final token = await LocalStorage.getStringValue(key: 'access_token');
     // fetches();
     Timer(
-      const Duration(seconds: 3),
+      const Duration(seconds: 1),
       () async {
         try {
           debugPrint("=======>token: $token");
-          if (token.isNotEmpty) {
+          if (token.isEmpty) {
             router.go('/login');
           } else {
             router.go('/rooms');
@@ -43,13 +41,19 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   void initState() {
+    super.initState();
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1000),
     );
     _animationController.forward();
     tokenHandler(context);
-    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 
   @override

@@ -23,7 +23,6 @@ class _ListingRoomState extends State<ListingRoom> {
   final bookingCon = Get.put(BookingController());
   @override
   void initState() {
-    bookingCon.page.value = 1;
     roomCon.getListingRoom();
     bookingCon.newMeetingList.clear();
     super.initState();
@@ -50,32 +49,37 @@ class _ListingRoomState extends State<ListingRoom> {
             children: [
               if (roomCon.roomListing.isNotEmpty)
                 Expanded(
-                  child: SingleChildScrollView(
-                    child: SizedBox(
-                      height: MediaQuery.of(context).size.height,
-                      child: GridView.builder(
-                        itemCount: roomCon.roomListing.length,
-                        shrinkWrap: false,
-                        physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                mainAxisExtent: 200,
-                                crossAxisCount: 2,
-                                childAspectRatio: 2 / 3,
-                                mainAxisSpacing: 20,
-                                crossAxisSpacing: 20),
-                        itemBuilder: (BuildContext context, int index) {
-                          return CustomListingRoom(
-                            title: roomCon.roomListing[index].title,
-                            onTap: () {
-                              debugPrint(
-                                  'roomId: ${roomCon.roomListing[index].id}');
-                              context.go('/rooms/room', extra: {
-                                'roomListingModel': roomCon.roomListing[index],
-                              });
-                            },
-                          );
-                        },
+                  child: RefreshIndicator(
+                    onRefresh: () async =>
+                        Future.delayed(const Duration(seconds: 1)),
+                    child: SingleChildScrollView(
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.height,
+                        child: GridView.builder(
+                          itemCount: roomCon.roomListing.length,
+                          shrinkWrap: false,
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  mainAxisExtent: 200,
+                                  crossAxisCount: 2,
+                                  childAspectRatio: 2 / 3,
+                                  mainAxisSpacing: 20,
+                                  crossAxisSpacing: 20),
+                          itemBuilder: (BuildContext context, int index) {
+                            return CustomListingRoom(
+                              title: roomCon.roomListing[index].title,
+                              onTap: () {
+                                debugPrint(
+                                    'roomId: ${roomCon.roomListing[index].id}');
+                                context.go('/rooms/room', extra: {
+                                  'roomListingModel':
+                                      roomCon.roomListing[index],
+                                });
+                              },
+                            );
+                          },
+                        ),
                       ),
                     ),
                   ),

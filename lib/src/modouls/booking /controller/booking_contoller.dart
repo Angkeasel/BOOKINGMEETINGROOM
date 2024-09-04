@@ -153,13 +153,14 @@ class BookingController extends GetxController {
   final eventModel = Meeting().obs;
   final isFetchEvent = false.obs;
   Future<List<Meeting>> getBooking({required String id}) async {
+    debugPrint('============> get booking all Id : $id');
     isFetchEvent.value = true;
     await api
         .onNetworkRequesting(
             url: '/book/$id/bookings', methode: METHODE.get, isAuthorize: true)
         .then((value) {
       //debugPrint('get all booking ${value['room']['booking']}');
-      value['room'].map((e) {
+      value['rooms']['booking'].map((e) {
         eventModel.value = Meeting.fromJson(e);
         //debugPrint('====> event model ${eventModel.value}');
         eventList.add(eventModel.value);
@@ -240,20 +241,21 @@ class BookingController extends GetxController {
 
 //===============================> Edit Booking <================================
   final isLoadingUpdate = false.obs;
-  Future<void> updateMeeting(
-      {String? meetingTopic,
-      String? phoneNumber,
-      String? email,
-      String? firstName,
-      String? lastName,
-      String? location,
-      String? date,
-      String? startTime,
-      String? endTime,
-      int? duration,
-      String? color,
-      String? id,
-      String? roomId}) async {
+  Future<void> updateMeeting({
+    String? meetingTopic,
+    String? phoneNumber,
+    String? email,
+    String? firstName,
+    String? lastName,
+    String? location,
+    String? date,
+    String? startTime,
+    String? endTime,
+    int? duration,
+    String? color,
+    String? id,
+    String? roomId,
+  }) async {
     isLoadingUpdate(true);
     final body = {
       "meetingTopic": meetingTopic,
@@ -279,8 +281,9 @@ class BookingController extends GetxController {
         debugPrint('=====> print update value $value');
         roomId = value['byRoom'];
         debugPrint('=====> print roomId value $roomId');
-        await Get.put(BookingController())
-            .getBookingByUser(loading: false, roomId: roomId);
+        await Get.put(BookingController()).getBookedListByRoomId(
+          roomId: roomId!,
+        );
         isLoadingUpdate(false);
       }).onError((ErrorModel error, stackTrace) {
         Get.snackbar(
@@ -313,7 +316,9 @@ class BookingController extends GetxController {
         debugPrint('Delelet Meeting Success : $value');
         newMeetingList.clear();
         List<Meeting> bookingList = await Get.put(BookingController())
-            .getBookingByUser(loading: false, roomId: roomId);
+            .getBookedListByRoomId(roomId: roomId);
+
+        // .getBookedListByRoomId(roomId: roomId);
         debugPrint('call back booking list $bookingList ');
         removeLoading();
 
@@ -358,73 +363,89 @@ class BookingController extends GetxController {
   }
 
   //============================> get booking by user <=================================
-  // final meetingUserList = <Meeting>[].obs;
-  // final meetingUserModel = Meeting().obs;
   final isLoadingMeetingUser = false.obs;
-  final hasNextPage = false.obs;
+  final loadingNextPage = false.obs;
   final newMeetingList = <Meeting>[].obs;
   final totalPage = 1.obs;
-  final currentPage = 0.obs;
   final isLoading = false.obs;
-  final page = 1.obs;
-  String? roomId;
-  Future<List<Meeting>> getBookingByUser({bool loading = true, roomId}) async {
-    debugPrint('===========> id $roomId');
-    if (loading) {
-      isLoadingMeetingUser(true);
-    }
+
+  /// Get booking List by Current User
+  Future<List<Meeting>> getBookedListByRoomId({
+    required String roomId,
+    int page = 1,
+  }) async {
+    // roomId is required
+    debugPrint('=======> roomId is required $roomId');
+    if (roomId == '') return [];
+    // if (loading) {
+    //   isLoadingMeetingUser(true);
+    // }
     isLoadingMeetingUser(true);
-    if (page.value == 1) {
+    if (page == 1) {
       isLoadingMeetingUser(true);
-      hasNextPage(false);
+      loadingNextPage(false);
     }
-    if (page.value != 1) {
+    if (page != 1) {
       isLoadingMeetingUser(false);
-      hasNextPage(true);
+      loadingNextPage(true);
     }
     try {
       await api
           .onNetworkRequesting(
-              url: '/book/bookings?page=$page&limit=10&roomId=$roomId',
-              methode: METHODE.get,
-              isAuthorize: true)
-          .then((response) {
-        debugPrint('response $response');
-        if (page.value == 1) {
-          newMeetingList.clear();
-        }
-        totalPage.value = response['totalPages'];
-        response['booking'].map((value) {
-          newMeetingList.add(Meeting.fromJson(value));
-        }).toList();
+        url: '/book/bookings?page=$page&limit=10&roomId=$roomId',
+        methode: METHODE.get,
+        isAuthorize: true,
+      )
+          .then(
+        (response) {
+          debugPrint('response $response');
+          if (page == 1) {
+            newMeetingList.clear();
+          }
+          totalPage.value = response['totalPages'];
+          response['bookings'].map((value) {
+            newMeetingList.add(Meeting.fromJson(value));
+          }).toList();
+          debugPrint('=====> totalItems : ${newMeetingList.length}');
+          isLoadingMeetingUser(false);
+          loadingNextPage(false);
+        },
+      ).onError((ErrorModel _, __) {
         isLoadingMeetingUser(false);
-        hasNextPage(false);
-      }).onError((ErrorModel error, stackTrace) {
-        isLoadingMeetingUser(false);
-        hasNextPage(false);
+        loadingNextPage(false);
       });
     } catch (error) {
       debugPrint('errr catch body tttttt ${error.toString()}');
       isLoadingMeetingUser(false);
-      hasNextPage(false);
+      loadingNextPage(false);
     }
     return newMeetingList;
   }
 
-  infinitPage() {
-    page.value < totalPage.value
-        ? () {
-            page.value++;
-            getBookingByUser(roomId: roomId);
-            // debugPrint(
-            //     'show me infinitPage value : ${getBookingByUser(roomId: roomId)}');
-          }()
-        : const SizedBox();
+  /// Get First Page or Refresh Page
+  Future<void> getAllBookedListByRoomId(String roomId) async {
+    currentPage = 1;
+    showNoMoreData.value = false;
+    loadingNextPage.value = false;
+    await getBookedListByRoomId(roomId: roomId, page: currentPage);
   }
 
-  @override
-  void onInit() {
-    getBookingByUser(roomId: roomId);
-    super.onInit();
+  int currentPage = 1;
+  final showNoMoreData = false.obs;
+  Future<void> getNextPage(String roomId) async {
+    debugPrint('fetch page : $currentPage ${totalPage.value}');
+    // if previous page is fetching we don't get next page
+    if (loadingNextPage.value) return;
+    // get more bookings if current page smaller than total page
+    if (currentPage < totalPage.value) {
+      currentPage++;
+      getBookedListByRoomId(roomId: roomId, page: currentPage);
+    }
+    // No more data
+    else if (currentPage == totalPage.value) {
+      showNoMoreData.value = true;
+      await Future.delayed(const Duration(seconds: 2));
+      showNoMoreData.value = false;
+    }
   }
 }

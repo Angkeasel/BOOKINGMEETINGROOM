@@ -27,42 +27,24 @@ class TimeListingPage extends StatefulWidget {
 }
 
 class _TimeListingPageState extends State<TimeListingPage> {
-  @override
-  void initState() {
-    debugPrint('date now : ${widget.date}');
-    fetch();
-    //fetchDate();
-
-    // final dateTime = DateFormat("yyyy-MM-dd").parse(widget.date);
-    //roomCon.allTimeSlots = roomCon.getTimeSlots(dateTime);
-    // roomCon.availableTimeSlots =
-    //     roomCon.getAvailableTimeSlots(dateTime, widget.appointment);
-    // debugPrint(
-    //     'availableTimeSlots ${roomCon.availableTimeSlots} ${widget.appointment}');
-    super.initState();
-  }
-
   final roomCon = Get.put(RoomController());
   final bookingCon = Get.put(BookingController());
   final now = DateTime.now();
 
   String formatTime(String time) {
-    // Parse the input time string to a DateTime object
     DateTime parsedTime = DateFormat('MM/dd/yyyy, hh:mm:ss aa').parse(time);
-    // Format the DateTime object to the desired format
     String formattedTime = DateFormat('HH:mm aa').format(parsedTime);
     return formattedTime;
   }
 
-  //final DateFormat _dateFormat = DateFormat('HH:mm aa', 'km');
   final languageController = Get.find<LanguageController>();
-
   String timeshiftFormatter(String datetime) => languageController.isKhmer
       ? datetime.replaceAll('AM', 'ព្រឹក').replaceAll('PM', 'ល្ងាច')
       : datetime;
+  //============================> function Fetch <============================
   List<String> availableSoltList = [];
   Future<List<String>> fetch() async {
-    bookingCon
+    await bookingCon
         .getAvailableTimeSlot(
             date: widget.date, roomId: widget.roomListingModel!.id!)
         .then((value) {
@@ -74,15 +56,11 @@ class _TimeListingPageState extends State<TimeListingPage> {
     return availableSoltList;
   }
 
-  List<Meeting> bookingByDateList = [];
-  Future<List<Meeting>> fetchDate() async {
-    bookingCon.getBookingByDate(date: widget.date).then((value) {
-      debugPrint('get Date by Date $value');
-      setState(() {
-        bookingByDateList = value;
-      });
-    });
-    return bookingByDateList;
+  @override
+  void initState() {
+    debugPrint('date now : ${widget.date}');
+    fetch();
+    super.initState();
   }
 
   @override
@@ -94,71 +72,89 @@ class _TimeListingPageState extends State<TimeListingPage> {
           style: TextStyle(color: AppColors.primaryColor),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: availableSoltList.asMap().entries.map((e) {
-                return GestureDetector(
-                  onTap: () {
-                    bookingCon.timeIndex.value = e.key;
-                    debugPrint('Time Index ${bookingCon.timeIndex.value}');
-                    String dateTimeString = e.value;
-                    debugPrint(
-                        'add time : $dateTimeString'); // //7/1/2024, 8:00:00
-                    DateFormat dateFormat =
-                        DateFormat('MM/dd/yyyy, hh:mm:ss aa');
-                    DateTime dateTime = dateFormat.parse(dateTimeString);
-                    int milliSeconds = dateTime.microsecondsSinceEpoch;
-                    var result = milliSeconds / 1000;
-                    debugPrint('millisecond: ${result.toInt()}');
-                    widget.isEdit
-                        ? context.goNamed('EditBooking', pathParameters: {
-                            'millisecondsSinceEpoch': result.toInt().toString()
-                          }, extra: {
-                            'roomModel': widget.roomListingModel,
-                            'meetModel': widget.meetingModel
-                          })
-                        // ? Navigator.pushReplacement(context,
-                        //     MaterialPageRoute(builder: (context) {
-                        //     return EditBookingPage(
-                        //       millisecondsSinceEpoch: result.toInt(),
-                        //       roomModel: widget.roomListingModel,
-                        //       meetModel: widget.meetingModel,
-                        //     );
-                        //   }))
-                        // : Navigator.push(context,
-                        //     MaterialPageRoute(builder: (context) {
-                        //     return ConfirmBookingScreen(
-                        //       millisecondsSinceEpoch: result.toInt(),
-                        //       roomListingModel: widget.roomListingModel!,
-                        //     );
-                        //   }));
-                        : context
-                            .goNamed('ConfirmBookingScreen', queryParameters: {
-                            'millisecondsSinceEpoch': result.toInt().toString()
-                          }, extra: {
-                            'roomListingModel': widget.roomListingModel!
-                          });
-                  },
-                  child: Container(
-                      width: MediaQuery.of(context).size.width * 0.8,
-                      padding: const EdgeInsets.all(10),
-                      margin: const EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: AppColors.primaryColor),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          formatTime(e.value),
-                          style: const TextStyle(color: Colors.white),
+      body: Obx(
+        () => bookingCon.isLoadingSlot.value
+            ? const Center(child: CircularProgressIndicator())
+            : availableSoltList.isEmpty
+                ? const Center(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'No Available Times',
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.grey),
                         ),
-                      )),
-                );
-              }).toList()),
-        ),
+                      ],
+                    ),
+                  )
+                : SingleChildScrollView(
+                    child: Center(
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: availableSoltList.asMap().entries.map((e) {
+                            return GestureDetector(
+                              onTap: () {
+                                bookingCon.timeIndex.value = e.key;
+                                debugPrint(
+                                    'Time Index ${bookingCon.timeIndex.value}');
+                                String dateTimeString = e.value;
+                                debugPrint(
+                                    'add time : $dateTimeString'); // //7/1/2024, 8:00:00
+                                DateFormat dateFormat =
+                                    DateFormat('MM/dd/yyyy, hh:mm:ss aa');
+                                DateTime dateTime =
+                                    dateFormat.parse(dateTimeString);
+                                int milliSeconds =
+                                    dateTime.microsecondsSinceEpoch;
+                                var result = milliSeconds / 1000;
+                                debugPrint('millisecond: ${result.toInt()}');
+                                widget.isEdit
+                                    ? context.go(
+                                        '/booking-room/all-booking-user/edit-booking/${result.toInt()}',
+                                        // pathParameters: {
+                                        //     'millisecondsSinceEpoch':
+                                        //         result.toInt().toString()
+                                        //   },
+                                        extra: {
+                                            'roomModel':
+                                                widget.roomListingModel,
+                                            'meetModel': widget.meetingModel
+                                          })
+                                    : context.goNamed('ConfirmBookingScreen',
+                                        queryParameters: {
+                                            'millisecondsSinceEpoch':
+                                                result.toInt().toString()
+                                          },
+                                        extra: {
+                                            'roomListingModel':
+                                                widget.roomListingModel!
+                                          });
+                              },
+                              child: Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.8,
+                                  padding: const EdgeInsets.all(10),
+                                  margin: const EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: AppColors.primaryColor),
+                                  child: Align(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      formatTime(e.value),
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                    ),
+                                  )),
+                            );
+                          }).toList()),
+                    ),
+                  ),
       ),
     );
   }
