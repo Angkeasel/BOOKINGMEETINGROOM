@@ -160,7 +160,7 @@ class BookingController extends GetxController {
             url: '/book/$id/bookings', methode: METHODE.get, isAuthorize: true)
         .then((value) {
       //debugPrint('get all booking ${value['room']['booking']}');
-      value['rooms']['booking'].map((e) {
+      value['room'].map((e) {
         eventModel.value = Meeting.fromJson(e);
         //debugPrint('====> event model ${eventModel.value}');
         eventList.add(eventModel.value);
@@ -392,13 +392,13 @@ class BookingController extends GetxController {
     try {
       await api
           .onNetworkRequesting(
-        url: '/book/bookings?page=$page&limit=10&roomId=$roomId',
+        url: '/book/bookings?page=$page&limit=10&roomId=$roomId&status=pending',
         methode: METHODE.get,
         isAuthorize: true,
       )
           .then(
         (response) {
-          debugPrint('response $response');
+          debugPrint('response ${response['bookings']}');
           if (page == 1) {
             newMeetingList.clear();
           }

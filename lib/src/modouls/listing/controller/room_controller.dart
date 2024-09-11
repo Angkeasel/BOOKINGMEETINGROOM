@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:meetroombooking/src/config/router/router.dart';
 import 'package:meetroombooking/src/modouls/listing/model/room_listing_model.dart';
 import '../../../util/helper/api_base_helper.dart';
+import '../../../util/helper/local_storage/local_storage.dart';
 
 class RoomController extends GetxController {
   final currentIndex = 0.obs;
   ApiBaseHelper api = ApiBaseHelper();
   final roomListing = <RoomListingModel>[].obs;
   final selectRoom = RoomListingModel().obs;
+  final loadings = false.obs;
   // List allTimeSlots = <DateTime>[].obs; // for debugprint view all list timeslot no need to used on screen anymore
   // List availableTimeSlots = <DateTime>[].obs;
 
@@ -15,6 +18,7 @@ class RoomController extends GetxController {
   Future<List<RoomListingModel>> getListingRoom() async {
     List<RoomListingModel> listRoom = [];
     try {
+      loadings(true);
       await api
           .onNetworkRequesting(
               url: "/room", methode: METHODE.get, isAuthorize: true)
@@ -25,11 +29,23 @@ class RoomController extends GetxController {
         roomListing.assignAll(listRoom);
         debugPrint('==========> testing room ${roomListing.length}');
         debugPrint('==========> roomId ${roomListing[0]}');
+        loadings(false);
       }).onError((ErrorModel error, stackTrace) {
-        debugPrint("=========> get roomListing Error $error");
+        debugPrint('error: $error');
+        loadings(false);
       });
     } catch (e) {
-      debugPrint('testing get room $e');
+      if (e is FormatException) {
+        debugPrint('Invalid number format: ${e.source}');
+        if (e.source == 'Unauthorized') {
+          LocalStorage.storeData(key: "access_token", value: '');
+          router.go('/login');
+        }
+      } else {
+        debugPrint('Unexpected error: $e');
+      }
+
+      loadings(false);
     }
     return roomListing;
   }

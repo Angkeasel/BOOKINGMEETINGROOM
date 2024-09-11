@@ -43,49 +43,53 @@ class _ListingRoomState extends State<ListingRoom> {
       body: Obx(
         () => Padding(
           padding: const EdgeInsets.all(15.0).copyWith(top: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (roomCon.roomListing.isNotEmpty)
-                Expanded(
-                  child: RefreshIndicator(
-                    onRefresh: () async =>
-                        Future.delayed(const Duration(seconds: 1)),
-                    child: SingleChildScrollView(
-                      child: SizedBox(
-                        height: MediaQuery.of(context).size.height,
-                        child: GridView.builder(
-                          itemCount: roomCon.roomListing.length,
-                          shrinkWrap: false,
-                          physics: const NeverScrollableScrollPhysics(),
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  mainAxisExtent: 200,
-                                  crossAxisCount: 2,
-                                  childAspectRatio: 2 / 3,
-                                  mainAxisSpacing: 20,
-                                  crossAxisSpacing: 20),
-                          itemBuilder: (BuildContext context, int index) {
-                            return CustomListingRoom(
-                              title: roomCon.roomListing[index].title,
-                              onTap: () {
-                                debugPrint(
-                                    'roomId: ${roomCon.roomListing[index].id}');
-                                context.go('/rooms/room', extra: {
-                                  'roomListingModel':
-                                      roomCon.roomListing[index],
-                                });
-                              },
-                            );
-                          },
+          child: roomCon.loadings.value
+              ? Center(
+                  child:
+                      CircularProgressIndicator(color: AppColors.primaryColor))
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (roomCon.roomListing.isNotEmpty)
+                      Expanded(
+                        child: RefreshIndicator(
+                          onRefresh: () async =>
+                              Future.delayed(const Duration(seconds: 1)),
+                          child: SingleChildScrollView(
+                            child: SizedBox(
+                              height: MediaQuery.of(context).size.height,
+                              child: GridView.builder(
+                                itemCount: roomCon.roomListing.length,
+                                shrinkWrap: false,
+                                physics: const NeverScrollableScrollPhysics(),
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                        mainAxisExtent: 200,
+                                        crossAxisCount: 2,
+                                        childAspectRatio: 2 / 3,
+                                        mainAxisSpacing: 20,
+                                        crossAxisSpacing: 20),
+                                itemBuilder: (BuildContext context, int index) {
+                                  return CustomListingRoom(
+                                    title: roomCon.roomListing[index].title,
+                                    onTap: () {
+                                      debugPrint(
+                                          'roomId: ${roomCon.roomListing[index].id}');
+                                      context.go('/rooms/room', extra: {
+                                        'roomListingModel':
+                                            roomCon.roomListing[index],
+                                      });
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
+                  ],
                 ),
-            ],
-          ),
         ),
       ),
     );

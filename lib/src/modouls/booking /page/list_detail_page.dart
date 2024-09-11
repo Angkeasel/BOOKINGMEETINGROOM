@@ -32,42 +32,52 @@ class _ListDetailPageState extends State<ListDetailPage> {
               fontWeight: FontWeight.w600),
         ),
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(16).copyWith(bottom: 30),
-        children: roomCon.roomListing.asMap().entries.map((e) {
-          return GestureDetector(
-            onTap: () {
-              debugPrint('run..........${e.value.id}');
-              context.go('/booking-room/all-booking-user',
-                  extra: {'roomModel': e.value});
-            },
-            child: Container(
-              width: context.width,
-              margin: const EdgeInsets.only(bottom: 15),
-              padding: const EdgeInsets.all(25),
-              decoration: BoxDecoration(
-                  border: Border.all(color: AppColors.primaryColor),
-                  borderRadius: BorderRadius.circular(15),
-                  color: Colors.white),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "${e.value.title}",
-                    style: const TextStyle(
-                        fontSize: 15,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold),
+      body: Obx(
+        () => SingleChildScrollView(
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              padding: const EdgeInsets.all(16).copyWith(bottom: 30),
+              itemCount: roomCon.roomListing.length,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {
+                    debugPrint('run..........${roomCon.roomListing[index].id}');
+                    context.go('/booking-room/all-booking-user',
+                        extra: {'roomModel': roomCon.roomListing[index]});
+                  },
+                  child: Container(
+                    width: context.width,
+                    margin: const EdgeInsets.only(bottom: 15),
+                    padding: const EdgeInsets.all(25),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: AppColors.primaryColor),
+                        borderRadius: BorderRadius.circular(15),
+                        color: Colors.white),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "${roomCon.roomListing[index].title}",
+                          style: const TextStyle(
+                              fontSize: 15,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        const Icon(
+                          Icons.arrow_forward_ios_outlined,
+                          size: 18,
+                        )
+                      ],
+                    ),
                   ),
-                  const Icon(
-                    Icons.arrow_forward_ios_outlined,
-                    size: 18,
-                  )
-                ],
-              ),
+                );
+              },
             ),
-          );
-        }).toList(),
+          ),
+        ),
       ),
     );
   }

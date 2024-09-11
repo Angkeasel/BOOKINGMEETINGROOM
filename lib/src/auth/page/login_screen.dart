@@ -5,7 +5,6 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-
 import 'package:meetroombooking/generated/l10n.dart';
 import 'package:meetroombooking/src/config/font/font_controller.dart';
 import 'package:meetroombooking/src/constant/app_size.dart';
@@ -13,7 +12,6 @@ import 'package:meetroombooking/src/constant/app_textstyle.dart';
 import 'package:meetroombooking/widgets/change_language_button.dart';
 import 'package:meetroombooking/widgets/custom_buttons.dart';
 import 'package:meetroombooking/widgets/custom_text_form_filed.dart';
-
 import '../../constant/app_color.dart';
 import '../controller/auth_controller.dart';
 

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
-
 import 'controller/bottombar_controller.dart';
 
 class ButtomNavigationBar extends StatelessWidget {
@@ -42,26 +41,26 @@ class ButtomNavigationBar extends StatelessWidget {
                 children: [
                   SvgPicture.asset(
                     bottomBarCon.activeIndex.value == 0
-                        ? 'assets/image/svg/s-home.svg'
-                        : 'assets/image/svg/home.svg',
+                        ? 'assets/image/svg/s-calendar.svg'
+                        : 'assets/image/svg/calendar.svg',
                     height: 26,
                   ),
                 ],
               ),
-              label: 'Home',
+              label: 'Calendar',
             ),
             BottomNavigationBarItem(
                 icon: Column(
                   children: [
                     SvgPicture.asset(
                       bottomBarCon.activeIndex.value == 1
-                          ? 'assets/image/svg/s-calendar.svg'
-                          : 'assets/image/svg/calendar.svg',
-                      height: 26,
+                          ? 'assets/image/svg/booked green.svg'
+                          : 'assets/image/svg/booked black.svg',
+                      height: 22,
                     ),
                   ],
                 ),
-                label: 'Calendar'),
+                label: 'Booked'),
             BottomNavigationBarItem(
                 icon: Column(
                   children: [

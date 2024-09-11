@@ -16,7 +16,7 @@ class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   Future<void> tokenHandler(context) async {
     // const token =
-    //     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjk5NDA5OTY0LCJleHAiOjE2OTk0OTYzNjR9.nDriVPu4kKlBCJFDXg2VSo9qzbWfDrwsq2C0smU1Fro';
+    //     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2OWY0Y2FlZjc3ODg5OWE1OTdiZjQ3YyIsImVtYWlsIjoibXV5a2VhQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoibXV5a2VhIiwiaWF0IjoxNzI0NzI2NDAwLCJleHAiOjE3MjQ4MTI4MDB9.ljPI0dl1rJU5MxHIcICn1-93IjBeJAtl2sIR5XvRtCo';
     final token = await LocalStorage.getStringValue(key: 'access_token');
     // fetches();
     Timer(

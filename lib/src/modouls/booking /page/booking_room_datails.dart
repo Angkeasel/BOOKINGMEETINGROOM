@@ -80,7 +80,7 @@ class _BookingRoomDetailsPageState extends State<BookingRoomDetailsPage> {
                           child: RefreshIndicator(
                             onRefresh: _onRefresh,
                             child: ListView.separated(
-                                shrinkWrap: true,
+                                shrinkWrap: false,
                                 physics: const AlwaysScrollableScrollPhysics(),
                                 padding: const EdgeInsets.all(16)
                                     .copyWith(bottom: 30),

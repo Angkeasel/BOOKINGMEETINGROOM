@@ -1,23 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'package:intl/intl.dart';
 import 'package:meetroombooking/src/config/font/font_controller.dart';
-
 import 'package:meetroombooking/src/constant/app_color.dart';
 import 'package:meetroombooking/src/constant/app_size.dart';
 import 'package:meetroombooking/src/constant/app_textstyle.dart';
 import 'package:meetroombooking/src/modouls/booking%20/controller/booking_contoller.dart';
-
 import 'package:meetroombooking/src/modouls/home/home_controller.dart';
 import 'package:meetroombooking/src/modouls/listing/model/room_listing_model.dart';
-
 import 'package:meetroombooking/widgets/custom_buttons.dart';
 import 'package:meetroombooking/widgets/custom_text_form_filed.dart';
-
 import '../../../../widgets/custom_lable_edit.dart';
-
 import '../widget/custom_color.dart';
 
 class ConfirmBookingScreen extends StatefulWidget {
@@ -48,13 +42,23 @@ class _ConfirmBookingScreenState extends State<ConfirmBookingScreen> {
 
   @override
   void initState() {
-    bookingCon.colorString.value = '';
-    bookingCon.isSelected.value = '';
+    clearForm();
     debugPrint('id of roomid ${widget.roomListingModel.id}');
     debugPrint('dateTime of now ${DateTime.now()}');
     debugPrint('startDate $startDate');
     homeCon.setDefaultDropdown();
+
     super.initState();
+  }
+
+  void clearForm() {
+    bookingCon.firstNameController.text = '';
+    bookingCon.lastNameController.text = '';
+    bookingCon.topicController.text = '';
+    bookingCon.phoneNumberController.text = '';
+    bookingCon.emailController.text = '';
+    bookingCon.colorString.value = '';
+    bookingCon.isSelected.value = '';
   }
 
   String hourFormatFromMinutes(int minutes) {

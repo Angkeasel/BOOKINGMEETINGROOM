@@ -16,7 +16,6 @@ class AuthController extends GetxController {
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController pwController = TextEditingController();
-
 // Register
   Future<void> onRegister() async {
     signUpLoading.value = true;
@@ -70,13 +69,20 @@ class AuthController extends GetxController {
               body: loginBody)
           .then((value) async {
         debugPrint('login value : $value');
+        debugPrint('accessToken: ${value['token']}');
+        // var token = value['token'];
+        // if (!token) {
+        //   await LocalStorage.storeData(key: 'access_token', value: '');
+        //   router.go('/login');
+        // }
         await LocalStorage.storeData(
             key: 'access_token', value: value['token']);
-        debugPrint('accessToken: ${value['token']}');
+
         isLoading(false);
         router.go('/rooms');
       }).onError((ErrorModel error, stackTrace) {
         isLoading(false);
+
         alertErrorSnackbar(
             title: "Error", message: error.bodyString["message"].toString());
       });
