@@ -50,6 +50,20 @@ class RoomController extends GetxController {
     return roomListing;
   }
 
+  //=========================> get room by id  <===========================
+  final roomModel = RoomListingModel().obs;
+  Future<RoomListingModel> getRoomById(String id) async {
+    await api
+        .onNetworkRequesting(
+            url: '/room/$id', methode: METHODE.get, isAuthorize: true)
+        .then((value) {
+      debugPrint('======> room listing by id :${value['rooms']}');
+      var response = value['rooms'];
+      roomModel.value = RoomListingModel.fromJson(response);
+    });
+    return roomModel.value;
+  }
+
   //Find available slots
   // List<DateTime> getTimeSlots(DateTime date) {
   //   List<DateTime> timeSlots = [];

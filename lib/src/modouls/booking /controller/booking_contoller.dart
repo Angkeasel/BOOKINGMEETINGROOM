@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-
 import 'package:meetroombooking/src/util/helper/api_base_helper.dart';
 import '../../../../widgets/loading_dialog.dart';
 import '../../../util/helper/snackbar/alert_snackbar.dart';
 import '../models/meeting/meeting_model.dart';
-import '../page/verify_booking.dart';
 
 class BookingController extends GetxController {
   final colorString = ''.obs;
@@ -78,6 +76,7 @@ class BookingController extends GetxController {
 
 //===============================> post Booking <=============================
   final isBookingLoading = false.obs;
+  final meetingverify = Meeting().obs;
   Future<void> postBooking(BuildContext context,
       {required String meetingTopic,
       required String id,
@@ -113,20 +112,19 @@ class BookingController extends GetxController {
               methode: METHODE.post,
               isAuthorize: true,
               body: body)
-          .then((value) async {
-        debugPrint(' create booking value is $value');
+          .then((value) {
+        debugPrint(' create booking value is ${value['data']}');
+        var response = value['data'];
+        meetingverify.value = Meeting.fromJson(response);
+        debugPrint(' meetingverify id ${meetingverify.value.id}');
         // post then fetch
         getBooking(id: id);
-        await Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return Verifybooking(
-            date: date,
-            durations: duration,
-            fromTime: startTime,
-            toTime: endTime,
-            location: location,
-            userName: firstName,
+        fetchBookingById(meetingverify.value.id!).then((value) {
+          context.go(
+            '/rooms/verify-booking/${meetingverify.value.id!}',
           );
-        }));
+        });
+
         isBookingLoading.value = false;
       }).onError((ErrorModel error, stackTrace) {
         debugPrint(
@@ -447,5 +445,24 @@ class BookingController extends GetxController {
       await Future.delayed(const Duration(seconds: 2));
       showNoMoreData.value = false;
     }
+  }
+
+  final bookingModels = Meeting().obs;
+  Future<Meeting> fetchBookingById(String id) async {
+    debugPrint('====> show booked id $id');
+    try {
+      await api
+          .onNetworkRequesting(
+              url: '/book/$id', methode: METHODE.get, isAuthorize: true)
+          .then((value) {
+        debugPrint('======> value of model : ${value['booking']}');
+        var response = value['booking'];
+        bookingModels.value = Meeting.fromJson(response);
+        debugPrint('======> fetch success book by id ${bookingModels.value}');
+      });
+    } catch (e) {
+      debugPrint('======> fetch err $e');
+    }
+    return bookingModels.value;
   }
 }

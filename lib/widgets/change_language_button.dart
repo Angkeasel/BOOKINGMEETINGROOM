@@ -10,7 +10,6 @@ class ChangeLanguageButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final lController = Get.find<LanguageController>();
-
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Material(

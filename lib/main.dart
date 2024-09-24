@@ -3,7 +3,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:meetroombooking/generated/l10n.dart';
 import 'package:meetroombooking/src/config/font/font_controller.dart';
-
 import 'package:meetroombooking/src/config/router/router.dart';
 import 'package:meetroombooking/src/constant/app_color.dart';
 import 'package:meetroombooking/src/constant/app_textstyle.dart';

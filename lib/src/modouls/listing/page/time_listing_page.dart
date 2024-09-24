@@ -4,23 +4,21 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:meetroombooking/src/constant/app_color.dart';
 import 'package:meetroombooking/src/modouls/listing/controller/room_controller.dart';
-import 'package:meetroombooking/src/modouls/listing/model/room_listing_model.dart';
 import '../../../config/font/font_controller.dart';
 import '../../booking /controller/booking_contoller.dart';
-import '../../booking /models/meeting/meeting_model.dart';
 
 class TimeListingPage extends StatefulWidget {
   final String date;
-  final RoomListingModel? roomListingModel;
+  final String id;
   final bool isEdit;
-  final Meeting? meetingModel;
-
-  const TimeListingPage(
-      {super.key,
-      required this.date,
-      this.roomListingModel,
-      this.isEdit = false,
-      this.meetingModel});
+  final String? bookingId;
+  const TimeListingPage({
+    super.key,
+    required this.date,
+    required this.id,
+    this.bookingId,
+    this.isEdit = false,
+  });
 
   @override
   State<TimeListingPage> createState() => _TimeListingPageState();
@@ -45,8 +43,7 @@ class _TimeListingPageState extends State<TimeListingPage> {
   List<String> availableSoltList = [];
   Future<List<String>> fetch() async {
     await bookingCon
-        .getAvailableTimeSlot(
-            date: widget.date, roomId: widget.roomListingModel!.id!)
+        .getAvailableTimeSlot(date: widget.date, roomId: widget.id)
         .then((value) {
       debugPrint('available time $value');
       setState(() {
@@ -59,6 +56,9 @@ class _TimeListingPageState extends State<TimeListingPage> {
   @override
   void initState() {
     debugPrint('date now : ${widget.date}');
+    widget.isEdit
+        ? debugPrint(' id edit true : ${widget.id}')
+        : debugPrint(' id edit false : ${widget.id}');
     fetch();
     super.initState();
   }
@@ -71,6 +71,11 @@ class _TimeListingPageState extends State<TimeListingPage> {
           widget.isEdit ? 'Update Add Time' : 'Show Add time ',
           style: TextStyle(color: AppColors.primaryColor),
         ),
+        leading: IconButton(
+            onPressed: () {
+              context.go('/rooms/room/${widget.id}');
+            },
+            icon: const Icon(Icons.arrow_back_sharp)),
       ),
       body: Obx(
         () => bookingCon.isLoadingSlot.value
@@ -115,42 +120,39 @@ class _TimeListingPageState extends State<TimeListingPage> {
                                 debugPrint('millisecond: ${result.toInt()}');
                                 widget.isEdit
                                     ? context.go(
-                                        '/booking-room/all-booking-user/edit-booking/${result.toInt()}',
-                                        // pathParameters: {
-                                        //     'millisecondsSinceEpoch':
-                                        //         result.toInt().toString()
-                                        //   },
-                                        extra: {
-                                            'roomModel':
-                                                widget.roomListingModel,
-                                            'meetModel': widget.meetingModel
-                                          })
-                                    : context.goNamed('ConfirmBookingScreen',
+                                        '/booking-room/${widget.id}/edit-booking?millisecondsSinceEpoch=${result.toInt()}&bookId=${widget.bookingId}',
+                                      )
+                                    // edit screen throw id of booking
+                                    : context.go(Uri(
+                                        path: '/rooms/confirm-booking',
                                         queryParameters: {
                                             'millisecondsSinceEpoch':
-                                                result.toInt().toString()
-                                          },
-                                        extra: {
-                                            'roomListingModel':
-                                                widget.roomListingModel!
-                                          });
+                                                result.toInt().toString(),
+                                            'id': widget.id
+                                          }).toString());
                               },
-                              child: Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.8,
-                                  padding: const EdgeInsets.all(10),
-                                  margin: const EdgeInsets.all(5),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: AppColors.primaryColor),
-                                  child: Align(
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      formatTime(e.value),
-                                      style:
-                                          const TextStyle(color: Colors.white),
-                                    ),
-                                  )),
+                              child: ConstrainedBox(
+                                constraints: BoxConstraints(
+                                    maxWidth: context.width > 500
+                                        ? context.width * 0.4
+                                        : context.width),
+                                child: Container(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.8,
+                                    padding: const EdgeInsets.all(10),
+                                    margin: const EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: AppColors.primaryColor),
+                                    child: Align(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        formatTime(e.value),
+                                        style: const TextStyle(
+                                            color: Colors.white),
+                                      ),
+                                    )),
+                              ),
                             );
                           }).toList()),
                     ),

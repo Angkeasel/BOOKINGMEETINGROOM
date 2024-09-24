@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'package:meetroombooking/src/util/helper/api_base_helper.dart';
 import 'package:meetroombooking/src/util/helper/snackbar/alert_snackbar.dart';
-
 import '../../config/router/router.dart';
 import '../../util/helper/local_storage/local_storage.dart';
 

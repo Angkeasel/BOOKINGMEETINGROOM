@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:meetroombooking/src/constant/app_size.dart';
 import 'package:meetroombooking/src/constant/app_textstyle.dart';
 
@@ -30,60 +31,67 @@ class CustomButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: isOutline == true
-          ? Colors.transparent
-          : isDisabled == true
-              ? Colors.grey
-              : color ?? AppColors.primaryColor,
-      borderRadius: BorderRadius.circular(10),
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: isDisabled == true ? null : onTap,
-        splashColor:
-            isOutline == true ? AppColors.primaryColor.withOpacity(0.4) : null,
-        highlightColor:
-            isOutline == true ? AppColors.primaryColor.withOpacity(0.4) : null,
-        focusColor:
-            isOutline == true ? AppColors.primaryColor.withOpacity(0.4) : null,
-        child: Container(
-          height: 50,
-          width: width ?? double.infinity,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            border: isOutline == true
-                ? isDisabled == true
-                    ? Border.all(color: Colors.grey)
-                    : Border.all(color: color ?? AppColors.primaryColor)
-                : null,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              icon != null
-                  ? Padding(
-                      padding: const EdgeInsets.only(right: 10),
-                      child: Icon(
-                        icon,
-                        color: AppColors.primaryColor,
-                      ),
-                    )
-                  : iconSvg != null
-                      ? SvgPicture.asset("$iconSvg")
-                      : const SizedBox(),
-              icon != null || iconSvg != null
-                  ? const SizedBox(width: 10)
-                  : const SizedBox(),
-              Text(title ?? '',
-                  textAlign: TextAlign.center,
-                  style: context.bodyMedium.copyWith(
-                      fontSize: 20,
-                      fontVariations: [FontWeight.w600.getVariant],
-                      color: isOutline == true
-                          ? color ?? AppColors.primaryColor
-                          : textColor ?? Colors.white)),
-            ],
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+          maxWidth: context.width > 500 ? context.width * .3 : double.infinity),
+      child: Material(
+        color: isOutline == true
+            ? Colors.transparent
+            : isDisabled == true
+                ? Colors.grey
+                : color ?? AppColors.primaryColor,
+        borderRadius: BorderRadius.circular(10),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: isDisabled == true ? null : onTap,
+          splashColor: isOutline == true
+              ? AppColors.primaryColor.withOpacity(0.4)
+              : null,
+          highlightColor: isOutline == true
+              ? AppColors.primaryColor.withOpacity(0.4)
+              : null,
+          focusColor: isOutline == true
+              ? AppColors.primaryColor.withOpacity(0.4)
+              : null,
+          child: Container(
+            height: 50,
+            // width: width ?? double.infinity,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              border: isOutline == true
+                  ? isDisabled == true
+                      ? Border.all(color: Colors.grey)
+                      : Border.all(color: color ?? AppColors.primaryColor)
+                  : null,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                icon != null
+                    ? Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: Icon(
+                          icon,
+                          color: AppColors.primaryColor,
+                        ),
+                      )
+                    : iconSvg != null
+                        ? SvgPicture.asset("$iconSvg")
+                        : const SizedBox(),
+                icon != null || iconSvg != null
+                    ? const SizedBox(width: 10)
+                    : const SizedBox(),
+                Text(title ?? '',
+                    textAlign: TextAlign.center,
+                    style: context.bodyMedium.copyWith(
+                        fontSize: 20,
+                        fontVariations: [FontWeight.w600.getVariant],
+                        color: isOutline == true
+                            ? color ?? AppColors.primaryColor
+                            : textColor ?? Colors.white)),
+              ],
+            ),
           ),
         ),
       ),
