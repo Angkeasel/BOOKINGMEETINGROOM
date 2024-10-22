@@ -6,6 +6,7 @@ import 'package:meetroombooking/src/modouls/booking%20/page/booking_room_datails
 import 'package:meetroombooking/src/modouls/booking%20/page/edit_booking_page.dart';
 import 'package:meetroombooking/src/modouls/booking%20/page/verify_booking.dart';
 import 'package:meetroombooking/src/modouls/listing/page/time_listing_page.dart';
+import 'package:meetroombooking/src/modouls/profile/page/edit_profile_page.dart';
 import '../../auth/page/login_screen.dart';
 import '../../auth/page/splash_screen.dart';
 import '../../bottomNavigationbar/bottomnavigationbar.dart';
@@ -14,15 +15,27 @@ import '../../modouls/booking /page/event_calendar_page.dart';
 import '../../modouls/booking /page/list_detail_page.dart';
 import '../../modouls/listing/page/listing_room.dart';
 import '../../modouls/profile/page/profile_page.dart';
+import '../../util/helper/local_storage/local_storage.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = Get.key;
-final GlobalKey<NavigatorState> _shellNavigatorAKey =
-    GlobalKey<NavigatorState>(debugLabel: 'shellA');
-final _shellNavigatorBKey = GlobalKey<NavigatorState>(debugLabel: 'shellB');
-final _shellNavigatorCKey = GlobalKey<NavigatorState>(debugLabel: 'shellC');
+final GlobalKey<NavigatorState> _shellNavigatorCalendarKey =
+    GlobalKey<NavigatorState>(debugLabel: 'shellCalendar');
+final _shellNavigatorBookedKey =
+    GlobalKey<NavigatorState>(debugLabel: 'shellBooked');
+final _shellNavigatorProfileKey =
+    GlobalKey<NavigatorState>(debugLabel: 'shellProfile');
 const _initialLocation = '/splash';
 
 final router = GoRouter(
+  redirect: (BuildContext context, GoRouterState state) async {
+    final isAuthenticated = await LocalStorage.getStringValue(
+        key: 'access_token'); // your logic to check if user is authenticated
+    if (isAuthenticated == '') {
+      return '/login';
+    } else {
+      return null; // return "null" to display the intended route without redirecting
+    }
+  },
   navigatorKey: _rootNavigatorKey,
   debugLogDiagnostics: true,
   initialLocation: _initialLocation,
@@ -35,7 +48,7 @@ final router = GoRouter(
         );
       },
       branches: [
-        StatefulShellBranch(navigatorKey: _shellNavigatorAKey, routes: [
+        StatefulShellBranch(navigatorKey: _shellNavigatorCalendarKey, routes: [
           GoRoute(
             path: '/rooms',
             name: 'RoomListingScreen',
@@ -97,7 +110,7 @@ final router = GoRouter(
             ],
           ),
         ]),
-        StatefulShellBranch(navigatorKey: _shellNavigatorBKey, routes: [
+        StatefulShellBranch(navigatorKey: _shellNavigatorBookedKey, routes: [
           GoRoute(
               path: '/booking-room',
               name: 'BookingRoom',
@@ -159,14 +172,26 @@ final router = GoRouter(
                     ]),
               ]),
         ]),
-        StatefulShellBranch(navigatorKey: _shellNavigatorCKey, routes: [
+        StatefulShellBranch(navigatorKey: _shellNavigatorProfileKey, routes: [
           GoRoute(
-            path: '/profile',
-            name: 'profile',
-            pageBuilder: (_, state) {
-              return const NoTransitionPage(child: ProfilePage());
-            },
-          ),
+              path: '/profile',
+              name: 'ProfileScreen',
+              pageBuilder: (_, state) {
+                return const NoTransitionPage(child: ProfilePage());
+              },
+              routes: [
+                GoRoute(
+                    parentNavigatorKey: _rootNavigatorKey,
+                    path: 'edit-profile',
+                    name: 'EditProfile',
+                    builder: (_, state) {
+                      return EditProfilePage(
+                        username: state.queryParameters['username'] ?? '',
+                        email: state.queryParameters['email'] ?? '',
+                        image: state.queryParameters['image'] ?? '',
+                      );
+                    })
+              ]),
         ]),
       ],
     ),

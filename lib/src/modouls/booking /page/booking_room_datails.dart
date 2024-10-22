@@ -12,7 +12,6 @@ import '../widget/custom_list_datails.dart';
 import 'view_detail.page.dart';
 
 class BookingRoomDetailsPage extends StatefulWidget {
-  //final RoomListingModel? roomModel;
   final String id;
   const BookingRoomDetailsPage({super.key, required this.id});
   @override
@@ -22,8 +21,6 @@ class BookingRoomDetailsPage extends StatefulWidget {
 class _BookingRoomDetailsPageState extends State<BookingRoomDetailsPage> {
   final bookingCon = Get.put(BookingController());
   final roomCon = Get.put(RoomController());
-  // final controller = ScrollController();
-
   late final currentRoomId = widget.id;
 
   @override

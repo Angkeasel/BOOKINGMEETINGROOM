@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,6 +11,26 @@ import '../model/userModel.dart';
 
 class ProfileController extends GetxController {
   final api = ApiBaseHelper();
+  final imageNetwork = ''.obs;
+  File? image;
+  Rx<Uint8List?> pickImageInBytes = Rx(null);
+  Future<void> uploadBytes(String url, Uint8List imageBytes) async {
+    final token = await LocalStorage.getStringValue(key: 'access_token');
+    debugPrint('=======> token :$token');
+    var request = http.MultipartRequest("POST", Uri.parse(url));
+    request.headers.assignAll({"Authorization": "Bearer $token"});
+    request.files.add(http.MultipartFile.fromBytes('profile', imageBytes,
+        filename: 'image.jpg'));
+    debugPrint('======> uplosdBytes $request');
+    final response = await request.send();
+    if (response.statusCode == 200) {
+      debugPrint('Image uploaded successfully');
+      await getProfile();
+    } else {
+      debugPrint('Image upload failed with status: ${response.statusCode}');
+    }
+  }
+
   //====================> Pick Image <========================
   Future<void> uploadImage(String url, File image) async {
     final token = await LocalStorage.getStringValue(key: 'access_token');
@@ -31,6 +52,7 @@ class ProfileController extends GetxController {
     final response = await request.send();
     if (response.statusCode == 200) {
       debugPrint('Image uploaded successfully');
+      await getProfile();
     } else {
       debugPrint('Image upload failed with status: ${response.statusCode}');
     }
@@ -43,8 +65,8 @@ class ProfileController extends GetxController {
   final userModel = UserModel().obs;
   final isLoading = false.obs;
   Future<UserModel> getProfile() async {
-    isLoading(true);
     try {
+      isLoading(true);
       await api
           .onNetworkRequesting(
               url: '/profile/info', methode: METHODE.get, isAuthorize: true)
