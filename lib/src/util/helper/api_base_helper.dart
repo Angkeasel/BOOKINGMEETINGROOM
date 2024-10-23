@@ -21,6 +21,7 @@ enum METHODE {
 
 class ApiBaseHelper {
   //String? baseurl = dotenv.env['base_url'];
+  //String? baseurl = 'http://localhost:8000/api';
   String? baseurl = 'http://localhost:3000/api';
   // String? baseurl = 'http://10.0.2.2:3000/api';
   Future<dynamic> onNetworkRequesting({
