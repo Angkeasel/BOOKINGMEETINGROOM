@@ -12,7 +12,7 @@ class BookingController extends GetxController {
   final editColorString = ''.obs;
   final meetingList = <Meeting>[].obs;
   final bookingByUserList = <Meeting>[].obs;
-
+  final what = 'happend';
   // textfield comfirm booking
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
