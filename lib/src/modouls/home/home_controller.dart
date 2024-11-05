@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:meetroombooking/src/modouls/booking%20/time_model/time_model.dart';
+import 'package:meetroombooking/src/modouls/booking/time_model/time_model.dart';
 
 class HomeController extends GetxController {
   final testing = ''.obs;

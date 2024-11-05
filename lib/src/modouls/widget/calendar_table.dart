@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../constant/app_color.dart';
-import '../booking /time_model/time_model.dart';
+import '../booking/time_model/time_model.dart';
 import '../home/home_controller.dart';
 import '../listing/controller/room_controller.dart';
 

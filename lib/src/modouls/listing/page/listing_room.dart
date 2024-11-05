@@ -6,9 +6,11 @@ import 'package:meetroombooking/generated/l10n.dart';
 import 'package:meetroombooking/src/constant/app_color.dart';
 
 import 'package:meetroombooking/src/constant/app_textstyle.dart';
-import 'package:meetroombooking/src/modouls/booking%20/controller/booking_contoller.dart';
+
 import 'package:meetroombooking/src/modouls/listing/controller/room_controller.dart';
 import 'package:meetroombooking/src/modouls/listing/custom_listing_room.dart';
+
+import '../../booking/controller/booking_contoller.dart';
 
 class ListingRoom extends StatefulWidget {
   static get path => '/room-listing';

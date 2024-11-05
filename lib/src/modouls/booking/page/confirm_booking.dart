@@ -7,13 +7,14 @@ import 'package:meetroombooking/src/config/font/font_controller.dart';
 import 'package:meetroombooking/src/constant/app_color.dart';
 import 'package:meetroombooking/src/constant/app_size.dart';
 import 'package:meetroombooking/src/constant/app_textstyle.dart';
-import 'package:meetroombooking/src/modouls/booking%20/controller/booking_contoller.dart';
-import 'package:meetroombooking/src/modouls/booking%20/page/list_detail_page.dart';
+
+import 'package:meetroombooking/src/modouls/booking/page/list_detail_page.dart';
 import 'package:meetroombooking/src/modouls/home/home_controller.dart';
 
 import 'package:meetroombooking/widgets/custom_buttons.dart';
 import 'package:meetroombooking/widgets/custom_text_form_filed.dart';
 import '../../../../widgets/custom_lable_edit.dart';
+import '../controller/booking_contoller.dart';
 import '../widget/custom_color.dart';
 
 class ConfirmBookingScreen extends StatefulWidget {

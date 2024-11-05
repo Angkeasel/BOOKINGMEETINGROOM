@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:meetroombooking/src/constant/app_color.dart';
 import 'package:meetroombooking/src/modouls/listing/controller/room_controller.dart';
 import '../../../config/font/font_controller.dart';
-import '../../booking /controller/booking_contoller.dart';
+import '../../booking/controller/booking_contoller.dart';
 
 class TimeListingPage extends StatefulWidget {
   final String date;

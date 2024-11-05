@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:meetroombooking/src/modouls/booking%20/controller/booking_contoller.dart';
+import '../controller/booking_contoller.dart';
 
 import '../../../constant/app_color.dart';
 import '../widget/custom_row_details.dart';

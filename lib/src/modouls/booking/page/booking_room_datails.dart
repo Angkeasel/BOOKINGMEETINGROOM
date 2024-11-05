@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:meetroombooking/src/config/router/router.dart';
 import 'package:meetroombooking/src/constant/app_textstyle.dart';
-import 'package:meetroombooking/src/modouls/booking%20/controller/booking_contoller.dart';
+import '../controller/booking_contoller.dart';
 import 'package:meetroombooking/src/modouls/listing/controller/room_controller.dart';
 
 import '../../../constant/app_color.dart';
