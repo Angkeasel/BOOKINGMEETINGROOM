@@ -11,6 +11,7 @@ _$RoomListingModelImpl _$$RoomListingModelImplFromJson(
     _$RoomListingModelImpl(
       id: json['_id'] as String?,
       title: json['title'] as String?,
+      image: json['image'] as String?,
       floor: json['floor'] as String?,
     );
 
@@ -19,5 +20,6 @@ Map<String, dynamic> _$$RoomListingModelImplToJson(
     <String, dynamic>{
       '_id': instance.id,
       'title': instance.title,
+      'image': instance.image,
       'floor': instance.floor,
     };

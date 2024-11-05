@@ -60,7 +60,7 @@ class ScaffoldWithNavigationBar extends StatelessWidget {
             label: 'Calendar',
             icon: SvgPicture.asset(
               selectedIndex == 0
-                  ? 'assets/image/svg/s-calendar.svg'
+                  ? 'assets/image/svg/calendar1.svg'
                   : 'assets/image/svg/calendar.svg',
               height: 26,
             ),
@@ -69,8 +69,8 @@ class ScaffoldWithNavigationBar extends StatelessWidget {
             label: 'Booked',
             icon: SvgPicture.asset(
               selectedIndex == 1
-                  ? 'assets/image/svg/booked green.svg'
-                  : 'assets/image/svg/booked black.svg',
+                  ? 'assets/image/svg/booked1.svg'
+                  : 'assets/image/svg/booked-black.svg',
               height: 22,
             ),
           ),
@@ -78,7 +78,7 @@ class ScaffoldWithNavigationBar extends StatelessWidget {
             label: 'Profile',
             icon: SvgPicture.asset(
               selectedIndex == 2
-                  ? 'assets/image/svg/s-profile.svg'
+                  ? 'assets/image/svg/profile1.svg'
                   : 'assets/image/svg/profile.svg',
               height: 26,
             ),
@@ -120,7 +120,7 @@ class ScaffoldWithNavigationRail extends StatelessWidget {
                       label: const Text('Calendar'),
                       icon: SvgPicture.asset(
                         selectedIndex == 0
-                            ? 'assets/image/svg/s-calendar.svg'
+                            ? 'assets/image/svg/calendar1.svg'
                             : 'assets/image/svg/calendar.svg',
                         height: 26,
                       ),
@@ -129,8 +129,8 @@ class ScaffoldWithNavigationRail extends StatelessWidget {
                       label: const Text('Booked'),
                       icon: SvgPicture.asset(
                         selectedIndex == 1
-                            ? 'assets/image/svg/booked green.svg'
-                            : 'assets/image/svg/booked black.svg',
+                            ? 'assets/image/svg/booked1.svg'
+                            : 'assets/image/svg/booked-black.svg',
                         height: 22,
                       ),
                     ),
@@ -138,7 +138,7 @@ class ScaffoldWithNavigationRail extends StatelessWidget {
                       label: const Text('Profile'),
                       icon: SvgPicture.asset(
                         selectedIndex == 2
-                            ? 'assets/image/svg/s-profile.svg'
+                            ? 'assets/image/svg/profile1.svg'
                             : 'assets/image/svg/profile.svg',
                         height: 26,
                       ),

@@ -38,11 +38,10 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Profile page',
+          'My Profile ',
         ),
         titleTextStyle: context.appBarTextStyle.copyWith(
-          color: AppColors.textLightColor,
-        ),
+            color: AppColors.secondaryColor, fontWeight: FontWeight.w700),
       ),
       body: Obx(
         () => profileCon.isLoading.value
@@ -87,16 +86,21 @@ class _ProfilePageState extends State<ProfilePage> {
                                 },
                               ),
                             ),
-                            Text(
-                              '${profileCon.userModel.value.role}',
-                              style: const TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600),
+                            const SizedBox(
+                              height: 5,
                             ),
                             Text(
                               '${profileCon.userModel.value.email}',
                               style: TextStyle(
+                                  fontSize: 16,
                                   color: AppColors.primaryColor,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            Text(
+                              '${profileCon.userModel.value.role}',
+                              style: const TextStyle(
+                                  color: AppColors.secondaryColor,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w600),
                             ),
                             const SizedBox(
@@ -186,8 +190,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                     child: Text(
                                       "LogOut",
                                       style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16,
+                                          color: AppColors.backgroundColor,
+                                          fontSize: 18,
                                           fontWeight: FontWeight.w700),
                                     ),
                                   ),

@@ -10,6 +10,7 @@ class RoomListingModel with _$RoomListingModel {
   factory RoomListingModel({
     @JsonKey(name: '_id') final String? id,
     final String? title,
+    final String? image,
     final String? floor,
   }) = _RoomListingModel;
 

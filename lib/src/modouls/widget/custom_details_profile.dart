@@ -39,7 +39,14 @@ class CustomDetailProfile extends StatelessWidget {
             const SizedBox(
               width: 10,
             ),
-            Expanded(child: Text('$lable')),
+            Expanded(
+                child: Text(
+              '$lable',
+              style: const TextStyle(
+                  fontSize: 16,
+                  color: AppColors.secondaryColor,
+                  fontWeight: FontWeight.w600),
+            )),
             const Spacer(),
             Expanded(
               child: Padding(
@@ -55,7 +62,8 @@ class CustomDetailProfile extends StatelessWidget {
             icons
                 ? const Icon(
                     Icons.arrow_forward_ios,
-                    size: 16,
+                    size: 18,
+                    color: AppColors.secondaryColor,
                   )
                 : const SizedBox()
           ],

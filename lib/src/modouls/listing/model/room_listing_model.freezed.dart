@@ -23,6 +23,7 @@ mixin _$RoomListingModel {
   @JsonKey(name: '_id')
   String? get id => throw _privateConstructorUsedError;
   String? get title => throw _privateConstructorUsedError;
+  String? get image => throw _privateConstructorUsedError;
   String? get floor => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -37,7 +38,11 @@ abstract class $RoomListingModelCopyWith<$Res> {
           RoomListingModel value, $Res Function(RoomListingModel) then) =
       _$RoomListingModelCopyWithImpl<$Res, RoomListingModel>;
   @useResult
-  $Res call({@JsonKey(name: '_id') String? id, String? title, String? floor});
+  $Res call(
+      {@JsonKey(name: '_id') String? id,
+      String? title,
+      String? image,
+      String? floor});
 }
 
 /// @nodoc
@@ -55,6 +60,7 @@ class _$RoomListingModelCopyWithImpl<$Res, $Val extends RoomListingModel>
   $Res call({
     Object? id = freezed,
     Object? title = freezed,
+    Object? image = freezed,
     Object? floor = freezed,
   }) {
     return _then(_value.copyWith(
@@ -65,6 +71,10 @@ class _$RoomListingModelCopyWithImpl<$Res, $Val extends RoomListingModel>
       title: freezed == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
+              as String?,
+      image: freezed == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
               as String?,
       floor: freezed == floor
           ? _value.floor
@@ -82,7 +92,11 @@ abstract class _$$RoomListingModelImplCopyWith<$Res>
       __$$RoomListingModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({@JsonKey(name: '_id') String? id, String? title, String? floor});
+  $Res call(
+      {@JsonKey(name: '_id') String? id,
+      String? title,
+      String? image,
+      String? floor});
 }
 
 /// @nodoc
@@ -98,6 +112,7 @@ class __$$RoomListingModelImplCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? title = freezed,
+    Object? image = freezed,
     Object? floor = freezed,
   }) {
     return _then(_$RoomListingModelImpl(
@@ -108,6 +123,10 @@ class __$$RoomListingModelImplCopyWithImpl<$Res>
       title: freezed == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
+              as String?,
+      image: freezed == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
               as String?,
       floor: freezed == floor
           ? _value.floor
@@ -121,7 +140,7 @@ class __$$RoomListingModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$RoomListingModelImpl implements _RoomListingModel {
   _$RoomListingModelImpl(
-      {@JsonKey(name: '_id') this.id, this.title, this.floor});
+      {@JsonKey(name: '_id') this.id, this.title, this.image, this.floor});
 
   factory _$RoomListingModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$RoomListingModelImplFromJson(json);
@@ -132,11 +151,13 @@ class _$RoomListingModelImpl implements _RoomListingModel {
   @override
   final String? title;
   @override
+  final String? image;
+  @override
   final String? floor;
 
   @override
   String toString() {
-    return 'RoomListingModel(id: $id, title: $title, floor: $floor)';
+    return 'RoomListingModel(id: $id, title: $title, image: $image, floor: $floor)';
   }
 
   @override
@@ -146,12 +167,13 @@ class _$RoomListingModelImpl implements _RoomListingModel {
             other is _$RoomListingModelImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
+            (identical(other.image, image) || other.image == image) &&
             (identical(other.floor, floor) || other.floor == floor));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, title, floor);
+  int get hashCode => Object.hash(runtimeType, id, title, image, floor);
 
   @JsonKey(ignore: true)
   @override
@@ -172,6 +194,7 @@ abstract class _RoomListingModel implements RoomListingModel {
   factory _RoomListingModel(
       {@JsonKey(name: '_id') final String? id,
       final String? title,
+      final String? image,
       final String? floor}) = _$RoomListingModelImpl;
 
   factory _RoomListingModel.fromJson(Map<String, dynamic> json) =
@@ -182,6 +205,8 @@ abstract class _RoomListingModel implements RoomListingModel {
   String? get id;
   @override
   String? get title;
+  @override
+  String? get image;
   @override
   String? get floor;
   @override

@@ -11,11 +11,11 @@ class ListDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "Booking List by Room",
           style: TextStyle(
               fontSize: 22,
-              color: AppColors.primaryColor,
+              color: AppColors.secondaryColor,
               fontWeight: FontWeight.w600),
         ),
       ),
@@ -44,7 +44,7 @@ class ListDetailPage extends StatelessWidget {
                     decoration: BoxDecoration(
                         border: Border.all(color: AppColors.primaryColor),
                         borderRadius: BorderRadius.circular(15),
-                        color: Colors.white),
+                        color: AppColors.primaryColor),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -52,14 +52,15 @@ class ListDetailPage extends StatelessWidget {
                           child: Text(
                             "${roomCon.roomListing[index].title}",
                             style: const TextStyle(
-                                fontSize: 15,
-                                color: Colors.black,
+                                fontSize: 18,
+                                color: AppColors.secondaryColor,
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
                         const Icon(
                           Icons.arrow_forward_ios_outlined,
-                          size: 18,
+                          size: 20,
+                          color: AppColors.secondaryColor,
                         )
                       ],
                     ),

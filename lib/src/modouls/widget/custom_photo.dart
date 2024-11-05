@@ -71,7 +71,7 @@ class CustomPhoto extends StatelessWidget {
               child: const Icon(
                 Icons.edit,
                 size: 15,
-                color: Colors.white,
+                color: AppColors.secondaryColor,
               ),
             ),
           ),

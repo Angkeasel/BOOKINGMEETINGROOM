@@ -34,11 +34,10 @@ class _ListingRoomState extends State<ListingRoom> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.transparent,
+        backgroundColor: AppColors.backgroundColor,
         title: const Text("Meeting Rooms"),
         titleTextStyle: context.appBarTextStyle.copyWith(
-          color: AppColors.textLightColor,
-        ),
+            color: AppColors.secondaryColor, fontWeight: FontWeight.w700),
       ),
       body: Obx(
         () => Padding(
@@ -68,6 +67,7 @@ class _ListingRoomState extends State<ListingRoom> {
                           itemBuilder: (BuildContext context, int index) {
                             return CustomListingRoom(
                               title: roomCon.roomListing[index].title,
+                              image: roomCon.roomListing[index].image,
                               onTap: () {
                                 debugPrint(
                                     'roomId: ${roomCon.roomListing[index].id}');
