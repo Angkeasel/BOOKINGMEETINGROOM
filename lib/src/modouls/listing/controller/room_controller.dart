@@ -23,7 +23,7 @@ class RoomController extends GetxController {
           .onNetworkRequesting(
               url: "/room", methode: METHODE.get, isAuthorize: true)
           .then((value) {
-        value.map((e) {
+        value['rooms'].map((e) { //value['rooms']
           listRoom.add(RoomListingModel.fromJson(e));
         }).toList();
         roomListing.assignAll(listRoom);

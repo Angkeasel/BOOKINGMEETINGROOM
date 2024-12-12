@@ -13,6 +13,12 @@ class BookingController extends GetxController {
   final meetingList = <Meeting>[].obs;
   final bookingByUserList = <Meeting>[].obs;
   final what = 'happend';
+  final bookingModelDetails = Meeting().obs ;
+  List<String> dropdownMenuList = [
+    "Edit","Delete"
+  ];
+  final dropdownIndex = 0.obs;
+  final dropdownButtonValue ='Edit'.obs;
   // textfield comfirm booking
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
@@ -77,7 +83,7 @@ class BookingController extends GetxController {
 //===============================> post Booking <=============================
   final isBookingLoading = false.obs;
   final meetingverify = Meeting().obs;
-  Future<void> postBooking(BuildContext context,
+  Future<void> postBooking(BuildContext contexts,
       {required String meetingTopic,
       required String id,
       required String phoneNumber,
@@ -120,8 +126,9 @@ class BookingController extends GetxController {
         // post then fetch
         getBooking(id: id);
         fetchBookingById(meetingverify.value.id!).then((value) {
-          context.go(
-            '/rooms/verify-booking/${meetingverify.value.id!}',
+          // ignore: use_build_context_synchronously
+          contexts.go(
+            '/rooms',
           );
         });
 
@@ -281,6 +288,7 @@ class BookingController extends GetxController {
         debugPrint('=====> print roomId value $roomId');
         await Get.put(BookingController()).getBookedListByRoomId(
           roomId: roomId!,
+          
         );
         isLoadingUpdate(false);
       }).onError((ErrorModel error, stackTrace) {
@@ -447,22 +455,27 @@ class BookingController extends GetxController {
     }
   }
 
-  final bookingModels = Meeting().obs;
+final bookingModels = Meeting().obs;
+ final loading = false.obs;
   Future<Meeting> fetchBookingById(String id) async {
     debugPrint('====> show booked id $id');
     try {
+      loading(true);
       await api
           .onNetworkRequesting(
               url: '/book/$id', methode: METHODE.get, isAuthorize: true)
           .then((value) {
         debugPrint('======> value of model : ${value['booking']}');
-        var response = value['booking'];
-        bookingModels.value = Meeting.fromJson(response);
+        bookingModels.value = Meeting.fromJson(value['booking']);
         debugPrint('======> fetch success book by id ${bookingModels.value}');
       });
+      loading(false);
     } catch (e) {
       debugPrint('======> fetch err $e');
+      loading(false);
     }
     return bookingModels.value;
   }
+
+
 }

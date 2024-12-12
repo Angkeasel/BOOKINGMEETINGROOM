@@ -33,7 +33,9 @@ class CustomButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     return ConstrainedBox(
       constraints: BoxConstraints(
-          maxWidth: context.width > 500 ? context.width * .3 : double.infinity),
+          maxWidth: context.width > 500
+              ? width ?? context.width * .3
+              : double.infinity),
       child: Material(
         color: isOutline == true
             ? Colors.transparent
@@ -54,7 +56,9 @@ class CustomButtons extends StatelessWidget {
               ? AppColors.primaryColor.withOpacity(0.4)
               : null,
           child: Container(
-            height: 50,
+            //height: 50,
+            padding:
+                const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 5),
             // width: width ?? double.infinity,
             alignment: Alignment.center,
             decoration: BoxDecoration(
@@ -83,9 +87,10 @@ class CustomButtons extends StatelessWidget {
                     ? const SizedBox(width: 10)
                     : const SizedBox(),
                 Text(title ?? '',
+               
                     textAlign: TextAlign.center,
                     style: context.bodyMedium.copyWith(
-                        fontSize: 20,
+                        fontSize: 16,
                         fontVariations: [FontWeight.w600.getVariant],
                         color: isOutline == true
                             ? color ?? AppColors.primaryColor

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../../constant/app_color.dart';
 
 class CustomPhoto extends StatelessWidget {
@@ -17,6 +18,7 @@ class CustomPhoto extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     String? image_path = dotenv.env['image_path'];
     //final profileCon = Get.put(ProfileController());
     return Stack(
       children: [
@@ -32,14 +34,14 @@ class CustomPhoto extends StatelessWidget {
               height: 100,
               decoration: const BoxDecoration(
                   shape: BoxShape.circle, color: Colors.white),
-              child: imageFile != null ||
-                      imageWeb != null ||
-                      imageNetwork != null
+              child: (imageFile != null &&  imageFile != "") ||
+                     ( imageWeb != null && imageWeb != "") ||
+                      (imageNetwork != null && imageNetwork !="")
                   ? ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: imageFile != null
                           ? Image.file(
-                              imageFile!,
+                            imageFile!,
                               fit: BoxFit.cover,
                             )
                           : imageWeb != null
@@ -49,7 +51,7 @@ class CustomPhoto extends StatelessWidget {
                                 )
                               : imageNetwork != null
                                   ? Image.network(
-                                      '$imageNetwork',
+                                      '$image_path$imageNetwork',
                                       fit: BoxFit.cover,
                                     )
                                   : Image.asset('assets/image/png/profile.png'),

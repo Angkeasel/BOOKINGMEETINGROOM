@@ -1,15 +1,15 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
+
 import 'package:flutter/material.dart';
 
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
-import 'package:go_router/go_router.dart';
+
 import 'package:intl/intl.dart';
 import 'package:meetroombooking/generated/l10n.dart';
 import 'package:meetroombooking/src/config/font/font_controller.dart';
 import 'package:meetroombooking/src/constant/app_size.dart';
-import 'package:meetroombooking/src/constant/app_textstyle.dart';
+
 import 'package:meetroombooking/widgets/change_language_button.dart';
 import 'package:meetroombooking/widgets/custom_buttons.dart';
 import 'package:meetroombooking/widgets/custom_text_form_filed.dart';
@@ -94,13 +94,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                       //image
                                       Image.asset(
                                         'assets/image/png/KOFI LOGO-01 1.png',
-                                        height: 120,
+                                        height: 50,
                                       ),
                                       Text(
                                         "Kofi Room Reservation",
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
-                                          fontSize: 24,
+                                          fontSize: 22,
                                           color: AppColors.primaryColor,
                                           fontVariations: [
                                             FontWeight.w600.getVariant
@@ -111,7 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       ConstrainedBox(
                                         constraints: BoxConstraints(
                                             maxWidth: context.width > 500
-                                                ? context.width * .3
+                                                ? context.width * .2
                                                 : context.width),
                                         child: CustomTextFormFiled(
                                           lable: L.current.email,
@@ -134,7 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           ConstrainedBox(
                                             constraints: BoxConstraints(
                                                 maxWidth: context.width > 500
-                                                    ? context.width * .3
+                                                    ? context.width * .2
                                                     : context.width),
                                             child: CustomTextFormFiled(
                                               autovalidateMode: AutovalidateMode
@@ -169,25 +169,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                                   : null,
                                             ),
                                           ),
-                                          GestureDetector(
-                                            onTap: () {
-                                              debugPrint(
-                                                  "========> go to forget pw screen");
-                                            },
-                                            child: Text(
-                                              textAlign: TextAlign.right,
-                                              L.current.forgetPassword,
-                                              style:
-                                                  context.labelLarge.copyWith(
-                                                color: AppColors.primaryColor,
-                                              ),
-                                            ),
-                                          ),
+                                         
                                         ],
                                       ),
 
                                       const SizedBox(height: 20),
                                       CustomButtons(
+                                        width: context.width*0.2,
                                         title: L.current.login,
                                         onTap: () {
                                           const noError =
@@ -216,42 +204,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ),
                             ),
-                            const SizedBox(
-                              height: 60,
-                            ),
-                            RichText(
-                              textAlign: TextAlign.center,
-                              text: TextSpan(
-                                text: '${L.current.noAccountMsg} ',
-                                style: context.titleMedium.copyWith(
-                                    // fontFamily: 'KantumruyPro',
-                                    // color: Colors.black,
-                                    // fontSize: 18,
-                                    ),
-                                // style: const TextStyle(
-                                //   inherit: true,
-                                //   color: Colors.black,
-                                //   fontSize: 18,
-                                // ),
-                                children: [
-                                  TextSpan(
-                                    text: L.current.register,
-                                    style: TextStyle(
-                                      color: AppColors.primaryColor,
-                                      decoration: TextDecoration.underline,
-                                    ),
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () {
-                                        debugPrint("=======>go REGISTER");
-                                        GoRouter.of(context).go('/register');
-                                      },
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            )
+                           const SizedBox(height: 50,)
+                           
                           ],
                         ),
                       ),
@@ -326,21 +280,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                             ? Intl.message("Invalid Password")
                                             : null,
                                       ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          debugPrint(
-                                              "========> go to forget pw screen");
-                                        },
-                                        child: SizedBox(
-                                          child: Text(
-                                            textAlign: TextAlign.right,
-                                            L.current.forgetPassword,
-                                            style: context.labelLarge.copyWith(
-                                              color: AppColors.primaryColor,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
+                                     
                                     ],
                                   ),
                                   const SizedBox(height: 30),
@@ -373,41 +313,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                         ),
+                       
                         const SizedBox(
-                          height: 40,
-                        ),
-                        RichText(
-                          textAlign: TextAlign.center,
-                          text: TextSpan(
-                            text: '${L.current.hasAccountMsg} ',
-                            style: context.titleMedium.copyWith(
-                                // fontFamily: 'KantumruyPro',
-                                // color: Colors.black,
-                                // fontSize: 18,
-                                ),
-                            // style: const TextStyle(
-                            //   inherit: true,
-                            //   color: Colors.black,
-                            //   fontSize: 18,
-                            // ),
-                            children: [
-                              TextSpan(
-                                text: L.current.register,
-                                style: TextStyle(
-                                  color: AppColors.primaryColor,
-                                  decoration: TextDecoration.underline,
-                                ),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    debugPrint("=======>go REGISTER");
-                                    GoRouter.of(context).go('/register');
-                                  },
-                              )
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
+                          height: 50,
                         )
                       ],
                     ),

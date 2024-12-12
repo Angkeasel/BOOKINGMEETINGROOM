@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,16 +17,13 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   Future<void> tokenHandler(context) async {
-    // const token =
-    //     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2OWY0Y2FlZjc3ODg5OWE1OTdiZjQ3YyIsImVtYWlsIjoibXV5a2VhQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoibXV5a2VhIiwiaWF0IjoxNzI0NzI2NDAwLCJleHAiOjE3MjQ4MTI4MDB9.ljPI0dl1rJU5MxHIcICn1-93IjBeJAtl2sIR5XvRtCo';
     final token = await LocalStorage.getStringValue(key: 'access_token');
-    // fetches();
     Timer(
       const Duration(seconds: 1),
       () async {
         try {
           debugPrint("=======>token: $token");
-          if (token.isEmpty) {
+          if (token == null) {
             router.go('/login');
           } else {
             router.go('/rooms');
@@ -33,6 +32,19 @@ class _SplashScreenState extends State<SplashScreen>
       },
     );
   }
+
+  // Future<void> checkAccessToken(context) async{
+  //   var token = await LocalStorage.getStringValue(key: "access_token");
+  //   if(token != null ){
+  //     bool isExpired = JwtDecoder.isExpired(token);
+  //     if(isExpired == true || token == null){
+  //        router.go('/login');
+  //     }else{
+  //        router.go('/rooms');
+  //     }
+  //   }
+  
+  // }
 
   late final AnimationController _animationController;
   final _position =
@@ -79,7 +91,7 @@ class _SplashScreenState extends State<SplashScreen>
                     child: FadeTransition(
                         opacity: _opacity.animate(_animationController),
                         child:
-                            Image.asset("assets/image/png/KOFI LOGO-01 1.png")),
+                            Image.asset("assets/image/png/KOFI LOGO.png")),
                   ),
                 ),
               ),

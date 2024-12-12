@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:meetroombooking/src/constant/app_color.dart';
+import 'package:meetroombooking/src/constant/app_textstyle.dart';
 import 'package:meetroombooking/src/modouls/listing/controller/room_controller.dart';
 import '../../../config/font/font_controller.dart';
 import '../../booking/controller/booking_contoller.dart';
@@ -67,15 +68,19 @@ class _TimeListingPageState extends State<TimeListingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          widget.isEdit ? 'Update Add Time' : 'Show Add time ',
-          style: TextStyle(color: AppColors.primaryColor),
+        title: Center(
+          child: Text(
+            widget.isEdit ? 'Update Add Time' : 'Show Add time ',
+            style: TextStyle(color: AppColors.primaryColor),
+          ),
         ),
         leading: IconButton(
             onPressed: () {
               context.go('/rooms/room/${widget.id}');
             },
             icon: const Icon(Icons.arrow_back_sharp)),
+        titleTextStyle: context.appBarTextStyle.copyWith(
+            color: AppColors.primaryColor, fontWeight: FontWeight.w700),
       ),
       body: Obx(
         () => bookingCon.isLoadingSlot.value
@@ -96,18 +101,26 @@ class _TimeListingPageState extends State<TimeListingPage> {
                       ],
                     ),
                   )
-                : SingleChildScrollView(
-                    child: Center(
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: availableSoltList.asMap().entries.map((e) {
+                : Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: GridView.builder(
+                         physics: const AlwaysScrollableScrollPhysics(),
+                        itemCount: availableSoltList.length,
+                          gridDelegate:
+                               SliverGridDelegateWithFixedCrossAxisCount(
+                                  mainAxisExtent: context.width<400 ?70: 60,
+                                    crossAxisCount:context.width>700? 5:context.width<400?1:2,
+                                    childAspectRatio: 2/3,
+                                    mainAxisSpacing: 10,
+                                    crossAxisSpacing: 10, ),
+                          itemBuilder: (BuildContext context, int index) {
                             return GestureDetector(
                               onTap: () {
-                                bookingCon.timeIndex.value = e.key;
+                                bookingCon.timeIndex.value = index;
                                 debugPrint(
                                     'Time Index ${bookingCon.timeIndex.value}');
-                                String dateTimeString = e.value;
+                                String dateTimeString = availableSoltList[index];
                                 debugPrint(
                                     'add time : $dateTimeString'); // //7/1/2024, 8:00:00
                                 DateFormat dateFormat =
@@ -137,26 +150,38 @@ class _TimeListingPageState extends State<TimeListingPage> {
                                         ? context.width * 0.4
                                         : context.width),
                                 child: Container(
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.8,
+                                    width: MediaQuery.of(context).size.width *
+                                        0.8,
                                     padding: const EdgeInsets.all(10),
                                     margin: const EdgeInsets.all(5),
                                     decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        color: AppColors.primaryColor),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color:
+                                                Colors.grey.withOpacity(0.5),
+                                            spreadRadius: 2,
+                                            blurRadius: 3,
+                                            offset: const Offset(0,
+                                                2), // changes position of shadow
+                                          ),
+                                        ],
+                                        borderRadius:
+                                            BorderRadius.circular(10),
+                                        color: AppColors.secondaryColor),
                                     child: Align(
                                       alignment: Alignment.center,
                                       child: Text(
-                                        formatTime(e.value),
+                                        formatTime(availableSoltList[index]),
                                         style: const TextStyle(
-                                            color: Colors.white),
+                                            color: Colors.white,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w700),
                                       ),
                                     )),
                               ),
                             );
-                          }).toList()),
-                    ),
-                  ),
+                          }),
+                    )),
       ),
     );
   }

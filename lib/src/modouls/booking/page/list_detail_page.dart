@@ -11,12 +11,14 @@ class ListDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "Booking List by Room",
-          style: TextStyle(
-              fontSize: 22,
-              color: AppColors.secondaryColor,
-              fontWeight: FontWeight.w600),
+        title: const Center(
+          child:  Text(
+            "Booking List by Room",
+            style: TextStyle(
+                fontSize: 22,
+                color: AppColors.secondaryColor,
+                fontWeight: FontWeight.w700),
+          ),
         ),
       ),
       body: Obx(
@@ -42,6 +44,14 @@ class ListDetailPage extends StatelessWidget {
                     margin: const EdgeInsets.only(bottom: 15),
                     padding: const EdgeInsets.all(25),
                     decoration: BoxDecoration(
+                       boxShadow:[
+                        BoxShadow(
+        color: Colors.grey.withOpacity(0.5),
+        spreadRadius: 2,
+        blurRadius: 3,
+        offset: const  Offset(0, 2), // changes position of shadow
+      ),
+                      ] ,
                         border: Border.all(color: AppColors.primaryColor),
                         borderRadius: BorderRadius.circular(15),
                         color: AppColors.primaryColor),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../src/constant/app_color.dart';
+
 class CustomLableEdit extends StatelessWidget {
   final IconData? icon;
   final String? lable;
@@ -45,7 +47,7 @@ class CustomLableEdit extends StatelessWidget {
           icon: const Icon(
             Icons.mode_edit_outlined,
             size: 20,
-            color: Colors.grey,
+            color: AppColors.secondaryColor,
           ),
         )
       ],

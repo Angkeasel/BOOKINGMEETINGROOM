@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:meetroombooking/src/auth/page/register_screen.dart';
 import 'package:meetroombooking/src/modouls/booking/page/booking_room_datails.dart';
 import 'package:meetroombooking/src/modouls/booking/page/edit_booking_page.dart';
-import 'package:meetroombooking/src/modouls/booking/page/verify_booking.dart';
+import 'package:meetroombooking/src/modouls/booking/page/view_detail.page.dart';
 import 'package:meetroombooking/src/modouls/listing/page/time_listing_page.dart';
 import 'package:meetroombooking/src/modouls/profile/page/edit_profile_page.dart';
 import '../../auth/page/login_screen.dart';
@@ -28,13 +29,16 @@ const _initialLocation = '/splash';
 
 final router = GoRouter(
   redirect: (BuildContext context, GoRouterState state) async {
-    final isAuthenticated = await LocalStorage.getStringValue(
-        key: 'access_token'); // your logic to check if user is authenticated
-    if (isAuthenticated == '') {
-      return '/login';
-    } else {
-      return null; // return "null" to display the intended route without redirecting
-    }
+     try {
+    final isAuthenticated = await LocalStorage.getStringValue(key: 'access_token');
+    bool isExpired = JwtDecoder.isExpired(isAuthenticated); 
+    debugPrint("isAuthenticated $isAuthenticated");
+    debugPrint("isExpired $isExpired");
+    return isExpired== true ? '/login' : null;
+  } catch (e) {
+    print("Error checking authentication: $e");
+    return '/login';
+  }
   },
   navigatorKey: _rootNavigatorKey,
   debugLogDiagnostics: true,
@@ -52,7 +56,8 @@ final router = GoRouter(
           GoRoute(
             path: '/rooms',
             name: 'RoomListingScreen',
-            pageBuilder: (_, state) {
+            pageBuilder: (_, state) {  
+              
               return const NoTransitionPage(
                 child: ListingRoom(),
               );
@@ -94,19 +99,19 @@ final router = GoRouter(
                   );
                 },
               ),
-              GoRoute(
-                parentNavigatorKey: _rootNavigatorKey,
-                path: 'verify-booking/:id',
-                name: 'VerifyBooking',
-                builder: (_, state) {
-                  // Map<String, dynamic> extra =
-                  //     state.extra as Map<String, dynamic>;
-                  return Verifybooking(
-                    //meeting: extra['meeting'],
-                    id: state.pathParameters['id'] ?? '',
-                  );
-                },
-              ),
+              // GoRoute(
+              //   parentNavigatorKey: _rootNavigatorKey,
+              //   path: 'verify-booking/:id',
+              //   name: 'VerifyBooking',
+              //   builder: (_, state) {
+              //     // Map<String, dynamic> extra =
+              //     //     state.extra as Map<String, dynamic>;
+              //     return Verifybooking(
+              //       //meeting: extra['meeting'],
+              //       id: state.pathParameters['id'] ?? '',
+              //     );
+              //   },
+              // ),
             ],
           ),
         ]),
@@ -123,12 +128,28 @@ final router = GoRouter(
                     path: ':id',
                     name: 'AllBookingUserListing',
                     builder: (_, state) {
-                      final id = state.pathParameters['id'] ?? '';
+                      final id = state.pathParameters['id'] ?? 'hlp';
                       return BookingRoomDetailsPage(
                         id: id,
                       );
                     },
                     routes: [
+                      GoRoute(
+                        parentNavigatorKey: _rootNavigatorKey,
+                        path: 'view',
+                        name: 'ViewBooking',
+                        builder: (BuildContext context, state) {
+                          final extra =
+                              state.extra as Map<String, GestureTapCallback?>?;
+                          final onTapEdit = extra?['onTapEdit'];
+                          final onTapDelete = extra?['onTapDelete'];
+                          return ViewDetailsPage(
+                            bookId: state.queryParameters['bookId'] ?? '',
+                            onTapDelete: onTapDelete,
+                            onTapEdit: onTapEdit,
+                          );
+                        },
+                      ),
                       GoRoute(
                         parentNavigatorKey: _rootNavigatorKey,
                         path: 'edit-booking',

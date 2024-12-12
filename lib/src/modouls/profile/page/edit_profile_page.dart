@@ -2,13 +2,15 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:meetroombooking/src/modouls/profile/controller/profile_controller.dart';
 import 'package:meetroombooking/src/modouls/widget/custom_photo.dart';
-import 'package:meetroombooking/widgets/custom_buttons.dart';
+
 import 'package:meetroombooking/widgets/custom_text_form_filed.dart';
+import '../../../../widgets/custom_buttons.dart';
 import '../../../../widgets/custom_showbottomsheet.dart';
 
 class EditProfilePage extends StatefulWidget {
@@ -215,11 +217,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       debugPrint('======> update profile info');
                       profileCon.image != null
                           ? profileCon.uploadImage(
-                              'http://localhost:3000/api/profile/update/image',
+                              '${dotenv.env['base_url']}/profile/update/image',
                               profileCon.image!)
                           : profileCon.pickImageInBytes.value != null
                               ? profileCon.uploadBytes(
-                                  'http://localhost:3000/api/profile/upload/image',
+                                  '${dotenv.env['base_url']}/profile/upload/image',
                                   profileCon.pickImageInBytes.value!)
                               : profileCon.userModel.value.avatar ??
                                   Image.asset('assets/image/png/profile.png');

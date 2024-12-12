@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:meetroombooking/src/constant/app_size.dart';
 
+import 'app_color.dart';
+
 final textFieldLabelStyle = TextStyle(
   fontSize: 18,
   fontVariations: [
@@ -10,6 +12,7 @@ final textFieldLabelStyle = TextStyle(
 
 final textFieldTextStyle = TextStyle(
   fontSize: 18,
+  color: AppColors.secondaryColor,
   fontVariations: [
     FontWeight.w500.getVariant,
   ],

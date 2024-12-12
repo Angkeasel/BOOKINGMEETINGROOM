@@ -37,8 +37,10 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'My Profile ',
+        title: const Center(
+          child:  Text(
+            'My Profile ',
+          ),
         ),
         titleTextStyle: context.appBarTextStyle.copyWith(
             color: AppColors.secondaryColor, fontWeight: FontWeight.w700),
@@ -84,7 +86,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         }).toString(),
                                   );
                                 },
-                              ),
+                              )
                             ),
                             const SizedBox(
                               height: 5,

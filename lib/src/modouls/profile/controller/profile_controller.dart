@@ -17,7 +17,7 @@ class ProfileController extends GetxController {
   Future<void> uploadBytes(String url, Uint8List imageBytes) async {
     final token = await LocalStorage.getStringValue(key: 'access_token');
     debugPrint('=======> token :$token');
-    var request = http.MultipartRequest("POST", Uri.parse(url));
+    var request = http.MultipartRequest("PUT", Uri.parse(url));
     request.headers.assignAll({"Authorization": "Bearer $token"});
     request.files.add(http.MultipartFile.fromBytes('profile', imageBytes,
         filename: 'image.jpg'));

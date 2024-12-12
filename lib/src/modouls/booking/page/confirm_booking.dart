@@ -66,7 +66,7 @@ class _ConfirmBookingScreenState extends State<ConfirmBookingScreen> {
     if (minutes % 60 == 0) {
       return '${duration.inHours}h';
     } else {
-      return '${duration.inHours}h${minutes % 60}mins';
+      return '${duration.inHours}h${minutes % 60}min';
     }
   }
 
@@ -82,14 +82,16 @@ class _ConfirmBookingScreenState extends State<ConfirmBookingScreen> {
   Widget build(BuildContext context) {
     final dateStyle = Theme.of(context).textTheme.bodyLarge!.copyWith(
       fontSize: 18,
-      color: AppColors.secondaryColor,
+      color: AppColors.primaryColor,
       fontVariations: [FontWeight.w500.getVariant],
     );
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "Confirm Booking",
-          style: TextStyle(color: AppColors.primaryColor),
+        title: Center(
+          child: Text(
+            "Confirm Booking",
+            style: TextStyle(color: AppColors.primaryColor),
+          ),
         ),
         leading: IconButton(
             onPressed: () {
@@ -99,6 +101,8 @@ class _ConfirmBookingScreenState extends State<ConfirmBookingScreen> {
               }).toString());
             },
             icon: const Icon(Icons.arrow_back_sharp)),
+        titleTextStyle: context.appBarTextStyle.copyWith(
+            color: AppColors.primaryColor, fontWeight: FontWeight.w700),
       ),
       body: SafeArea(
         minimum: defaultMinSafeArea.copyWith(left: padding, right: padding),
@@ -126,7 +130,8 @@ class _ConfirmBookingScreenState extends State<ConfirmBookingScreen> {
                                 padding: const EdgeInsets.all(padding),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(color: Colors.grey),
+                                    border: Border.all(
+                                        color: AppColors.secondaryColor),
                                     color: Colors.white),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -140,10 +145,18 @@ class _ConfirmBookingScreenState extends State<ConfirmBookingScreen> {
                                         fontVariations: [
                                           FontWeight.w600.getVariant,
                                         ],
-                                        color: Colors.grey.shade600,
+                                        color: AppColors.secondaryColor,
                                       ),
                                       onPressed: () {
                                         debugPrint('=========> edit day');
+                                        context.go(Uri(
+                                            path: '/rooms/time-slot',
+                                            queryParameters: {
+                                              'date': DateFormat('yyyy-MM-dd')
+                                                  .format(startDate!)
+                                                  .toString(),
+                                              'id': widget.id
+                                            }).toString());
                                       },
                                     ),
                                     Row(
@@ -183,7 +196,7 @@ class _ConfirmBookingScreenState extends State<ConfirmBookingScreen> {
                                 padding: const EdgeInsets.all(padding)
                                     .copyWith(top: 5),
                                 decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.grey),
+                                    border: Border.all(color: AppColors.secondaryColor),
                                     borderRadius: BorderRadius.circular(10),
                                     color: Colors.white),
                                 child: Column(
@@ -191,8 +204,10 @@ class _ConfirmBookingScreenState extends State<ConfirmBookingScreen> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     DropdownButton<int>(
+                                      dropdownColor: AppColors.secondaryColor,
                                       // Initial Value
                                       value: homeCon.dropdownvalue.value,
+                                      style: TextStyle(color: AppColors.primaryColor,fontWeight: FontWeight.w600, fontSize: 16, fontFamily: 'KantumruyPro'),
                                       // Down Arrow Icon
                                       icon:
                                           const Icon(Icons.keyboard_arrow_down),
@@ -227,7 +242,7 @@ class _ConfirmBookingScreenState extends State<ConfirmBookingScreen> {
                                     TextFormField(
                                       controller: TextEditingController()
                                         ..text =
-                                            roomCon.roomModel.value.title ?? '',
+                                            roomCon.roomModel.value.title ?? '',style:const TextStyle(color: AppColors.secondaryColor, fontWeight: FontWeight.w600, fontSize: 16),
                                       decoration: const InputDecoration(
                                         prefixIcon: Icon(
                                           CupertinoIcons.building_2_fill,
@@ -235,13 +250,7 @@ class _ConfirmBookingScreenState extends State<ConfirmBookingScreen> {
                                         ),
                                       ),
                                     ),
-                                    // CustomLableEdit(
-                                    //   icon: Icons.person,
-                                    //   lable: 'Training room head office',
-                                    //   onPressed: () {
-                                    //     debugPrint('=========> edit place');
-                                    //   },
-                                    // ),
+                                
                                   ],
                                 ),
                               ),

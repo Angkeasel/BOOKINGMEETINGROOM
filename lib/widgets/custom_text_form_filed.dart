@@ -59,7 +59,9 @@ class _CustomTextFormFiledState extends State<CustomTextFormFiled> {
                 widget.title ?? '',
                 style: context.headlineSmall.copyWith(
                   fontSize: 14,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w600,
+                  fontFamily: 'KantumruyPro',
+                  color: AppColors.primaryColor
                 ),
               ),
             if (widget.title != null) const SizedBox(height: 5),
@@ -122,7 +124,7 @@ class _CustomTextFormFiledState extends State<CustomTextFormFiled> {
                       : OutlineInputBorder(
                           borderSide: const BorderSide(
                             width: borderWidth,
-                            // color: Color(0xffF1F1F1),
+                            color: AppColors.secondaryColor
                           ),
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -146,9 +148,9 @@ class _CustomTextFormFiledState extends State<CustomTextFormFiled> {
                       : Colors.white,
                   filled: true,
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                       width: 1.5,
-                      color: AppColors.primaryColor,
+                      color: AppColors.secondaryColor,
                     ),
                     borderRadius: BorderRadius.circular(10),
                   ),

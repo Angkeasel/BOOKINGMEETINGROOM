@@ -1,6 +1,9 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 import 'package:meetroombooking/generated/l10n.dart';
 import 'package:meetroombooking/src/constant/app_color.dart';
@@ -10,6 +13,8 @@ import 'package:meetroombooking/src/constant/app_textstyle.dart';
 import 'package:meetroombooking/src/modouls/listing/controller/room_controller.dart';
 import 'package:meetroombooking/src/modouls/listing/custom_listing_room.dart';
 
+import '../../../config/router/router.dart';
+import '../../../util/helper/local_storage/local_storage.dart';
 import '../../booking/controller/booking_contoller.dart';
 
 class ListingRoom extends StatefulWidget {
@@ -23,8 +28,23 @@ class ListingRoom extends StatefulWidget {
 class _ListingRoomState extends State<ListingRoom> {
   final roomCon = Get.put(RoomController());
   final bookingCon = Get.put(BookingController());
+
+  Future<void> checkAccessToken(context) async{
+    var token = await LocalStorage.getStringValue(key: "access_token");
+    debugPrint("test room token $token");
+    if(token != null ){
+      bool isExpired = JwtDecoder.isExpired(token);
+      if(isExpired== false || token ==null){
+         router.go('/login');
+      }else{
+         router.go('/rooms');
+      }
+    }
+  
+  }
   @override
   void initState() {
+    // checkAccessToken(context);
     roomCon.getListingRoom();
     bookingCon.newMeetingList.clear();
     super.initState();
@@ -37,7 +57,7 @@ class _ListingRoomState extends State<ListingRoom> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: AppColors.backgroundColor,
-        title: const Text("Meeting Rooms"),
+        title: const Center(child:  Text("Meeting Rooms")),
         titleTextStyle: context.appBarTextStyle.copyWith(
             color: AppColors.secondaryColor, fontWeight: FontWeight.w700),
       ),

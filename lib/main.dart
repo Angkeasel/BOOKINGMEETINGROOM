@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:meetroombooking/generated/l10n.dart';
@@ -7,12 +8,14 @@ import 'package:meetroombooking/src/config/router/router.dart';
 import 'package:meetroombooking/src/constant/app_color.dart';
 import 'package:meetroombooking/src/constant/app_textstyle.dart';
 import 'package:meetroombooking/src/util/helper/local_storage/local_storage.dart';
+import 'package:url_strategy/url_strategy.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // setPathUrlStrategy();
+  setPathUrlStrategy();
   Get.put(LanguageController());
   await LocalStorage.init();
+  await dotenv.load(fileName:".env");
 
   runApp(const MyApp());
 }
@@ -31,7 +34,7 @@ class MyApp extends StatelessWidget {
       builder: (_) {
         return MaterialApp.router(
           debugShowCheckedModeBanner: false,
-          title: 'Flutter Demo',
+          title: 'RoomBooking',
           theme: ThemeData(
             colorScheme:
                 ColorScheme.fromSeed(seedColor: AppColors.primaryColor),

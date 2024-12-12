@@ -309,32 +309,32 @@ class RegisterScreen extends StatelessWidget {
                                 ),
                           ),
                         ),
-                        const SizedBox(
-                          height: 60,
-                        ),
-                        RichText(
-                          textAlign: TextAlign.center,
-                          text: TextSpan(
-                            text: '${L.current.hasAccountMsg} ',
-                            style: context.titleMedium,
-                            children: [
-                              TextSpan(
-                                text: L.current.login,
-                                style: TextStyle(
-                                  color: AppColors.primaryColor,
-                                  decoration: TextDecoration.underline,
-                                ),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    context.go('/login');
-                                  },
-                              )
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        )
+                        // const SizedBox(
+                        //   height: 60,
+                        // ),
+                        // RichText(
+                        //   textAlign: TextAlign.center,
+                        //   text: TextSpan(
+                        //     text: '${L.current.hasAccountMsg} ',
+                        //     style: context.titleMedium,
+                        //     children: [
+                        //       TextSpan(
+                        //         text: L.current.login,
+                        //         style: TextStyle(
+                        //           color: AppColors.primaryColor,
+                        //           decoration: TextDecoration.underline,
+                        //         ),
+                        //         recognizer: TapGestureRecognizer()
+                        //           ..onTap = () {
+                        //             context.go('/login');
+                        //           },
+                        //       )
+                        //     ],
+                        //   ),
+                        // ),
+                        // const SizedBox(
+                        //   height: 20,
+                        // )
                       ],
                     ),
                   ),

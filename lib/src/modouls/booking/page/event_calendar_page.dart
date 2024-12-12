@@ -1,8 +1,12 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:meetroombooking/src/constant/app_color.dart';
+import 'package:meetroombooking/src/constant/app_textstyle.dart';
+import 'package:meetroombooking/widgets/custom_buttons.dart';
 import '../controller/booking_contoller.dart';
 import 'package:meetroombooking/src/modouls/booking/models/meeting/meeting_datasource.dart';
 import 'package:meetroombooking/src/modouls/home/home_controller.dart';
@@ -92,7 +96,7 @@ class _EventCalendarPageState extends State<EventCalendarPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.primaryColor,
+        //backgroundColor: AppColors.secondaryColor,
         title: Text(
           widget.isEdit! ? 'Edit ${roomModel.title}' : roomModel.title ?? '',
         ),
@@ -104,56 +108,78 @@ class _EventCalendarPageState extends State<EventCalendarPage> {
             Navigator.pop(context);
           },
         ),
+        actions: [
+            Padding(
+              padding: const EdgeInsets.only(top: 10, right: kIsWeb? 100:0),
+              child: CustomButtons(title: "Book Now",width:double.infinity,textColor: AppColors.primaryColor,color: AppColors.secondaryColor,onTap:(){
+                 //================>************ fix here [millisecond] *************** <=====================
+                debugPrint('==>************ fix here [millisecond] ${widget.id}');
+                widget.isEdit!
+                    ? context.go(
+                        '/booking-room/${bookingModelEdit.byRoom}/edit-time-slot?date=$text&bookingId=${widget.id}',
+                      )
+                    : context.go(Uri(
+                            path: '/rooms/time-slot',
+                            queryParameters: {'date': text, 'id': widget.id})
+                        .toString());
+              }),
+            ),
+          const  SizedBox(width: 10,)
+        ],
+        titleTextStyle:context.appBarTextStyle.copyWith(
+          color: AppColors.primaryColor,fontWeight: FontWeight.w700
+        ), 
       ),
+      
       body: GetBuilder(
         init: BookingController(),
         builder: (_) => Center(
           child: ConstrainedBox(
             constraints: BoxConstraints(
                 maxWidth:
-                    context.width > 500 ? context.width * 0.4 : context.width),
+                    context.width > 500 ? context.width  : context.width),
             child: bookingCon.isFetchEvent.value
                 ? const Center(child: CircularProgressIndicator())
                 : Padding(
-                    padding: const EdgeInsets.only(top: 15),
+                  padding: const EdgeInsets.only(top: 5,right: kIsWeb? 100:0,left: kIsWeb?100:0),
+                  child: SafeArea(
                     child: SfCalendar(
+                      cellBorderColor: AppColors.primaryColor,
+                      cellEndPadding: 15,
                       controller: calendarController,
                       initialDisplayDate: DateTime.now(),
                       initialSelectedDate:
                           widget.isEdit! ? dateTime : DateTime.now(),
                       onSelectionChanged: selectionChanged,
                       minDate: DateTime.now(),
-                      maxDate: DateTime(2040, 12, 31, 0, 0),
-                      headerHeight: 50,
-                      viewHeaderStyle: const ViewHeaderStyle(
-                          dayTextStyle: TextStyle(
-                        fontSize: 14,
+                      maxDate: DateTime(2444, 12, 31, 0, 0),
+                      headerHeight: 70,
+                      viewHeaderStyle:   ViewHeaderStyle(
+                        backgroundColor: AppColors.secondaryColor,
+                          dayTextStyle:   TextStyle(
+                        fontSize: 16,
+                        color: AppColors.primaryColor,
                         fontWeight: FontWeight.bold,
                       )),
-                      headerStyle: CalendarHeaderStyle(
-                          backgroundColor: AppColors.primaryColor,
-                          textStyle: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18)),
+                      headerStyle: const CalendarHeaderStyle(
+                         backgroundColor: Colors.transparent,
+                          textStyle:  TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18, color: AppColors.darkColor, )),
                       showTodayButton: false,
                       showDatePickerButton: true,
                       showNavigationArrow: true,
                       view: CalendarView.month,
                       appointmentTimeTextFormat: 'HH:mm a',
-                      // cellBorderColor: Colors.transparent,
+                      appointmentTextStyle:const  TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.w600),
                       dataSource: MeetingDataSource(
                           bookingCon.meetingList), // post events
                       monthViewSettings: MonthViewSettings(
                         appointmentDisplayMode: _displayMode,
                         showAgenda: true,
-                        // agendaViewHeight: 200,
+                        monthCellStyle:const MonthCellStyle( textStyle: TextStyle(color: AppColors.secondaryColor, fontSize: 16, fontWeight: FontWeight.w600))
                       ),
                       selectionDecoration: BoxDecoration(
-                          color: Colors.transparent,
-                          border: Border.all(color: Colors.pink, width: 2)),
-                      blackoutDates: const [
-                        // DateTime.now().subtract(const Duration(hours: 48)),
-                        // DateTime.now().subtract(const Duration(hours: 24))
-                      ],
+                          border: Border.all(color: AppColors.secondaryColor, width: 2)),
                       allowedViews: const [
                         CalendarView.day,
                         CalendarView.month,
@@ -161,9 +187,10 @@ class _EventCalendarPageState extends State<EventCalendarPage> {
                         CalendarView.week,
                         CalendarView.workWeek
                       ],
+                      todayHighlightColor: AppColors.primaryColor,
+                      todayTextStyle: const TextStyle(color: AppColors.backgroundColor,fontSize: 16, fontWeight: FontWeight.w600),
                       timeSlotViewSettings: const TimeSlotViewSettings(
-                          timeIntervalHeight: 200,
-                          //timeTextStyle: TextStyle(color: Colors.pink, fontSize: 10),
+                        timeTextStyle:TextStyle(color: AppColors.secondaryColor, fontSize: 14, fontWeight: FontWeight.w600),
                           startHour: 8,
                           endHour: 18,
                           timeInterval: Duration(minutes: 30),
@@ -171,31 +198,11 @@ class _EventCalendarPageState extends State<EventCalendarPage> {
                           timeRulerSize: 80),
                     ),
                   ),
+                ),
           ),
         ),
       ),
-      floatingActionButton: SizedBox(
-        height: 50,
-        width: 50,
-        child: FittedBox(
-          child: FloatingActionButton(
-            shape: const CircleBorder(),
-            onPressed: () {
-              //================>************ fix here [millisecond] *************** <=====================
-              debugPrint('==>************ fix here [millisecond] ${widget.id}');
-              widget.isEdit!
-                  ? context.go(
-                      '/booking-room/${bookingModelEdit.byRoom}/edit-time-slot?date=$text&bookingId=${widget.id}',
-                    )
-                  : context.go(Uri(
-                          path: '/rooms/time-slot',
-                          queryParameters: {'date': text, 'id': widget.id})
-                      .toString());
-            },
-            child: const Icon(Icons.add),
-          ),
-        ),
-      ),
+      
     );
   }
 
@@ -211,4 +218,12 @@ class _EventCalendarPageState extends State<EventCalendarPage> {
     }
     debugPrint('testing print : $text');
   }
+
+
+  void viewChanged(ViewChangedDetails viewChangedDetails) {
+    SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
+      calendarController.selectedDate = viewChangedDetails.visibleDates[0];
+    });
+  }
 }
+

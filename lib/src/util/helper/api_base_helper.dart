@@ -1,6 +1,7 @@
 import 'dart:convert';
 // import 'package:get/get_connect.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -20,10 +21,11 @@ enum METHODE {
 }
 
 class ApiBaseHelper {
-  //String? baseurl = dotenv.env['base_url'];
-  //String? baseurl = 'http://localhost:8000/api';
-  String? baseurl = 'http://localhost:3000/api';
-  // String? baseurl = 'http://10.0.2.2:3000/api';
+   String? baseurl = dotenv.env['base_url'];
+ 
+  //String? baseurl = 'http://localhost:3000/api';
+ // String? baseurl = 'http://192.168.120.101:3000/api';
+ //String? baseurl = 'http://10.0.2.2:3000/api';
   Future<dynamic> onNetworkRequesting({
     required String url,
     Map<String, String>? header,
@@ -36,6 +38,7 @@ class ApiBaseHelper {
     // var token =
     //     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MjFlZTNiZGJjMTY5YTE2NjE4ZTk5YSIsImVtYWlsIjoiQWRtaW5AZ21haWwuY29tIiwidXNlcm5hbWUiOiJhZG1pbnMiLCJpYXQiOjE3MTUxNTczOTMsImV4cCI6MTcxNTI0Mzc5M30.JlugFgKmEwihlxka5RGc6LnU-1EFyocNvd0JofyIy-g';
     var token = await LocalStorage.getStringValue(key: "access_token");
+     debugPrint('baseurl $baseUrl');
     debugPrint('get token $token');
     final fullUrl = baseurl! + url;
     Map<String, String> headerDefault = {

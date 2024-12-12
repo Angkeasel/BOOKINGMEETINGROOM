@@ -3,11 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:meetroombooking/src/config/router/router.dart';
 import 'package:meetroombooking/src/constant/app_size.dart';
 import 'package:meetroombooking/src/constant/app_textstyle.dart';
 import '../controller/booking_contoller.dart';
-import 'package:meetroombooking/src/modouls/booking/models/meeting/meeting_model.dart';
 import 'package:meetroombooking/src/modouls/home/home_controller.dart';
 import '../../../../widgets/custom_buttons.dart';
 import '../../../../widgets/custom_lable_edit.dart';
@@ -16,6 +14,7 @@ import '../../../config/font/font_controller.dart';
 import '../../../constant/app_color.dart';
 import '../../listing/controller/room_controller.dart';
 import '../widget/custom_color.dart';
+
 
 class EditBookingPage extends StatefulWidget {
   final int? millisecondsSinceEpoch;
@@ -61,40 +60,11 @@ class _EditBookingPageState extends State<EditBookingPage> {
   final TextEditingController meetTopicController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
-  Meeting bookingModel = Meeting();
-  Future<void> fetch() async {
-    try {
-      await bookingCon.fetchBookingById(widget.bookId).then((value) {
-        debugPrint('value=====>$value');
-        setState(() {
-          bookingModel = value;
-          homeCon.dropdownvalue.value = bookingModel.duration!;
-          bookingCon.isSelectedEdit.value = bookingModel.backgroundColor!;
-        });
-        debugPrint('bookingModel=====>${bookingModel.backgroundColor}');
-      });
-    } catch (e) {
-      debugPrint('heeeeeh=====>$e');
-    }
-  }
 
   @override
   void initState() {
-    fetch();
-    debugPrint('=======> booking id: ${widget.bookId}');
-    debugPrint('====> colors value : ${bookingModel.backgroundColor}');
-
-    //bookingCon.editColorString.value = '';
-    //bookingCon.isSelectedEdit.value = '';
-    // debugPrint('========> test millisecondsSinceEpoch : $startDate');
-    //===========================================================>
-    //fNameControler.text = bookingModel.firstName ?? '';
-    // lNameController.text = bookingCon.bookingModels.value.lastName ?? '';
-    // meetTopicController.text =
-    //     bookingCon.bookingModels.value.meetingTopic ?? '';
-    // phoneController.text = bookingCon.bookingModels.value.phoneNumber ?? '';
-    // emailController.text = bookingCon.bookingModels.value.email ?? '';
-    // debugPrint(' time : ${homeCon.dropdownvalue.value}');
+    bookingCon.fetchBookingById(widget.bookId);
+    bookingCon.isSelectedEdit.value = bookingCon.bookingModels.value.backgroundColor??'';
     super.initState();
   }
 
@@ -118,7 +88,8 @@ class _EditBookingPageState extends State<EditBookingPage> {
         ),
         leading: IconButton(
             onPressed: () {
-              context.go('/booking-room/${bookingModel.byRoom}');
+              context
+                  .go('/booking-room/${bookingCon.bookingModels.value.byRoom}');
             },
             icon: const Icon(Icons.arrow_back)),
       ),
@@ -164,7 +135,7 @@ class _EditBookingPageState extends State<EditBookingPage> {
                                     onPressed: () {
                                       debugPrint('=========> edit day');
                                       context.go(
-                                        '/booking-room/${bookingModel.byRoom}/edit-event-date/${widget.bookId}',
+                                        '/booking-room/${bookingCon.bookingModels.value.byRoom}/edit-event-date/${widget.bookId}',
                                       );
                                     },
                                   ),
@@ -260,7 +231,7 @@ class _EditBookingPageState extends State<EditBookingPage> {
                                   CustomLableEdit(
                                     icon: Icons.person,
                                     lable:
-                                        "${bookingModel.firstName} ${bookingModel.lastName}",
+                                        "${bookingCon.bookingModels.value.firstName} ${bookingCon.bookingModels.value.lastName}",
                                     onPressed: () {
                                       debugPrint('=========> edit place');
                                     },
@@ -274,7 +245,9 @@ class _EditBookingPageState extends State<EditBookingPage> {
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             controller: fNameControler
-                              ..text = bookingModel.firstName ?? '',
+                              ..text =
+                                  bookingCon.bookingModels.value.firstName ??
+                                      '',
                             title: 'First Name',
                             lable: '',
                             hintText: 'Enter Your First Name',
@@ -289,7 +262,8 @@ class _EditBookingPageState extends State<EditBookingPage> {
                           ),
                           CustomTextFormFiled(
                             controller: lNameController
-                              ..text = bookingModel.lastName ?? '',
+                              ..text =
+                                  bookingCon.bookingModels.value.lastName ?? '',
                             title: 'Last Name',
                             lable: '',
                             hintText: 'Enter Your Last Name',
@@ -306,13 +280,15 @@ class _EditBookingPageState extends State<EditBookingPage> {
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             controller: meetTopicController
-                              ..text = bookingModel.meetingTopic ?? '',
+                              ..text =
+                                  bookingCon.bookingModels.value.meetingTopic ??
+                                      '',
                             title: 'Meeting Topic',
                             lable: '',
                             hintText: 'Enter Your Meeting Topic',
-                            onChanged: (v) {
-                              meetTopicController.text = v;
-                            },
+                            // onChanged: (v) {
+                            //   meetTopicController.text = v;
+                            // },
                             validator: (v) => v == ''
                                 ? Intl.message("Invalid Meeting Topic")
                                 : null,
@@ -321,7 +297,9 @@ class _EditBookingPageState extends State<EditBookingPage> {
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             controller: phoneController
-                              ..text = bookingModel.phoneNumber ?? '',
+                              ..text =
+                                  bookingCon.bookingModels.value.phoneNumber ??
+                                      '',
                             keyboardType: TextInputType.phone,
                             title: 'Phone Number',
                             //lable: '',
@@ -334,75 +312,19 @@ class _EditBookingPageState extends State<EditBookingPage> {
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             controller: emailController
-                              ..text = bookingModel.email ?? '',
+                              ..text =
+                                  bookingCon.bookingModels.value.email ?? '',
                             keyboardType: TextInputType.emailAddress,
                             title: 'Email',
                             lable: '',
                             hintText: 'Enter Your Email',
-                            // validator: (v) => v?.isEmail == false
-                            //     ? Intl.message("Invalid Email Address")
-                            //     : null,
+                            validator: (v) => v?.isEmail == false
+                                ? Intl.message("Invalid Email Address")
+                                : null,
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // CustomLableEdit(
-                              //   //icon: Icons.person,
-                              //   lable: 'Colors:',
-                              //   onPressed: () {
-                              //     debugPrint('show bottomsheet');
-                              //     onShowBottomSheet(
-                              //       isDimissible: true,
-                              //       enableDrag: false,
-                              //       context: context,
-                              //       height: context.height * 1 / 3,
-                              //       child: Padding(
-                              //         padding: const EdgeInsets.all(8.0),
-                              //         child: Column(
-                              //           crossAxisAlignment:
-                              //               CrossAxisAlignment.start,
-                              //           children: [
-                              //             const Text(' Select Colors: '),
-                              //             const SizedBox(
-                              //               height: 10,
-                              //             ),
-                              //             Row(
-                              //               children: bookingCon.colors
-                              //                   .asMap()
-                              //                   .entries
-                              //                   .map((e) {
-                              //                 return GestureDetector(
-                              //                   onTap: () {
-                              //                     bookingCon
-                              //                             .isSelectedEdit.value =
-                              //                         widget.meetModel!
-                              //                             .backgroundColor!;
-                              //                     debugPrint(
-                              //                         '=========> ${bookingCon.isSelectedEdit.value}');
-                              //                     // bookingCon.isSelectedEdit
-                              //                     //     .value = e.value;
-                              //                     // debugPrint(
-                              //                     //     'value colos: ${e.value}');
-                              //                     setState(() {
-                              //                       bookingCon.isSelectedEdit
-                              //                           .value = e.value;
-                              //                     });
-                              //                   },
-                              //                   child: CustomColor(
-                              //                       isSelected: bookingCon
-                              //                               .isSelectedEdit
-                              //                               .value ==
-                              //                           e.value,
-                              //                       colors: e.value),
-                              //                 );
-                              //               }).toList(),
-                              //             ),
-                              //           ],
-                              //         ),
-                              //       ),
-                              //     );
-                              //   },
-                              // ),
                               ConstrainedBox(
                                 constraints: BoxConstraints(
                                     maxWidth: context.width > 500
@@ -415,14 +337,12 @@ class _EditBookingPageState extends State<EditBookingPage> {
                                       .map((e) {
                                     return GestureDetector(
                                       onTap: () {
-                                        bookingCon.isSelectedEdit.value =
-                                            bookingCon.bookingModels.value
-                                                .backgroundColor!;
                                         debugPrint(
-                                            '=========> ${bookingCon.isSelectedEdit.value}');
+                                            '=========> new bgColors ${bookingCon.isSelectedEdit.value}');
                                         setState(() {
                                           bookingCon.isSelectedEdit.value =
                                               e.value;
+                                          bookingCon.update();
                                         });
                                       },
                                       child: CustomColor(
@@ -446,9 +366,7 @@ class _EditBookingPageState extends State<EditBookingPage> {
                 minimum: const EdgeInsets.only(bottom: 30, left: 20, right: 20),
                 child: CustomButtons(
                   isDisabled:
-                      bookingCon.bookingModels.value.backgroundColor == ''
-                          ? true
-                          : false,
+                      bookingCon.isSelectedEdit.value == '' ? true : false,
                   title: 'Update',
                   onTap: () async {
                     await bookingCon.updateMeeting(
@@ -462,12 +380,17 @@ class _EditBookingPageState extends State<EditBookingPage> {
                             .format(startDate!)
                             .toString(),
                         startTime: startDate!.toString(),
+                        location: bookingCon.bookingModels.value.location,
                         endTime: startDate!
                             .add(Duration(minutes: homeCon.dropdownvalue.value))
                             .toString(),
                         duration: homeCon.dropdownvalue.value,
-                        color: bookingCon.isSelectedEdit.value);
-                    router.pop();
+                        color: bookingCon.isSelectedEdit.value,
+                        );
+                   
+                    // ignore: use_build_context_synchronously
+                    context
+                  .go('/booking-room/${bookingCon.bookingModels.value.byRoom}');
                   },
                 ),
               )
