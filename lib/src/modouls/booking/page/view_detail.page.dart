@@ -38,11 +38,17 @@ class _ViewDetailsPageState extends State<ViewDetailsPage> {
   }
 
 //===============================>Function <==================================
-  String formatDateTime(String dateTimeString) {
+  String formatDate(String dateTimeString) {
     final dateTime = DateTime.parse(dateTimeString);
     final formatter = DateFormat('d MMMM yyyy');
     return formatter.format(dateTime);
   }
+  String formatDateTime(String dateTimeString) {
+      final dateTime = DateTime.parse(dateTimeString);
+      final formatter = DateFormat(
+          'hh:mm aa'); // Adjust format as needed (e.g., HH:mm for 24-hour format)
+      return formatter.format(dateTime);
+    }
 
 //=======================> variable <==========================================
   @override
@@ -110,7 +116,7 @@ class _ViewDetailsPageState extends State<ViewDetailsPage> {
                                 ),
                                 const Text("Date: "),
                                 Text(
-                                    formatDateTime(
+                                    formatDate(
                                         bookingCon.bookingModels.value.date!),
                                     style: TextStyle(
                                         color: AppColors.primaryColor,
