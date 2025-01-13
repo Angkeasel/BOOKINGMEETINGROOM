@@ -15,7 +15,7 @@ void main() async {
   setPathUrlStrategy();
   Get.put(LanguageController());
   await LocalStorage.init();
-  await dotenv.load(fileName:".env");
+  await dotenv.load(fileName: "dotenv");
 
   runApp(const MyApp());
 }
